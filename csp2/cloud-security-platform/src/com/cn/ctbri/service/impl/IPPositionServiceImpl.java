@@ -43,9 +43,15 @@ public class IPPositionServiceImpl implements IIPPositionService{
 	}
 
 	public void saveIPPosition(IPPosition ipPosition) {
-		ipPositionDao.saveAsset(ipPosition);
+		if(ipPosition.getLongitude()!=null&&ipPosition.getLatitude()!=null
+				&&ipPosition.getLongitude().length()>0&&ipPosition.getLatitude().length()>0){
+			ipPositionDao.saveAsset(ipPosition);
+		}
 	}
 
-	
-	
+	public int delete(String  ip) {
+		
+		return ipPositionDao.deleteIP(ip);
+	}
+
 }

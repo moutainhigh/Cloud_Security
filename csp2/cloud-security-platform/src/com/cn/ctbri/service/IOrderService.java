@@ -212,6 +212,8 @@ public interface IOrderService {
 	 * @time 2017-3-27 返回值 ： List
 	 */
 	List findOrderByUserIdAndServiceIdCheckShopCar(int id, int parseInt);
-	
+	//查询需要续费提醒订单
+	List<Order> getWafOrderById();
+	void updateLinkRenew(Map dateMap);
 
 }

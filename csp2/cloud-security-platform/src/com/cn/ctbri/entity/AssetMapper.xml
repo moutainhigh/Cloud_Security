@@ -23,6 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from cs_asset a
 		where a.userid = #{userid}
 	</select>
+	<!-- 按用户id查询addr -->
+	<select id="findDomainByUserId" parameterType="int" resultType="String">
+		select a.addr
+		from cs_asset a
+		where a.userid = #{userid}
+	</select>
 	<!-- 新增资产 -->
 	<insert id="saveAsset" parameterType="com.cn.ctbri.entity.Asset">
 		insert into cs_asset 

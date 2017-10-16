@@ -226,7 +226,7 @@ $(document).ready(function(){
 										Accept: application/json;version=1.0<br/>
 										{     <br/>
 										    "userID" : "",<br/>
-										    "apiKey  : "",<br/>
+										    "apiKey"  : "",<br/>
 										    "randomChar" : ""<br/>
 										}<br/><br/>
 										                                    	

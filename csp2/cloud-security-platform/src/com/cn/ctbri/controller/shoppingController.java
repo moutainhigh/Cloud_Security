@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.common.WafAPIWorker;
@@ -71,7 +72,7 @@ import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
-
+import com.cn.ctbri.util.SMSUtils;
 /**
  * 
  * 创 建 人  ：  tang
@@ -1972,6 +1973,7 @@ public class shoppingController {
     @RequestMapping("cashierUI.html")
     public String cashier(Model model, HttpServletRequest request){
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    	String renew = request.getParameter("renew");
     	//获取orderId,购买时间,交易金额
     	OrderList orderList = orderListService.findById(orderListId);
     	
@@ -2007,6 +2009,7 @@ public class shoppingController {
         model.addAttribute("price", priceStr);
         model.addAttribute("serverName", serverNameMap);
         model.addAttribute("balance",balance);
+        model.addAttribute("renew",renew);
     	return "source/page/details/shoppingcashier-desk2";
     }
     
@@ -2018,6 +2021,8 @@ public class shoppingController {
     	Map<String, Object> m = new HashMap<String, Object>();
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    		//判断是否续费
+    		String renew = request.getParameter("renew");
     		OrderList orderList = orderListService.findById(orderListId);
     		if (orderList == null) {
     			m.put("payFlag", 1);
@@ -2033,10 +2038,12 @@ public class shoppingController {
         	
     		Double price = orderList.getPrice();//支付金额
     		//收银台页面刷新，再次支付
-    		if (orderList.getPay_date() != null){
-    			//不能重复支付
-    			m.put("payFlag", 1);
-    			return;
+    		if("".equals(renew)){
+    			if (orderList.getPay_date() != null){
+    				//不能重复支付
+    				m.put("payFlag", 1);
+    				return;	
+    			}
     		}
     		
 //    		Date orderCreateDate = orderList.getCreate_date();//下单时间
@@ -2070,8 +2077,12 @@ public class shoppingController {
     		}
     			
     		// 南向API调用 任务执行
-    		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
-    			m.put("payFlag", 4);
+    		if(!orderTask(orderList, globle_user, orderIdOfModify,renew)) {
+    			try{
+    				m.put("payFlag", 4);
+    			}catch(Exception e){
+    				e.printStackTrace();
+    			}
     			return;
     		}
     		
@@ -2088,7 +2099,12 @@ public class shoppingController {
     		
     		//更新 支付Flag(cs_order表) 未支付-->已支付
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
-    		selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
+    		String strArrayId[] = orderIds.split(",");
+    		System.out.println("updateOrderPayFlag============"+orderIds);
+    		int payflag = 1;
+    		for (int i = 0; i < strArrayId.length; i++) {
+				selfHelpOrderService.updateOrderPayFlag(strArrayId[i], payflag);
+			}
     		
     		//取得服务时间更改的订单编号
     		String orderId = "";
@@ -2179,7 +2195,7 @@ public class shoppingController {
     	 return orderIdOfModify;
     }
     
-    public boolean orderTask(OrderList orderList, User globle_user, List<String> modifyOrderId){
+    public boolean orderTask(OrderList orderList, User globle_user, List<String> modifyOrderId,String renew){
     	boolean result = true;
     	try{
     		Date date = new Date();
@@ -2191,6 +2207,7 @@ public class shoppingController {
     		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
     		List list = new ArrayList();
     		List shopAPIList = new ArrayList();
+    		List shopSysList = new ArrayList();
     		List<ShopCar> shopList = new ArrayList();
     		int orderNum=0;
     		String orderVal="";
@@ -2206,15 +2223,15 @@ public class shoppingController {
     			}
     			
     			orderNum= strArray.length;
-    			if (orderNum == 1) {
-    				List orderHashList = orderService.findByOrderId(orderIdList.get(0));
-    				/*
-    				 * <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
-        					select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
-        					from cs_order o,cs_service s
-        					where o.id = #{orderId} and o.serviceId = s.id
-    					</select>
-    				 * */
+    			for (int i = 0; i < strArray.length; i++) {
+    				
+    				List orderHashList = orderService.findByOrderId(orderIdList.get(i));
+    				 // <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
+        				//	select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
+        				//	from cs_order o,cs_service s
+        					//where o.id = #{orderId} and o.serviceId = s.id
+    					//</select>
+    				
     				if (orderHashList == null ||orderHashList.size() == 0) {
     		    		return false;
     		    	}
@@ -2254,6 +2271,7 @@ public class shoppingController {
 									System.out.println("金山接口创建成功" + orderId + " userid:"+userid.toString());
 									String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(orderId+userid.toString());
 									selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
+									 orderVal = orderVal+ orderId+",";
 								}
 								System.out.println("url:"+SysWorker.getJinshanoauthurl(orderId+userid.toString()));
 								
@@ -2261,30 +2279,33 @@ public class shoppingController {
 								System.out.println(""+orderId );
 								String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
 								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strInstanceid);
+								 orderVal = orderVal+ orderId+",";
 								
 							}else if (serviceId == 10) {//服务监测 
 								System.out.println(""+orderId );
 								System.out.println(""+portMessage );
 								//String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
 								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),portMessage);
+								 orderVal = orderVal+ orderId+",";
 								
 							}
     			    	
     			    		else {
 								selfHelpOrderService.updateOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date());
+								 orderVal = orderVal+ orderId+",";
 							}
     			    		
         					
         					
-        					/*更新 修改时间的订单Id
-        					if (modifyOrderId.contains(shopCar.getOrderId())){
-        						modifyOrderId.remove(shopCar.getOrderId());
-        						modifyOrderId.add(orderId);
-        					}*/
+        					//更新 修改时间的订单Id
+        				//	if (modifyOrderId.contains(shopCar.getOrderId())){
+        					//	modifyOrderId.remove(shopCar.getOrderId());
+        					//	modifyOrderId.add(orderId);
+        					//}
         				} else {
         					result = false;
         				}
-						return result;
+						//return result;
 					}
 				}
     			
@@ -2297,9 +2318,11 @@ public class shoppingController {
     				ShopCar shopCar = (ShopCar)list.get(i);
     				if(shopCar.getIsAPI()==0 || shopCar.getIsAPI()==2){
     					shopList.add(shopCar);
-    				}else{
+    				}else if (shopCar.getIsAPI()==1) {
     					shopAPIList.add(shopCar);
-    				}
+    				}else if (shopCar.getIsAPI()==3) {
+    					shopSysList.add(shopCar);
+					}
     			}	 
     		}
     		
@@ -2354,7 +2377,7 @@ public class shoppingController {
     				        	int id = 0;
     				        	String addr = "";
     				        	String addrName = "";
-    				        	String wafIp = "192.168.0.133";
+    				        	String wafIp = "219.141.189.183";
     				        	String wafPort = "";
         						JSONArray ser = new JSONArray();
         						if(assets != null && assets.size() > 0){
@@ -2386,14 +2409,14 @@ public class shoppingController {
         						if(addrName.length()>20){
         							addrName = addrName.substring(0, 20);
         						}
-        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("20001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
+        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
         						String targetKey = "";
         				    	try {
         				    		JSONObject obj = JSONObject.fromObject(wafcreate);
         				    		targetKey = obj.getString("targetKey"); 
         				    		String sta = obj.getString("status");
 //        				    		String sta = "success";
-        				    		if(sta.equals("success")){
+        				    		if(sta!=null&&!"".equals(sta)&&sta.equals("success")){
         				    			OrderAsset oa = new OrderAsset();
             				    		oa.setId(id);
             				    		oa.setTargetKey(targetKey);
@@ -2405,9 +2428,14 @@ public class shoppingController {
             			    			orderService.update(order);
             			    			
             				    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-                						String orderDate = odf.format(new Date());
+            				    		if(renew!=null&&!"".equals(renew)){
+            				    			orderId = shopCar.getOrderId();
+            				    			orderVal=orderVal+ orderId+",";;
+            				    		}else{
+            				    		String orderDate = odf.format(new Date());
                 						orderId = orderDate+String.valueOf(Random.fivecode());
                 						orderVal = orderVal+ orderId+",";
+            				    		}
         				    		}else{
         				    			orderId = "";
         				    		}
@@ -2417,10 +2445,15 @@ public class shoppingController {
         				        }
         						//end
     						}else{
+    							if(renew!=null&&!"".equals(renew)){
+    				    			orderVal = shopCar.getOrderId();
+    				    			orderVal=orderVal+ orderId+",";
+    				    		}else{
     							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
         						String orderDate = odf.format(new Date());
         						orderId = orderDate+String.valueOf(Random.fivecode());
         						orderVal = orderVal+ orderId+",";
+    				    		}
     						}
     						
     					}
@@ -2500,10 +2533,41 @@ public class shoppingController {
     			
     		}
     		
+    		/*
+    		if (shopSysList != null && shopSysList.size() > 0) {
+    			for (int i = 0; i < shopSysList.size(); i++) {
+    				ShopCar shopCar = (ShopCar) shopSysList.get(i);
+    				String orderId = "";
+    				orderId = shopCar.getOrderId();
+    			   
+    			    
+    			    if (orderId != null && !"".equals(orderId)) {
+    					//更新 修改时间的订单Id
+    					if (modifyOrderId.contains(shopCar.getOrderId())){
+    						modifyOrderId.remove(shopCar.getOrderId());
+    						modifyOrderId.add(orderId);
+    					}
+    				} else {
+    					result = false;
+    				}
+    			   
+    			}//for
+    		}//shopSyslist
+    		*/
+    		
+    		
+    		
     		//更新orderList表中的orderId
-    		String newOrderIds = orderVal.substring(0,orderVal.length()-1);
+    		String newOrderIds = "";
     		if (orderVal != null&& !orderVal.equals("")) {
+    			if(renew!=null&&!"".equals(renew)){
+    				orderVal = orderVal.substring(0,orderVal.length()-1);
+    				orderList.setOrderId(orderVal);
+    				newOrderIds=orderVal;
+    			}else{
+    			newOrderIds = orderVal.substring(0,orderVal.length()-1);
     			orderList.setOrderId(newOrderIds);
+    			}
     			orderListService.update(orderList);
     		}
     		
@@ -2525,7 +2589,7 @@ public class shoppingController {
      * 功能描述： 支付成功页面
      * */
     @RequestMapping(value="repayUI.html", method=RequestMethod.POST)
-    public String toRepayUI(Model m,HttpServletRequest request, HttpServletResponse response){
+    public String toRepayUI(Model m,HttpServletRequest request, HttpServletResponse response) throws IOException{
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
 		OrderList orderList = orderListService.findById(orderListId);
 		
@@ -2534,7 +2598,32 @@ public class shoppingController {
     	if (orderListId== null || orderList == null ||orderList.getUserId()!= globle_user.getId()) {
     		return "redirect:/index.html";
     	}
-    	
+    	/**waf 订单支付成功发送短信提醒开始**/
+		List<String> orderIdList=new ArrayList();
+		
+		String orderIds = orderList.getOrderId();
+		if(orderIds!=null&&!"".equals(orderIds)){
+			String strArray[] = orderIds.split(",");
+			for (int k=0;k<strArray.length;k++){
+				orderIdList.add(strArray[k]);
+			}
+		}
+		List	list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
+		for(int i=0;i<list.size();i++){
+			ShopCar shopCar = (ShopCar)list.get(i);
+			int serviceId = shopCar.getServiceId();
+			if(serviceId==6){
+				Linkman linkman=orderService.findLinkmanByOrderId(shopCar.getOrderId());
+				String mobile = linkman.getMobile();
+				SMSUtils smsUtils = new SMSUtils();
+			    try {
+			    	smsUtils.sendMessage_WafOrderSuccess(mobile, shopCar.getOrderId(), shopCar.getBeginDate());
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		/**waf 订单支付成功发送短信提醒结束**/
     	
 		//获取修改时间的订单编号
 		String modifyOrderIdList = request.getParameter("modifyOrderId");

@@ -1,3 +1,7 @@
+var myChartPieLevel = null;
+var myChartPieEvent = null;
+var myChartBar = null;
+
 $(function(){	
 	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
@@ -30,7 +34,7 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 饼图 ---
-            var myChartPieLevel = ec.init(document.getElementById('levelPie'));
+            myChartPieLevel = ec.init(document.getElementById('levelPie'));
             myChartPieLevel.showLoading({
           	  text: 'loading...',
           	  effect : 'spin',
@@ -127,9 +131,9 @@ $(function(){
             'echarts',
             'echarts/chart/pie'
         ],
-        function (ec) {//回调函数
+        function (ec) {//回调函数执行图表对象初始化
             //--- 饼图 ---
-            var myChartPieEvent = ec.init(document.getElementById('eventPie'));
+            myChartPieEvent = ec.init(document.getElementById('eventPie'));
             myChartPieEvent.showLoading({
           	  text: 'loading...',
           	  effect : 'spin',
@@ -145,6 +149,7 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
+            	async:false,
             	url:"getEventPieData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -198,7 +203,6 @@ $(function(){
         }
     );
     
-    
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
@@ -208,7 +212,7 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 柱形图 ---
-        	var myChartBar = ec.init(document.getElementById('eventBar'));
+        	myChartBar = ec.init(document.getElementById('eventBar'));
         	myChartBar.showLoading({
           	  text: 'loading...',
           	  effect : 'spin',
@@ -224,6 +228,7 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type: "post",
+            	async:false,
             	url:"getEventBarData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
 //                contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -340,5 +345,28 @@ $(function(){
     
     
 });
+
+function strToHexCharCode(str) {
+	if(str === "")
+		return "";
+	var hexCharCode = [];
+	hexCharCode.push("0x"); 
+	for(var i = 0; i < str.length; i++) {
+		hexCharCode.push((str.charCodeAt(i)).toString(16));
+	}
+	return hexCharCode.join("");
+}
+
+function exportImgWAF(){
+    var dataPieLevel = myChartPieLevel.getDataURL("png"); 
+    var dataPieEvent = myChartPieEvent.getDataURL("png");
+    var dataBar = myChartBar.getDataURL("png");
+   
+    $("#imgPieLevel").val(strToHexCharCode(dataPieLevel));
+    $("#imgPieEvent").val(strToHexCharCode(dataPieEvent));
+    $("#imgBar").val(strToHexCharCode(dataBar));
+    
+	$("#exportForm").submit();
+}
 
 

@@ -127,6 +127,10 @@ public class ServerManagerService {
 		
 		try {
 			Advertisement ad = adService.findById(adId);
+			if(ad == null){
+				json.put("code", 200);//返回200表示成功
+				json.put("message", "删除广告成功");
+			}
 			//图片删除
 			String imageName = ad.getImage();
 			if (imageName != null && !imageName.equals("")) {
@@ -274,6 +278,7 @@ public class ServerManagerService {
 			if(parent == 6) {	//删除API服务
 				//删除服务图标
 				ServiceAPI serviceAPI = servAPIService.findById(serviceId);
+				if(serviceAPI!=null){
 				serviceIcon = serviceAPI.getHomeIcon();
 				deleteImage("serviceIcon", serviceIcon);
 				
@@ -282,7 +287,7 @@ public class ServerManagerService {
 				
 				serviceIcon = serviceAPI.getDetailIcon();
 				deleteImage("serviceIcon", serviceIcon);
-				
+				}
 				//删除service_api表数据
 				servAPIService.deleteById(serviceId);
 				//删除price_api表数据

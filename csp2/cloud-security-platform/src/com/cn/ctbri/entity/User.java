@@ -325,4 +325,21 @@ public class User implements java.io.Serializable{
 	public void setPartner(String partner) {
 		this.partner = partner;
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", createTime="
+				+ createTime + ", realName=" + realName + ", password="
+				+ password + ", mobile=" + mobile + ", email=" + email
+				+ ", status=" + status + ", type=" + type + ", remarks="
+				+ remarks + ", verification_code=" + verification_code
+				+ ", checkNumber=" + checkNumber + ", servSum=" + servSum
+				+ ", AssetSum=" + AssetSum + ", ip=" + ip + ", industry="
+				+ industry + ", job=" + job + ", company=" + company
+				+ ", startIP=" + startIP + ", endIP=" + endIP
+				+ ", lastLoginTime=" + lastLoginTime + ", apikey=" + apikey
+				+ ", urlAddr=" + urlAddr + ", balance=" + balance
+				+ ", lastSignInTime=" + lastSignInTime + ", Salt=" + Salt
+				+ ", ipProvice=" + ipProvice + ", partner=" + partner + "]";
+	}
+	
 }

@@ -23,6 +23,12 @@ public interface AssetDao {
 	 */
 	List<Asset> findByUserId(int id);
 	/**
+	 * 功能描述：根据用户名查询订单addr
+	 * @param userId
+	 * @return
+	 */
+	List<String> findDomainByUserId(int userId);
+	/**
 	 * 功能描述：新增资产
 	 * 参数描述：Asset asset
 	 *		 @time 2015-1-16

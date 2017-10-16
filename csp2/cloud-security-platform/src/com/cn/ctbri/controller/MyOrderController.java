@@ -109,8 +109,10 @@ public class MyOrderController {
     @RequestMapping(value="getOrderList.html")
     public ModelAndView getOrderList(HttpServletRequest request){
         //获取pageIndex
+    	 ModelAndView mv = new ModelAndView("/source/page/personalCenter/orderList");
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
         String state=request.getParameter("state");
 //        int list_group=Integer.parseInt(request.getParameter("list_group"));
         //根据pageIndex获取每页order条数,获取订单信息（逻辑删除订单不显示）
@@ -127,11 +129,26 @@ public class MyOrderController {
 	        	for(int j = 0; j < ol.size(); j++){
 	        		int alarmViewedFlag = 1;
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+		        	int serviceId =(Integer)map.get("serviceId");
+		        	int status=(Integer)map.get("status");
+		        	Date endDate =(Date) map.get("end_date");
 		        	Map<String,Object> paramMap = new HashMap<String,Object>();
 		        	String orderId = (String)map.get("id");
 		        	String type = map.get("type").toString();
 		        	paramMap.put("orderId", orderId);
 		        	paramMap.put("type", type);
+		        	//判断waf是否需要延期
+		        	if(serviceId==6&&status==4){
+			        	Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
+			        		 map.put("Renew", true);
+			        	}else{
+			        		 map.put("Renew", false);
+			        	}
+		        	}
+
 //		        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
 //					if(taskList != null && taskList.size() > 0){
 //						for (Task task : taskList) {
@@ -178,11 +195,11 @@ public class MyOrderController {
     		}
     	}*/
         
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+     
         Date currentTime = new Date();//得到当前系统时间 
         String temp = formatter.format(currentTime); //将日期时间格式化
         
-        ModelAndView mv = new ModelAndView("/source/page/personalCenter/orderList");
+      
         mv.addObject("orderList", orderList);
         mv.addObject("state", state);
         mv.addObject("nowDate", temp);
@@ -197,6 +214,7 @@ public class MyOrderController {
     @SuppressWarnings("rawtypes")
     @RequestMapping("/searchCombineByPage.html")
     public ModelAndView searchCombineByPage(HttpServletRequest request){
+    	ModelAndView mv = new ModelAndView("/source/page/personalCenter/orderList");
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         String type = request.getParameter("type");
         String servName = request.getParameter("servName");
@@ -275,9 +293,23 @@ public class MyOrderController {
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
 		        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
 		        	String orderId = (String)map.get("id");
+		        	int serviceId =(Integer)map.get("serviceId");
+		        	int status=(Integer)map.get("status");
+		        	Date endDate =(Date) map.get("end_date");
 		        	String type1 = map.get("type").toString();
 		        	paramMap.put("orderId", orderId);
 		        	paramMap.put("type", type1);
+		        	//判断waf是否需要延期
+		        	if(serviceId==6&&status==4){
+		        		Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
+			        		   map.put("Renew", true);
+			        	}else{
+			        		  map.put("Renew", false);
+			        	}
+		        	}
 		        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
 					if(taskList != null && taskList.size() > 0){
 						for (Task task : taskList) {
@@ -301,7 +333,7 @@ public class MyOrderController {
 	        }
         }
         
-        ModelAndView mv = new ModelAndView("/source/page/personalCenter/orderList");
+        
         mv.addObject("nowDate",temp); 
         mv.addObject("orderList",result);      //传对象到页面
         mv.addObject("type",type);//回显类型  
@@ -382,6 +414,20 @@ public class MyOrderController {
 	        	for(int j = 0; j < ol.size(); j++){
 	        		int alarmViewedFlag = 1;
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+		        	Date endDate =(Date) map.get("end_date");
+		        	int serviceId = Integer.parseInt(map.get("serviceId").toString());
+		        	int status = Integer.parseInt(map.get("status").toString());
+		        	//判断waf是否需要延期
+		        	if(serviceId==6&&status==4){
+		        		Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
+			        		map.put("Renew", true);
+			        	}else{
+			        		map.put("Renew", false);
+			        	}
+		        	}
 		        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
 		        	String orderId = (String)map.get("id");
 		        	String type1 = map.get("type").toString();

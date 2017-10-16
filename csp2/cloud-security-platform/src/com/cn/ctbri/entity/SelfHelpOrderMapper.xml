@@ -90,6 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 a.serviceId,
 a.isAPI,
  a.status,
+ a.remarks,
  a.begin_date beginDate,
 a.end_date endDate
 FROM (SELECT
@@ -131,6 +132,7 @@ ORDER BY a.create_date desc
 a.serviceId,
 a.isAPI,
  a.status,
+ a.remarks,
 b.buynum,
  a.begin_date beginDate,
 a.end_date endDate
@@ -169,6 +171,7 @@ ORDER BY a.create_date desc
   a.serviceId,
   a.isAPI,
   a.status,
+  a.remarks,
   a.scan_type,
   a.begin_date beginDate,
   a.end_date endDate,
@@ -396,12 +399,7 @@ FROM (SELECT
       	 id = #{id}
  </update>
  <update id="updatePayFlag" parameterType="hashMap">
-      	update cs_order
-      	set
-      	 payFlag = #{payFlag}
-      	 
-      	where
-      	 id in (${orderId})
+  update cs_order set payFlag = #{payFlag} where id = (#{orderId})
  </update>
  
  <update id="updateOrderStatus" parameterType="hashMap">
@@ -472,5 +470,24 @@ AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" ope
 AND s.serviceId=api.id
        
     </select>
+	<!-- 修改购物车续费订单 -->
+	<update id="updateRenewOrder" parameterType="Map" >
+		update cs_order  set  begin_date=#{begin_date},end_date=#{end_date}, task_date=#{task_date}, payFlag=#{payFlag},isAPI=#{isAPI},price=#{price},create_date=#{create_date}
+		
+	   where id=#{orderId}
+	</update>
+      <!-- 立即支付修改续费订单 -->
+	<update id="updateBuyRenewOrder" parameterType="Map" >
+		update cs_order  set  begin_date=#{begin_date},end_date=#{end_date}, task_date=#{task_date}, payFlag=#{payFlag},isAPI=#{isAPI},price=#{price},scan_type=#{scanType}
+	   where id=#{orderId}
+	</update>
+	<select id="getOrderInfoById" parameterType="Map" resultType="int">
+	
+      SELECT serviceId FROM cs_order  WHERE id in
+           	<foreach item="orderId" index="index" collection="orderIds" open="("
+			separator="," close=")">
+			#{orderId}
+		</foreach>
+	</select>
     
 </mapper>

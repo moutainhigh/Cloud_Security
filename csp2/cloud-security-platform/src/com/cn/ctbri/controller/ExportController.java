@@ -2,19 +2,26 @@ package com.cn.ctbri.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,6 +36,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.text.StrBuilder;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.Document;
@@ -60,8 +68,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.common.WafAPIAnalysis;
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
@@ -74,7 +85,16 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.util.AttackList;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.FreeMarkerUtils;
+import com.cn.ctbri.util.Threat;
+import com.cn.ctbri.util.TimeList;
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
+
+import freemarker.template.Configuration;  
+import freemarker.template.Template;  
+import freemarker.template.TemplateException; 
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-2-2
@@ -1227,10 +1247,13 @@ public class ExportController {
             String fileName, String data) 
             throws ServletException, IOException {
         try {
-            String[] url = data.split(",");
+        	String replaceData = data.replaceAll(" ", "+");
+            String[] url = replaceData.split(",");
+            System.out.println("file png raw data *******************: "+data);
             String u = url[1];
             // Base64解码
-            byte[] b = new BASE64Decoder().decodeBuffer(u);
+            byte[]  b= new BASE64Decoder().decodeBuffer(u);
+          //  System.out.println("file png *******************: "+ Arrays.toString(b));
             // 生成图片
             OutputStream out = new FileOutputStream(new File(fileName));
             out.write(b);
@@ -1266,6 +1289,475 @@ public class ExportController {
       CTTc cttc = cell.getCTTc();
       CTTcPr tcPr = cttc.isSetTcPr() ? cttc.getTcPr() : cttc.addNewTcPr();
       return tcPr;
+    }
+    
+    public static String getFromBASE64(String s) { 
+    	if (s == null) return null; 
+    	BASE64Decoder decoder = new BASE64Decoder(); 
+    	try { 
+    	byte[] b = decoder.decodeBuffer(s); 
+    	return new String(b,"utf-8"); 
+    	} catch (Exception e) { 
+    	return null; 
+    	} 
+    }
+
+    /** 
+     * @Title:hexString2String 
+     * @Description:16进制字符串转字符串 
+     * @param src 
+     *            16进制字符串 
+     * @return 字节数组 
+     * @throws 
+     */  
+    /*public static String hexString2String(String src) {  
+    	src = src.substring(2);
+        String temp = "";  
+        for (int i = 0; i < src.length() / 2; i++) {  
+            temp = temp  
+                    + (char) Integer.valueOf(src.substring(i * 2, i * 2 + 2),  
+                            16).byteValue();  
+        }  
+        return temp;  
+    } */
+    public static String hexString2String(String s) {  
+        if (s == null || s.equals("")) {  
+            return null;  
+        }  
+        s = s.replace(" ", ""); 
+        
+        
+        byte[] baKeyword = new byte[s.length() / 2];  
+        for (int i = 0; i < baKeyword.length; i++) {  
+            try {  
+                baKeyword[i] = (byte) (0xff & Integer.parseInt(  
+                        s.substring(i * 2, i * 2 + 2), 16));  
+            } catch (Exception e) {  
+                e.printStackTrace();  
+            }  
+        }  
+        try {  
+            s = new String(baKeyword, "UTF-8");  
+            new String();  
+        } catch (Exception e1) {  
+            e1.printStackTrace();  
+        }  
+        return s;  
+    }  
+    /**
+     * 功能描述：在初始时间上加减时间
+     * 参数描述：String orignalTimestr 初始时间,int addnum 间隔时间 ,String type 时间类型 1、月 2、年  3、周
+     *       @time 2017-6-29
+     */
+    
+    public String TimeCalc(String orignalTimestr,int addnum,String type)
+    {
+    	SimpleDateFormat sdf;
+    	String reTimeString ="";
+    	if (type!=null&&type.equals("月报")) {
+    		sdf=new SimpleDateFormat("yyyy-MM");
+		}else if (type!=null&&type.equals("年报")) {
+			sdf=new SimpleDateFormat("yyyy");
+		}else  {
+			sdf=new SimpleDateFormat("yyyy-MM-dd");
+		}
+    	try {
+			Date dt = sdf.parse(orignalTimestr);
+			Calendar endCalendar = Calendar.getInstance();
+			endCalendar.setTime(dt);
+			//beginCalendar.add(field, amount);
+			if (type!=null&&type.equals("月报")) {
+				endCalendar.add(Calendar.MONTH, addnum);
+			}else if (type!=null&&type.equals("年报")) {
+				endCalendar.add(Calendar.YEAR, addnum);
+			}else if (type!=null&&type.equals("周报")){
+				endCalendar.add(Calendar.DAY_OF_YEAR, addnum*7);
+			}
+			
+			Date endDate = endCalendar.getTime(); 
+			reTimeString = sdf.format(endDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+    	return reTimeString;
+    }
+    /**
+     * 功能描述：下载waf导入模板
+     * 参数描述：HttpServletRequest request,HttpServletResponse response
+     *       @time 2017-6-29
+     */
+    @RequestMapping(value="/exportWAF.html",method=RequestMethod.POST)
+    public void exportWAF(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    		//System.out.println("");
+            String orderId = request.getParameter("orderId");
+            String group_flag = request.getParameter("group_flag");
+            String orderAssetId = request.getParameter("orderAssetId");
+            String imgPieLevelHex = request.getParameter("imgPieLevel");
+            String imgBarHex = request.getParameter("imgBar");
+            String imgPieEventHex = request.getParameter("imgPieEvent");
+            String imgSourceIpHex = request.getParameter("imgSourceIp");
+            String imgOntimeLineHex = request.getParameter("imgOntimeLine");
+            String ipurl = request.getParameter("ipurl"); 
+            String defenselength = request.getParameter("defenselength");
+            
+            
+          //获取报表类型  月、年
+    	    String reporttype = request.getParameter("radioType");
+    	    if (reporttype.equals("month")) {
+    	    	reporttype = "月报";
+    		}else if (reporttype.equals("year")) {
+    			reporttype = "年报";
+    		}else if (reporttype.equals("week")) {
+    			reporttype = "周报";
+			}else{
+				reporttype = " ";
+			}
+    	    String beginDate = request.getParameter("beginDate");
+            String endDate = TimeCalc(beginDate, 1, reporttype);
+            //16进制转base64数据
+            
+            String imgPieLevel = hexString2String(imgPieLevelHex);
+            String imgBar = hexString2String(imgBarHex);
+            String imgPieEvent = hexString2String(imgPieEventHex);
+            String imgSourceIp = hexString2String(imgSourceIpHex);
+            String imgOntimeLine = hexString2String(imgOntimeLineHex);
+            
+            String levelTotal = request.getParameter("level");
+            String levelhigh = request.getParameter("levelhigh");
+            String levelmid = request.getParameter("levelmid");
+            String levellow = request.getParameter("levellow");
+            String listtimeString = request.getParameter("resultList");
+            
+            String timeCountTotal = request.getParameter("timeCountTotal"); // time
+          //  String timeStrBase64 = request.getParameter("resultListTime");
+          //  timeStrBase64 = timeStrBase64.replaceAll(" ", "+");
+            String timeStrHex = request.getParameter("resultListTime");
+            String timeJsonStr =hexString2String(timeStrHex);
+            
+           // String strattackipBase64 = request.getParameter("websecListIp");   //ip
+            String totalAttackIPStr = request.getParameter("totalAttackIP");
+            //strattackipBase64 = strattackipBase64.replaceAll(" ", "+");
+            String strattackipHex = request.getParameter("websecListIp");
+            String strJsonattackip = hexString2String(strattackipHex);
+            
+            String eventTypeTotalstr = request.getParameter("eventTypeTotal");  //event type
+           // String strEventTypeBase64 = request.getParameter("strlistEventType");
+            //strEventTypeBase64 = strEventTypeBase64.replaceAll(" ", "+"); // 浏览器出现 将base64中的＋转换为空格
+            String eventTypeHex = request.getParameter("strlistEventType");
+            String strJsonEventTypeStr = hexString2String(eventTypeHex);
+            
+            imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+            imgBar = imgBar.replaceAll(" ", "+");
+            imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+            imgSourceIp = imgSourceIp.replaceAll(" ", "+");
+            imgOntimeLine = imgOntimeLine.replaceAll(" ", "+");
+            
+            System.out.println("imgPie"+imgPieLevel);
+            System.out.println("imgbar:"+imgBar);
+            System.out.println("imgpieevent"+imgPieEvent);
+            //查找订单
+            Order order = orderService.findOrderById(orderId);
+            //获取对应资产
+            List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("ipurl", ipurl);
+            paramMap.put("defenselength", defenselength);
+            paramMap.put("reporttype", reporttype);
+            paramMap.put("orderId", orderId);
+            paramMap.put("type", order.getType());
+            paramMap.put("count", assetList.size());
+            paramMap.put("websoc", order.getWebsoc());
+            paramMap.put("group_flag", group_flag);
+            paramMap.put("orderAssetId", orderAssetId);
+            paramMap.put("imgPieLevel", imgPieLevel);
+            paramMap.put("imgBar", imgBar);
+            paramMap.put("imgPieEvent", imgPieEvent);
+            paramMap.put("imgSourceIp", imgSourceIp);
+            paramMap.put("imgOntimeLine", imgOntimeLine);
+            paramMap.put("levelTotal", levelTotal);
+            paramMap.put("timeJsonStr", timeJsonStr);//time
+            paramMap.put("timeCountTotal", timeCountTotal);
+            paramMap.put("strJsonattackip", strJsonattackip);//ip
+            paramMap.put("totalAttackIPStr", totalAttackIPStr);
+            paramMap.put("eventTypeTotalstr", eventTypeTotalstr);//event
+            paramMap.put("strJsonEventTypeStr", strJsonEventTypeStr);
+            paramMap.put("levelhigh", levelhigh);
+            paramMap.put("levelmid", levelmid);
+            paramMap.put("levellow", levellow);
+            paramMap.put("beginDate", beginDate);
+            paramMap.put("endDate", endDate);
+            
+            
+            
+            
+            
+            
+//            for (Asset asset : assetList) {
+                //预备导出数据
+                Map<String, Object> dataMap = this.getExportWafData(orderId,paramMap,request,response);
+                response.setCharacterEncoding("UTF-8");  
+                response.setContentType("application/msword");
+                File file = null;
+                InputStream inputStream = null;
+                ServletOutputStream out = null;
+                try {
+
+                    String fileName = orderId+"wafinfo.doc";
+                    fileName = new String(fileName.getBytes("gbk"),"iso-8859-1");
+                    response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+
+                    file = FreeMarkerUtils.write("waffreemarker.ftl", dataMap);
+                    inputStream = new FileInputStream(file);
+                    out = response.getOutputStream();
+
+                    byte[] buffer = new byte[512];  // 缓冲区  
+                    int bytesToRead = -1;  
+                    // 通过循环将读入的Word文件的内容输出到浏览器中  
+                    while((bytesToRead = inputStream.read(buffer)) != -1) {  
+                        out.write(buffer, 0, bytesToRead);  
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+
+                    try {
+                        if (inputStream != null) {
+                                inputStream.close();
+                        }
+                        if (out != null) {
+                            out.close();
+                        }
+
+                        if (file != null) {
+                            file.delete();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+    }
+    private String getImageStr(String fileName) throws Exception{
+    	 
+    	                
+    	//String imgFileString = "";
+    	InputStream in = null;
+    	byte[]  data = null;
+    	in = new FileInputStream(fileName);
+    	data = new byte[in.available()];
+    	in.read(data);
+    	in.close();
+    	BASE64Encoder encoder = new BASE64Encoder();
+    	
+		return encoder.encode(data);
+	}
+    private Map<String, Object> getExportWafData(String orderId, Map<String, Object> paramMap,HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+    
+    	//查找订单
+        Order order = orderService.findOrderById(orderId);
+        //获取对应资产
+        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        Object oAssetId = paramMap.get("orderAssetId");
+        //查询时间
+       // String startDate = request.getParameter("beginDate");
+        //周期类型
+        //String timeUnit = request.getParameter("type");
+  
+        int orderAssetId=0;
+        if(oAssetId!=null)
+        {
+        	orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
+        }
+        
+        OrderAsset oa = orderAssetService.findOrderAssetById(orderAssetId);
+        String webSite = oa.getAssetAddr();
+        String wafName = "";
+        wafName = oa.getAssetName();
+        SimpleDateFormat odf = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
+        String createDate = odf.format(new Date());
+        SimpleDateFormat odf1 = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
+        String createDate1 = odf1.format(new Date());
+        
+        String stripurl = paramMap.get("ipurl").toString();
+        String strdefenselength = paramMap.get("defenselength").toString();
+ 
+        
+        String strimgPieLevel = paramMap.get("imgPieLevel").toString();
+        String strimgBar = paramMap.get("imgBar").toString();
+        String strimgPieEvent = paramMap.get("imgPieEvent").toString();
+        String strimgSourceIp = paramMap.get("imgSourceIp").toString();
+        String strimgOntimeLine = paramMap.get("imgOntimeLine").toString();
+        
+        String levelTotal =paramMap.get("levelTotal").toString();
+        String levelhigh =paramMap.get("levelhigh").toString();
+        String levelmid =paramMap.get("levelmid").toString();
+        String levellow =paramMap.get("levellow").toString();
+        
+        String timeCountTotal = paramMap.get("timeCountTotal").toString();
+        String eventTypeTotalstr = paramMap.get("eventTypeTotalstr").toString();
+        String strreporttype = paramMap.get("reporttype").toString();
+        
+        String beginDate = paramMap.get("beginDate").toString();
+        String endDate = paramMap.get("endDate").toString();
+        
+        String strJsonEventTypeStr = paramMap.get("strJsonEventTypeStr").toString();  // eventType
+        List listEventType = WafAPIAnalysis.analysisEventTypeCountList(strJsonEventTypeStr);
+       /* eventListStr = eventListStr.substring(1,eventListStr.length()-1);
+        eventListStr = eventListStr.replaceAll("},", "}:");
+        System.out.println("eventListStr============"+eventListStr);
+        List eventListArray = Arrays.asList(eventListStr.split(":"));*/
+        
+        String timeJsonStr = paramMap.get("timeJsonStr").toString();   //time
+        List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(timeJsonStr);
+       /* timeListStr = timeListStr.substring(1,timeListStr.length()-1); // 去掉头和尾的 ［］
+        timeListStr =timeListStr.replaceAll("},", "}:");
+        System.out.println("timeListStr================"+timeListStr);
+        List  timeListArray = Arrays.asList(timeListStr.split(":")); */
+        
+        String strJsonattackip = paramMap.get("strJsonattackip").toString(); //ip
+        List listattackIP = WafAPIAnalysis.getWafLogWebsecSrcIp(strJsonattackip);
+        /*
+        websecListStr = websecListStr.substring(1,websecListStr.length()-1);
+        if (websecListStr.indexOf("},")!=-1) {
+        	websecListStr = websecListStr.replaceAll("},", "}:");
+		}
+        System.out.println("webseclistStr============"+websecListStr);
+        List  websecListArray = Arrays.asList(websecListStr.split(":")); */
+        
+        String filePath1 = request.getSession().getServletContext().getRealPath("/source/chart");
+        File file1 = new File(filePath1);
+        if(!file1.exists()){
+            file1.mkdir();
+        }
+        String imgFilePieLevel = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieLevel"+".png";
+        String imgFileBar = filePath1 +"/"+ System.currentTimeMillis()+"strimgBar"+".png";
+        String imgFilePieEvent = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieEvent"+".png";
+        String imgFileSourceIp =filePath1 +"/"+ System.currentTimeMillis() +"strimgSourceIp"+".png";
+        String imgFileOntimeLine = filePath1 +"/"+ System.currentTimeMillis() +"strimgOntimeLine"+".png"; 
+        
+        createImage(request, response, imgFilePieLevel, strimgPieLevel);
+        createImage(request, response, imgFileBar, strimgBar);
+        createImage(request, response, imgFilePieEvent, strimgPieEvent);
+        createImage(request, response, imgFileSourceIp, strimgSourceIp);
+        createImage(request, response, imgFileOntimeLine, strimgOntimeLine);
+
+        //高中低 数据统计
+        //*****************test WafAPIWorker
+       // String levelStr = WafAPIWorker.getWafAlertLevelCountInTime(startDate,"",timeUnit,dstIpList);
+    	//Map mapLevelcount = WafAPIAnalysis.getWafAlertLevelCount(levelStr);
+    	//Integer totallevel = (Integer) mapLevelcount.get("total");
+    	//*****************
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+     //   String imgagefilePath = request.getSession().getServletContext().getRealPath("/source/chart");
+     //   String fileName = imgagefilePath +"/"+ "1498719516115"+".png";
+        try {
+        	
+            map.put("createDate1", createDate1);
+            map.put("webName", wafName);
+            map.put("webSite",webSite);
+            map.put("JCSJ", order.getBegin_date().toString());
+            map.put("LEAKNUM", levelTotal);
+            map.put("HIGHNUM", levelhigh);
+            map.put("MIDDLENUM", levelmid);
+            map.put("LOWNUM", levellow);
+            map.put("threattotal", eventTypeTotalstr);
+            map.put("timetotal", timeCountTotal);
+			map.put("REPORTTYPE", strreporttype);
+			map.put("IP", stripurl);
+			map.put("DEFENDLENGTH", strdefenselength);
+			map.put("STARTTIME", beginDate);
+			map.put("ENDTIME", endDate);
+			
+			List<Threat> threatlist = new ArrayList<Threat>();  
+	        /*for (int i = 0; i < eventListArray.size(); i++) {  
+	        	Threat t = new Threat();
+	        	String eventTypeStr = (String)eventListArray.get(i);
+	        	String[] spilt = eventTypeStr.split(",");
+	        	String count = spilt[0].substring(spilt[0].indexOf("{count=")+7);
+	        	String eventTypeString = spilt[1].substring(spilt[1].indexOf("eventType=")+10,spilt[1].length()-1);
+	            t.setNum(count);  
+	            t.setName(eventTypeString);  
+	            threatlist.add(t);  
+	        }   */
+			
+			for (int i = 0; i < listEventType.size(); i++) {
+				Threat t = new Threat();
+				Map typeMap = (Map) listEventType.get(i);
+				String count = String.valueOf(typeMap.get("count"));
+				String eventTypeString = String.valueOf(typeMap.get("eventType"));
+				t.setNum(count);  
+	            t.setName(eventTypeString);  
+	            threatlist.add(t); 
+			}
+	        map.put("threatList", threatlist);  
+	        
+	        List<TimeList> tl = new ArrayList<TimeList>();  
+	        /*for (int i = 0; i < timeListArray.size(); i++) {  
+	        	TimeList t = new TimeList();  
+	        	String strTime = (String) timeListArray.get(i);
+	        	String[] spilt =  strTime.split(",");
+	        	String count = spilt[0].substring(spilt[0].indexOf("{count=")+7);
+	        	String timeName = spilt[1].substring(spilt[1].indexOf("time=")+5,spilt[1].length()-1);
+	            t.setNum(count);
+	            t.setName(timeName);  
+	            timeList.add(t);  
+	        }*/
+	        for (int i = 0; i < listTime.size(); i++) {
+				TimeList t = new TimeList();
+				Map timeMap = (Map)listTime.get(i);
+				String count = String.valueOf(timeMap.get("count"));
+				String timeName = String.valueOf(timeMap.get("time"));
+				t.setName(timeName);
+				t.setNum(count);
+				tl.add(t);
+			}
+	        
+	        map.put("timeList",tl);
+	        
+	        List<AttackList> attackList = new ArrayList<AttackList>();  
+	        /*for (int i = 0; i < websecListArray.size(); i++) {  
+	        	AttackList t = new AttackList();  
+	        	String strAttack = String.valueOf(websecListArray.get(i));
+	        	String[] spilt =  strAttack.split(",");
+	        	String count = spilt[1].substring(spilt[1].indexOf("count=")+6,spilt[1].length()-1);
+	        	String attackIP = spilt[0].substring(spilt[0].indexOf("{srcIp=")+7);
+	            t.setNum(count);;  
+	            t.setSourceIP(attackIP);  
+	            attackList.add(t);  
+	        } */
+	        for (int i = 0; i < listattackIP.size(); i++) {
+				AttackList t = new AttackList();
+				Map ipMap = (Map)listattackIP.get(i);
+				String count = String.valueOf(ipMap.get("count"));
+				String strsrcIP = String.valueOf(ipMap.get("srcIp"));
+				String strCountry = String.valueOf(ipMap.get("country"));
+				String strSubdiv = String.valueOf(ipMap.get("subdiv"));
+				t.setNum(count);
+				t.setSourceIP(strsrcIP);
+				//t.setCountry(strCountry);
+				//t.setSubdiv(strSubdiv);
+				t.setCountry("**");
+				t.setSubdiv("**");
+				attackList.add(t);
+			}
+	        map.put("attackList", attackList);
+	        
+	        map.put("img6", getImageStr(imgFilePieLevel));
+			map.put("img5", getImageStr(imgFileBar));
+			map.put("img4", getImageStr(imgFilePieEvent));
+			map.put("img3", getImageStr(imgFileOntimeLine));
+			map.put("img2", getImageStr(imgFileSourceIp));
+			//map.put("img1", getImageStr(imgFilePieEvent));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return map;
     }
     
 }

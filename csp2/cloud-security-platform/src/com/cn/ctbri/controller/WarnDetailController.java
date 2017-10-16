@@ -49,6 +49,7 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.vo.ServicePortVO;
 
 /**
  * 创 建 人  ：  tangxr
@@ -1477,10 +1478,8 @@ public class WarnDetailController {
 				
 			}
 			else if (serviceId == 10) { // 绿盟极光
-				//
 				String useridString = ((Integer)order.get("userId")).toString();
-				//orderId
-				Linkman linkman = orderService.findLinkmanByOrderId(orderId); 
+				Linkman linkman = orderService.findLinkmanByOrderId(orderId); 				
 				
 				
 				String remarks = order.get("remarks").toString();
@@ -1493,29 +1492,30 @@ public class WarnDetailController {
 				}else{
 					scanType=60;
 				}
+
+				/********20170702-wq******************/
+				String[] infos = remarks.split(";");
+				String host = infos[0];
+				List<ServicePortVO> servicePorts = new ArrayList<ServicePortVO>();
+				String[] tmp = null;
 				
-				
-				String[] str=null;
-				String port="";
-				String[] temp=null;
-				str=remarks.split(";");
-				int i=0;
-				for(i=1;i<str.length;i++){
-					temp=str[i].split(":");
-					port=port+temp[1]+",";
+				for (int i = 1, j = 0; i < infos.length; i++, j++) {
+					tmp = infos[i].split(":");
+					ServicePortVO servicePortVO = new ServicePortVO(tmp[0], tmp[1]);
+					servicePorts.add(servicePortVO);
 				}
-				port = port.substring(0,port.length() - 1);
-				System.out.println(port);
-				System.out.println(str[0]);
-				String sysMonitorMessage="{\"type\":\"CreateTask\", \"task_type\":\"app_detect\", \"target\":\""+ str[0]+ "\", \"port\":\""+port+"\",  \"interval_time\":\""+scanType+"\", \"start_time\":\""+strBeginDate+"\", \"end_time\":\""+strEndDate+"\"}";
-				System.out.println(sysMonitorMessage);
-					
 				
-				//String urljiguangString = SysWorker.getsysMonitorURL(useridString, orderId, linkman.getMobile(), linkman.getName(),sysMonitorMessage);
-				//if (!urljiguangString.equals("failed")&&urljiguangString!=null) {
-				//.setAttribute("returnURL", urljiguangString);
-				//}
+				request.setAttribute("host", host);
+				request.setAttribute("beginTime", strBeginDate);
+				request.setAttribute("endTime", strEndDate);
+				request.setAttribute("servicePorts", servicePorts);
+				request.setAttribute("frequency", scanType);
+		        request.setAttribute("orderId",orderId);
 				
+				/********20170702-peidandan******************/
+
+				
+				return "/source/page/personalCenter/sys_warnUsable";
 			}
 			
 		}

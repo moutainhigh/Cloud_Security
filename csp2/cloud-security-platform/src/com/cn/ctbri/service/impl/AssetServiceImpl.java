@@ -1,5 +1,6 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -148,5 +149,22 @@ public class AssetServiceImpl implements IAssetService{
 	public String getProvinceIdByName(String provinceName) {
 		// TODO Auto-generated method stub
 		return assetDao.getProvinceIdByName(provinceName);
+	}
+	 /**
+     * 功能描述： 根据userId查询addr列表
+     *       @time 2017-9-26
+     */
+	public List<String>findDomainByUserId(int userid){
+		List<String> list= assetDao.findDomainByUserId(userid);
+		List<String>result=new ArrayList<String>();
+		for(int i=0;i<list.size();i++){
+			if(list.get(i).startsWith("http")){
+				int begin=list.get(i).indexOf('/')+2;
+				result.add(list.get(i).substring(begin));
+			}else{
+				result.add(list.get(i));
+			}
+		}
+		return result;
 	}
 }

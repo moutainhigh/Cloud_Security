@@ -22,6 +22,7 @@ import javax.ws.rs.core.NewCookie;
 
 import org.apache.commons.codec.binary.Base64;
 
+import se.akerfeldt.com.google.gson.JsonObject;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -59,6 +60,7 @@ public class WafAPIAnalysis {
     }
 
 	public static Map analysisWafLogWebSecTimeCount(String eventStr) {
+		System.out.println(eventStr);
 		Map<String,Object> reMap = new HashMap<String,Object>();
     	List<Object> arr = new ArrayList<Object>();
 		List<Object> arra = new ArrayList<Object>();
@@ -104,7 +106,54 @@ public class WafAPIAnalysis {
         }
     	return reList;
 	}
-
+	public static List analysisEventTypeCountList(String eventString){
+		List reList = new ArrayList();
+		try {
+			JSONObject obj = JSONObject.fromObject(eventString);
+			JSONArray jsonArray = obj.getJSONArray("list");
+			if (jsonArray!=null && jsonArray.size()>0) {
+				for (int i = 0; i < jsonArray.size(); i++) {
+					Map<String,Object> newMap = new HashMap<String, Object>();
+					String object = jsonArray.getString(i);
+					JSONObject innerObj = JSONObject.fromObject(object);
+					int count = innerObj.getInt("count");
+					if (count!=0) {
+						String eventTypeStr = innerObj.getString("eventType");
+						newMap.put("count", count);
+						newMap.put("eventType", eventTypeStr);
+						reList.add(newMap);
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return reList ;
+	}
+	
+	public static Map analysisWafLogWebSecSrcIp(String eventStr) {
+		Map<String,Object> reMap = new HashMap<String,Object>();
+    	List<Object> arr = new ArrayList<Object>();
+		List<Object> arra = new ArrayList<Object>();
+    	try {
+    		JSONObject jsonObj = new JSONObject().fromObject(eventStr);
+    		JSONArray obj = jsonObj.getJSONArray("list");
+    		for (Object aObj : obj) {
+    			JSONObject e = (JSONObject) aObj;
+    			String srcIp = e.getString("srcIp");
+    			int count = e.getInt("count");
+    			arr.add(srcIp);
+				arra.add(count);
+    		}	
+			reMap.put("srcIp", arr);
+			reMap.put("count", arra);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reMap;
+	}
+	
 	public static List getWafLogWebsecSrcIp(String reStr) {
 		List reList = new ArrayList();
     	try {
@@ -118,8 +167,15 @@ public class WafAPIAnalysis {
 			        
 			        int count = jsonObject.getInt("count");
 			        String dstIp = jsonObject.getString("srcIp");
+			        String srcCountry = jsonObject.getString("srcCountry");
+			        String srcCity = jsonObject.getString("srcCity");
+			        String srcSubdivision1 = jsonObject.getString("srcSubdivision1");
+			        String srcSubdivision2 = jsonObject.getString("srcSubdivision2");
+			        
 			        newMap.put("count", count);
-			        newMap.put("dstIp", dstIp);
+			        newMap.put("srcIp", dstIp);
+			        newMap.put("country", srcCountry);
+			        newMap.put("subdiv", srcCity+srcSubdivision1+srcSubdivision2);
 			        reList.add(newMap);
 				}
     		}

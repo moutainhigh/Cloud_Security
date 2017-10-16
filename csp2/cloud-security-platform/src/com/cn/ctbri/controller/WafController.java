@@ -31,11 +31,14 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderListService;
+import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.IPriceService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
@@ -61,7 +64,10 @@ public class WafController {
 	ISelfHelpOrderService selfHelpOrderService;
     @Autowired
     IOrderListService orderListService;
-    
+    @Autowired
+    IOrderService orderService;
+    @Autowired
+    IPriceService priceService;
 	 /**
 	 * 功能描述：获取所有资产列表
 	 * 参数描述：  无
@@ -242,7 +248,13 @@ public class WafController {
 			}
 		}
 		Serv service = servService.findById(serviceId);
-		  //网站安全帮列表
+		//获取包月价格
+		Double monthPrice = priceService.findPriceByServiceIdAndType("6", "8").get(0).getPrice();
+		request.setAttribute("monthPrice", monthPrice);
+		//获取包年价格
+		Double yearPrice = priceService.findPriceByServiceIdAndType("6", "9").get(0).getPrice();
+		request.setAttribute("yearPrice", yearPrice);
+		//网站安全帮列表
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
 		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
@@ -567,12 +579,14 @@ public class WafController {
 			   				return;
 				    }
 				    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+				    List<Price> priceList = priceService.findPriceByServiceIdAndType(serviceId,orderType);
 				    if(orderType.equals("9")){//包年
-				    	countPrice =9000;
+				    	
+				    	countPrice =priceList.get(0).getPrice();
 				    	eDate = DateUtils.getDateAfterOneYear(bDate);
 				     
 				    }else{//包月
-				    	countPrice = 880*Integer.parseInt(month);
+				    	countPrice = priceList.get(0).getPrice()*Integer.parseInt(month);
 				    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(month));
 				    
 				    }
@@ -801,12 +815,13 @@ public class WafController {
 	    bDate = DateUtils.getDateAfter10Mins(bDate);
 	    Date eDate = new Date();
 	   
+	    List<Price> priceList = priceService.findPriceByServiceIdAndType(serviceId,scanType);
 	    if(scanType.equals("9")){//包年
-	    	countPrice =9000;
+	    	countPrice =priceList.get(0).getPrice();
 	    	eDate = DateUtils.getDateAfterOneYear(bDate);
 	     
 	    }else{//包月
-	    	countPrice = 880*Integer.parseInt(timeswaf);
+	    	countPrice = priceList.get(0).getPrice()*Integer.parseInt(timeswaf);
 	    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(timeswaf));
 	    
 	    }
@@ -1027,7 +1042,176 @@ public class WafController {
 			e.printStackTrace();
 		}
     }
-    
+	/**
+     * 功能描述： 保存续费Waf订单
+     * 参数描述：  
+	 * @throws Exception 
+     *       @time 2015-01-16
+     */
+    @RequestMapping(value="saveWafRenewOrder.html")
+    @ResponseBody
+    public void saveWafRenewOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
+    	
+    	String id ="";
+       try{
+    	  Map<String, Object> m = new HashMap<String, Object>();
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	List assetIdsList = new ArrayList();
+    	String newOrderId = request.getParameter("orderId");
+    	String createDate = DateUtils.dateToString(new Date());
+    	 String linkname =request.getParameter("linkname");
+         String phone = request.getParameter("phone");
+         String email = request.getParameter("email");
+         String month = request.getParameter("month");
+         String orderIdList = request.getParameter("orderIdList");
+         List<HashMap<String, Object>> orderList = orderService.findByOrderId(newOrderId);
+		   	HashMap<String, Object> orderInfo=new HashMap<String, Object>();
+		   	orderInfo=(HashMap) orderList.get(0);
+			Date newDate = DateUtils.getDateAfterMonths((Date)orderInfo.get("end_date"), Integer.parseInt(month));
+			double orderPrice = (Double)orderInfo.get("price");
+			double price;
+			if(month.equals("12")){
+				List<Price> priceList = priceService.findPriceByServiceIdAndType("6","9");
+				price = priceList.get(0).getPrice();
+			}else{
+				List<Price> priceList = priceService.findPriceByServiceIdAndType("6","9");
+				price = priceList.get(0).getPrice()*Integer.parseInt(month);
+			}
+			double sumprice = orderPrice+price;
+    	//判断参数值
+      	String orderDetailId = request.getParameter("orderDetailId");
+      	if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
+      		m.put("error", true);
+          		 //object转化为Json格式
+          	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+          	       try {
+          	           // 把数据返回到页面
+          	           CommonUtil.writeToJsp(response, JSON);
+          	       } catch (IOException e) {
+          	           e.printStackTrace();
+          	       }
+          	       return;
+          
+      	}
+      	 /***判断参数开始**/
+        if(phone!=null&&!"".equals(phone)){
+        Pattern p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$");  
+         Matcher matcher = p.matcher(phone); 
+	       if(!matcher.find()){
+	    		m.put("error", true);
+	      		 //object转化为Json格式
+	      	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	      	       try {
+	      	           // 把数据返回到页面
+	      	           CommonUtil.writeToJsp(response, JSON);
+	      	       } catch (IOException e) {
+	      	           e.printStackTrace();
+	      	       }
+	      	       return;
+	       }
+    	
+        }
+       if(email!=null&&!"".equals(email)){
+    	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
+           Matcher ematcher = emailP.matcher(email); 
+           if(!ematcher.find()){
+        	   m.put("error", true);
+        		 //object转化为Json格式
+        	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+        	       try {
+        	           // 把数据返回到页面
+        	           CommonUtil.writeToJsp(response, JSON);
+        	       } catch (IOException e) {
+        	           e.printStackTrace();
+        	       }
+        	       return;
+           }
+       }
+      
+     /***判断参数结束**/
+    	OrderDetail orderDetailVo =selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());
+    	if(orderDetailVo==null){
+      		m.put("error", true);
+     		 //object转化为Json格式
+     	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+     	       try {
+     	           // 把数据返回到页面
+     	           CommonUtil.writeToJsp(response, JSON);
+     	       } catch (IOException e) {
+     	           e.printStackTrace();
+     	       }
+     	       return;
+      	}
+      	boolean assetsStatus = false;
+		Asset _asset = assetService.findById(Integer.parseInt(orderDetailVo.getAsstId()),globle_user.getId());
+		if(_asset==null){
+			m.put("error", true);
+     		 //object转化为Json格式
+     	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+     	       try {
+     	           // 把数据返回到页面
+     	           CommonUtil.writeToJsp(response, JSON);
+     	       } catch (IOException e) {
+     	           e.printStackTrace();
+     	       }
+     	       return;
+		}
+		assetIdsList.add(orderDetailVo.getAsstId());
+		OrderDetail orderDetail =selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(), assetIdsList);
+    	if(orderDetail==null){
+    		m.put("error", true);
+   		 //object转化为Json格式
+   	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+   	       try {
+   	           // 把数据返回到页面
+   	           CommonUtil.writeToJsp(response, JSON);
+   	       } catch (IOException e) {
+   	           e.printStackTrace();
+   	       }
+   	       return;
+    	}
+    	
+		//新增订单
+
+		//生成订单id，当前日期加5位随机数
+		//SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+		//String orderDate = odf.format(new Date());
+        //String orderId = orderDate+String.valueOf(Random.fivecode());
+    	Date date = new Date();
+      //新增联系人
+        Linkman linkObj = new Linkman();
+        int linkmanId = Random.eightcode();
+        linkObj.setId(linkmanId);
+        linkObj.setName(linkname);
+        linkObj.setMobile(phone);
+        linkObj.setEmail(email);
+        linkObj.setUserId(globle_user.getId());
+        selfHelpOrderService.insertLinkman(linkObj);
+        
+        selfHelpOrderService.updateRenewOrder(2,0,(Date)orderInfo.get("begin_date"),newDate,(Date)orderInfo.get("end_date"),date,sumprice,(String)orderInfo.get("id"));
+		  //插入数据到order_list
+	    OrderList ol = orderListService.findById(orderIdList);
+
+	   ol.setCreate_date(new Date());
+	   // ol.setOrderId(orderId);
+	    ol.setPrice(price);
+	    orderListService.update(ol);
+	    
+		m.put("orderStatus", true);
+		m.put("orderListId",orderIdList);
+		m.put("renew", "true");
+		//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+			    // 把数据返回到页面
+			    CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 	/**
 	 * 功能描述：返回修改订单
 	 * 参数描述：  无
@@ -1152,6 +1336,12 @@ public class WafController {
 	    	   return "redirect:/index.html";	
 	       }
 	       Serv service = servService.findById(orderDetail.getServiceId()); 
+	       //获取包月价格
+	       Double monthPrice = priceService.findPriceByServiceIdAndType("6", "8").get(0).getPrice();
+	       request.setAttribute("monthPrice", monthPrice);
+	       //获取包年价格
+	       Double yearPrice = priceService.findPriceByServiceIdAndType("6", "9").get(0).getPrice();
+	       request.setAttribute("yearPrice", yearPrice);
 	       //网站安全帮列表
 	        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 	     //查询安全能力API
@@ -1206,6 +1396,7 @@ public class WafController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    	System.out.println(multiResult);
         return multiResult;
     }
     
@@ -1448,4 +1639,643 @@ public class WafController {
         }
     	return reList;
     }
+    
+    /**
+   	 * 功能描述：waf续费
+   	 * 参数描述：  无
+   	 * add gxy
+   	 *     @time 2017-6-30
+   	 */
+   	@RequestMapping(value="reNewWafDetails.html")
+   	public String reNewWafDetails(HttpServletRequest request){
+   		User globle_user = (User) request.getSession().getAttribute("globle_user");
+   		String orderId = request.getParameter("orderId");
+   	//获取订单信息
+        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+        HashMap<String, Object> order=new HashMap<String, Object>();
+        order=(HashMap) orderList.get(0);
+        int  serviceId=(Integer) order.get("serviceId");
+   		
+   	    //判断serviceId是否存在
+   	    List<Serv> serList = servService.findAllService();
+   	    boolean hasServFlag = false;
+   	    if(serList!=null && serList.size()>0){
+   	    	for(int i = 0; i < serList.size(); i++){
+   	    		if(serviceId==serList.get(i).getId()){
+   	    			hasServFlag = true;
+   	    		}
+   	    	}
+   	    }
+   	    if(!hasServFlag){
+   	    	return "redirect:/index.html";
+   	    }
+   	    
+   	 
+   		//获取服务对象资产
+   	    List<Asset> list = selfHelpOrderService.findServiceAsset(globle_user.getId());
+   	    String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+   		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+   		boolean flag=false;
+   		boolean ipflag=false;
+   		List assList = new ArrayList();
+   		if(list!=null&&list.size()>0){
+   			for(int i=0;i<list.size();i++){
+   				Asset asset = (Asset)list.get(i);
+//   				if (asset.getStatus() == 0) {
+//   					continue;
+//   				}
+   				String addr = asset.getAddr();
+   				String addInfo = "";
+   				//判断http协议
+   				if(addr.indexOf("http://")!=-1){
+   				  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+   				  		addInfo = addr.trim().substring(7,addr.length()-1);
+   				  	}else{
+   				  		addInfo = addr.trim().substring(7,addr.length());
+   				  	}
+   				}else if(addr.indexOf("https://")!=-1){
+   					if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+   				  		addInfo = addr.trim().substring(8,addr.length()-1);
+   				  	}else{
+   				  		addInfo = addr.trim().substring(8,addr.length());
+   				  	}
+   				}
+   				//判断ip地址是否包含端口号
+   				if(addInfo.indexOf(":")!=-1){
+   					String addArr[] = addInfo.split(":");
+   					ipflag = addArr[0].matches(IpAddressRegex);
+   					if(ipflag==false){
+   						flag=addArr[0].matches(hostnameRegex);
+   					}
+   				}else{
+   					ipflag = addInfo.matches(IpAddressRegex);
+   				}
+   				if(ipflag==false){
+                       //判断资产地址是否是域名
+   				flag=addInfo.matches(hostnameRegex);
+   				if(flag){
+   					Asset  assetInfo = new Asset();
+   					assetInfo.setAddr(asset.getAddr());
+   					assetInfo.setId(asset.getId());
+   					assetInfo.setName(asset.getName());
+   					assetInfo.setIp(asset.getIp());
+   					assetInfo.setStatus(asset.getStatus());
+   					assList.add(assetInfo);
+   				 }
+   				}
+   			}
+   		}
+   		Serv service = servService.findById(serviceId);
+   		  //网站安全帮列表
+           List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+           //查询安全能力API
+   		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+   		 int carnum=shopCarList.size()+apiList.size();
+   		 request.setAttribute("carnum", carnum);  
+   		request.setAttribute("assList", assList);
+   		request.setAttribute("service", service);
+   		request.setAttribute("serviceId", serviceId);
+   		request.setAttribute("orderId", orderId);
+   	    return  "/source/page/details/reNewWafDetails";
+   	}
+   	
+    /**
+   	 * 功能描述：续费判断ip地址是否与域名绑定的一致
+   	 * 参数描述：  无
+   	 * add gxy
+   	 * @throws Exception 
+   	 *     @time 2016-5-19
+   	 */
+   	@RequestMapping(value="VerificationRenewIP.html")
+   	public void VerificationRenewIP(HttpServletRequest request,HttpServletResponse response) throws Exception{
+   		Map<String, Object> m = new HashMap<String, Object>();
+   		//ip地址
+   		String ipStr = request.getParameter("ipVal");
+   		
+   		//域名
+   		String domainName = request.getParameter("domainName");
+   		String orderId = request.getParameter("orderId");
+   	   List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+   	 HashMap<String, Object> order=new HashMap<String, Object>();
+	    order=(HashMap) orderList.get(0);
+   		String domainId =  request.getParameter("domainId");
+   	   String errorIp ="";
+   		String addInfo = "";
+   		  boolean flag=false;
+   		try{
+   		//判断http协议
+   		if(domainName.indexOf("http://")!=-1){
+   		  	if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
+   		  		addInfo = domainName.trim().substring(7,domainName.length()-1);
+   		  	}else{
+   		  		addInfo = domainName.trim().substring(7,domainName.length());
+   		  	}
+   		}else if(domainName.indexOf("https://")!=-1){
+   			if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
+   		  		addInfo = domainName.trim().substring(8,domainName.length()-1);
+   		  	}else{
+   		  		addInfo = domainName.trim().substring(8,domainName.length());
+   		  	}
+   		}
+   	    List<String> IpInfo = new ArrayList();
+   	    //根据域名找出域名绑定下得所有ip地址
+   		InetAddress[] addresses=InetAddress.getAllByName(addInfo);
+   		for(InetAddress addr:addresses)
+   		{
+   			IpInfo.add(addr.getHostAddress());
+         }
+           String array[]=IpInfo.toArray(new String[]{});
+         
+           String ipPortVal="";
+           //页面输入的ip地址
+           String ipArr[]= ipStr.split(",");
+           for(int i=0;i<ipArr.length;i++){
+           	if(ipArr[i].indexOf(":")!=-1){
+           		String ipPort[] = ipArr[i].split(":");
+           		ipPortVal=ipPort[0];
+           	}else{
+           		ipPortVal=ipArr[i];
+           	}
+         	  for(int k=0;k<array.length;k++){
+         		    if(ipPortVal.equals(array[k])){
+         		    
+         		    	flag=true;
+         		    }else{
+         		      	flag=false;
+         		    }
+         	  }
+         	  if(!flag){
+         		errorIp+=ipArr[i]+",";
+         	  }
+           }
+          
+           
+           if(flag){
+          
+           //添加购物车时
+   		String serviceId = request.getParameter("serviceId");
+   		if(serviceId!=null){
+   			 SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss"); 
+   			 Date date= new Date();
+   			 String value1= sdf1.format(date);
+   			 //类型
+   			 String orderType = request.getParameter("orderType");
+   			 //开始时间
+   			 String beginDate =DateUtils.dateToString((Date)order.get("end_date"));
+   			 //服务期限
+   			 String month ="";
+   			 Date cd= DateUtils.stringToDate(beginDate);
+   			 //包月
+   			 if(orderType.equals("8")){
+   				month =  request.getParameter("month");
+   			 }else{
+   				 month="12";
+   			 }
+   			Date endDate = DateUtils.getDateAfterMonths(cd,Integer.parseInt(month));
+   			String endVal =	DateUtils.dateToDate(endDate)+" "+value1;
+   			String beginVal = beginDate+" "+value1;   
+   			Date end = DateUtils.stringToDateNYRSFM(endVal);
+   			Date begin = DateUtils.stringToDateNYRSFM(beginVal);
+   			//获得当前日期后十分钟
+   			Date afterEnd = DateUtils.getDateAfter10Mins(end);
+   			Date afterBegin = DateUtils.getDateAfter10Mins(begin);
+   		   
+
+   	         m.put("serviceId", serviceId);
+   	         m.put("orderType", orderType);
+   	         m.put("domainName", domainName);
+   	         m.put("ipStr", ipStr);
+   	         m.put("month", month);
+   	         m.put("domainId", domainId);
+   	         m.put("orderId", orderId);
+   		}
+   	 	
+           }   
+           if(errorIp.length()>1){
+           	  m.put("errorIp", errorIp.substring(0, errorIp.length()-1));
+           }
+        
+   	}catch(Exception e){
+   			e.printStackTrace();
+   			flag=false;
+   			 m.put("errorIp", "");
+   		}
+   		m.put("flag", flag);
+   		   JSONObject JSON = CommonUtil.objectToJson(response, m);
+   	       // 把数据返回到页面
+              CommonUtil.writeToJsp(response, JSON);
+   		
+   	}
+   	
+   	
+   	/**
+	 * 功能描述：添加到购物车
+	 * 参数描述：  无
+	 * add gxy
+	 *     @time 2016-5-19
+	 */
+	@RequestMapping(value="shoppingRenewWaf.html")
+	public void shoppingRenewWaf(HttpServletRequest request,HttpServletResponse response){
+		
+		Map<String, Object> m = new HashMap<String, Object>();
+		  try{
+				boolean ipflag=false;
+				  boolean flag=false;
+				  String addInfo = "";
+				  double countPrice =0.0;
+					String orderId = request.getParameter("orderId");
+				   	   List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+				   	 HashMap<String, Object> orderInfo=new HashMap<String, Object>();
+				   	orderInfo=(HashMap) orderList.get(0);
+				  List<String> IpInfo = new ArrayList();
+				  int linkmanId = Random.eightcode();
+				  //根据ip地址加端口号
+			        String ipPortstr ="";
+				  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+			  User globle_user = (User) request.getSession().getAttribute("globle_user");
+				//资产ids
+		       String serviceId = request.getParameter("serviceId");
+				String orderType = request.getParameter("orderType");
+		        String beginDate = DateUtils.dateToString((Date)orderInfo.get("end_date"));
+		        String createDate = DateUtils.dateToString(new Date());
+		        String month = request.getParameter("month");
+		       
+		        /*****判断参数开始***/
+		        if(serviceId==null||"".equals(serviceId)||orderType==null||"".equals(orderType)||beginDate==null||"".equals(beginDate)||month==null||"".equals(month)){
+		        	
+		        	   m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+		        }
+		        if(!serviceId.equals("6")){
+		        	  m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+		        }
+		        if(!orderType.equals("8")&&!orderType.equals("9")){
+		        	  m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+		        }
+		       
+			        Serv service = servService.findById(Integer.parseInt(serviceId));
+				    if(service==null){
+				    	 m.put("error",true);
+			          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+			   				try {
+			   					// 把数据返回到页面
+			   					CommonUtil.writeToJsp(response, JSON);
+			   				} catch (IOException e) {
+			   					e.printStackTrace();
+			   				}
+			   				return;
+				    }
+				    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+				    Date eDate=null;
+				    List<Price> priceList = priceService.findPriceByServiceIdAndType(serviceId,orderType);
+				    if(orderType.equals("9")){//包年
+				    	
+				    	countPrice =priceList.get(0).getPrice();
+				    	eDate = DateUtils.getDateAfterOneYear(bDate);
+				     
+				    }else{//包月
+				    	countPrice = priceList.get(0).getPrice()*Integer.parseInt(month);
+				    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(month));
+				    
+				    }
+				    
+				 selfHelpOrderService.updateRenewOrder(2,0,(Date)orderInfo.get("end_date"),eDate,DateUtils.stringToDateNYRSFM(beginDate),new Date(),countPrice,orderId);
+				 //网站安全帮列表
+			            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+			         //查询安全能力API
+			  		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+			  		 int carnum=shopCarList.size()+apiList.size();
+			  		 request.setAttribute("carnum", carnum);
+			  		 
+			  		   m.put("sucess", true);
+			  		   m.put("orderId", orderId);
+			  		   m.put("serviceId", serviceId);
+			  		   JSONObject JSON = CommonUtil.objectToJson(response, m);
+			  	        // 把数据返回到页面
+			          CommonUtil.writeToJsp(response, JSON);
+		  }catch(Exception e){
+			  e.printStackTrace();
+			  m.put("sucess", false);
+			  
+		  }
+	}
+
+	 /**
+		 * 功能描述： 续约跳立即支付頁
+		 * 参数描述：  无
+		 * @throws ParseException 
+		 *     @time 2016-3-10
+		 */
+		@RequestMapping(value="buyRenewWafUI.html")
+		public String buyRenewWafUI(HttpServletRequest request) throws Exception{
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			List assetIdsList = new ArrayList();
+		      String orderId = request.getParameter("orderId");
+		      String orderListId = request.getParameter("orderListId");
+		      List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+			   	HashMap<String, Object> orderInfo=new HashMap<String, Object>();
+			   	orderInfo=(HashMap) orderList.get(0);
+			   	List<HashMap<String, Object>> orderAsset=orderAssetService.findAssetsByOrderId(orderId) ;
+				 HashMap<String, Object> orderAssetInfo=new HashMap<String, Object>();
+				 orderAssetInfo=(HashMap) orderAsset.get(0);
+				 String createDate = DateUtils.dateToString(new Date());
+				//根据id查询service
+				    Serv service = servService.findById(Integer.parseInt(String.valueOf(orderInfo.get("serviceId"))));
+				  //日期格式 yyyy-MM
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+		    OrderDetail orderDetail = new OrderDetail();
+			String beginDate = dateFormat.format((Date)orderInfo.get("begin_date"));
+			String  endDate =  dateFormat.format((Date)orderInfo.get("end_date"));
+	 	      String orderDate = odf.format(new Date());
+	 	    String detailId = orderDate+String.valueOf(Random.fivecode());
+	 	    int timeswaf = DateUtils.getMonthSpace(DateUtils.stringToDateNYRSFM(beginDate), DateUtils.stringToDateNYRSFM(endDate));
+	 	   //格式化价格
+		    DecimalFormat df = new DecimalFormat("#.00");
+
+		    assetIdsList.add(orderAssetInfo.get("assetId").toString());
+	 	   orderDetail.setId(detailId);
+	       orderDetail.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
+	       orderDetail.setEnd_date(DateUtils.stringToDateNYRSFM(endDate));
+	       orderDetail.setType((Integer)orderInfo.get("scan_type"));
+	       orderDetail.setServiceId((Integer)orderInfo.get("serviceId"));
+	       orderDetail.setUserId(globle_user.getId());
+	      // orderDetail.setIsAPI(0);
+	       orderDetail.setAsstId(orderAssetInfo.get("assetId").toString());
+	       orderDetail.setIpArray(orderAssetInfo.get("ipArray").toString());
+	       orderDetail.setPrice((Double)orderInfo.get("price"));
+	       orderDetail.setCreate_date(dateFormat.parse(createDate));
+	       orderDetail.setWafTimes(timeswaf);
+		  //  selfHelpOrderService.updateBuyRenewOrder(0,0,(Date)orderInfo.get("end_date"),eDate,DateUtils.stringToDateNYRSFM(beginDate),countPrice,orderId,scanType);
+	       selfHelpOrderService.SaveOrderDetail(orderDetail);
+	   	  OrderDetail orderDetailVo = selfHelpOrderService.getOrderDetailById(detailId, globle_user.getId(),assetIdsList);
+		 
+	        request.setAttribute("user", globle_user);
+	        request.setAttribute("orderId", orderId);
+	        request.setAttribute("service", service);
+		    request.setAttribute("orderDetail", orderDetailVo);
+		    request.setAttribute("orderInfo", orderInfo);
+		    request.setAttribute("orderListId", orderListId);
+	        String result = "/source/page/details/reNewsettlement";
+	        return result;
+		}
+		 /**
+		 * 功能描述： 续约跳立即支付頁
+		 * 参数描述：  无
+		 * @throws ParseException 
+		 *     @time 2016-3-10
+		 */
+		@RequestMapping(value="changeOrderInfo.html")
+		@ResponseBody
+		public void changeOrderInfo(HttpServletResponse response,HttpServletRequest request) {
+			  Map<String, Object> m = new HashMap<String, Object>();
+			  try{
+			String orderDate="";
+			  String orderId = request.getParameter("orderId");
+			  String month=request.getParameter("month");
+		
+		      List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+			   	HashMap<String, Object> orderInfo=new HashMap<String, Object>();
+			   	orderInfo=(HashMap) orderList.get(0);
+				Date newDate = DateUtils.getDateAfterMonths((Date)orderInfo.get("end_date"), Integer.parseInt(month));
+				orderDate = DateUtils.dateToString((Date)orderInfo.get("end_date"))+"~"+ DateUtils.dateToString(newDate);
+				  m.put("orderDate", orderDate);
+				  m.put("beginDate", DateUtils.dateToString((Date)orderInfo.get("end_date")));
+				  m.put("endDate",  DateUtils.dateToString(newDate));
+				   JSONObject JSON = CommonUtil.objectToJson(response, m);
+		  	        // 把数据返回到页面
+		          CommonUtil.writeToJsp(response, JSON);
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+		}
+		
+		
+		/**
+	     * 功能描述： 保存续费Waf订单
+	     * 参数描述：  
+		 * @throws Exception 
+	     *       @time 2015-01-16
+	     */
+	    @RequestMapping(value="saveRenewWafOrder.html")
+	    @ResponseBody
+	    public void saveRenewWafOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
+	    	
+	    	String id ="";
+	       try{
+	    	  Map<String, Object> m = new HashMap<String, Object>();
+	    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+	    	List assetIdsList = new ArrayList();
+	    	String orderId = request.getParameter("orderId");
+	    	  List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+			   	 HashMap<String, Object> orderInfo=new HashMap<String, Object>();
+			   	orderInfo=(HashMap) orderList.get(0);
+	    	String createDate = DateUtils.dateToString(new Date());
+
+	    	 String linkname =request.getParameter("linkname");
+	         String phone = request.getParameter("phone");
+	         String email = request.getParameter("email");
+	    	//判断参数值
+	     
+	      	String orderDetailId = request.getParameter("orderDetailId");
+	      	if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
+	      		m.put("error", true);
+	          		 //object转化为Json格式
+	          	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	          	       try {
+	          	           // 把数据返回到页面
+	          	           CommonUtil.writeToJsp(response, JSON);
+	          	       } catch (IOException e) {
+	          	           e.printStackTrace();
+	          	       }
+	          	       return;
+	          
+	      	}
+	      	 /***判断参数开始**/
+	        if(phone!=null&&!"".equals(phone)){
+	        Pattern p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$");  
+	         Matcher matcher = p.matcher(phone); 
+		       if(!matcher.find()){
+		    		m.put("error", true);
+		      		 //object转化为Json格式
+		      	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+		      	       try {
+		      	           // 把数据返回到页面
+		      	           CommonUtil.writeToJsp(response, JSON);
+		      	       } catch (IOException e) {
+		      	           e.printStackTrace();
+		      	       }
+		      	       return;
+		       }
+	    	
+	        }
+	       if(email!=null&&!"".equals(email)){
+	    	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
+	           Matcher ematcher = emailP.matcher(email); 
+	           if(!ematcher.find()){
+	        	   m.put("error", true);
+	        		 //object转化为Json格式
+	        	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	        	       try {
+	        	           // 把数据返回到页面
+	        	           CommonUtil.writeToJsp(response, JSON);
+	        	       } catch (IOException e) {
+	        	           e.printStackTrace();
+	        	       }
+	        	       return;
+	           }
+	       }
+	      
+	     /***判断参数结束**/
+	    	OrderDetail orderDetailVo =selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());
+	    	if(orderDetailVo==null){
+	      		m.put("error", true);
+	     		 //object转化为Json格式
+	     	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	     	       try {
+	     	           // 把数据返回到页面
+	     	           CommonUtil.writeToJsp(response, JSON);
+	     	       } catch (IOException e) {
+	     	           e.printStackTrace();
+	     	       }
+	     	       return;
+	      	}
+	      	boolean assetsStatus = false;
+			Asset _asset = assetService.findById(Integer.parseInt(orderDetailVo.getAsstId()),globle_user.getId());
+			if(_asset==null){
+				m.put("error", true);
+	     		 //object转化为Json格式
+	     	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	     	       try {
+	     	           // 把数据返回到页面
+	     	           CommonUtil.writeToJsp(response, JSON);
+	     	       } catch (IOException e) {
+	     	           e.printStackTrace();
+	     	       }
+	     	       return;
+			}
+			assetIdsList.add(orderDetailVo.getAsstId());
+			OrderDetail orderDetail =selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(), assetIdsList);
+	    	if(orderDetail==null){
+	    		m.put("error", true);
+	   		 //object转化为Json格式
+	   	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	   	       try {
+	   	           // 把数据返回到页面
+	   	           CommonUtil.writeToJsp(response, JSON);
+	   	       } catch (IOException e) {
+	   	           e.printStackTrace();
+	   	       }
+	   	       return;
+	    	}
+	    	 //日期格式 yyyy-MM
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    	 String beginDate = DateUtils.dateToString((Date)orderInfo.get("end_date"));
+	    	 String  scanType =String.valueOf(orderDetail.getScan_type());
+	    	 String ipArray = orderDetail.getIpArray();
+	    	 int timeswaf =orderDetail.getWafTimes();
+	    	 double countPrice =orderDetail.getPrice();
+	    	 Date now = new Date();
+			    String nowDate = dateFormat.format(now);
+	    	 beginDate = beginDate + nowDate.substring(10);
+			    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+			    //得到开始时间10分钟后
+			    bDate = DateUtils.getDateAfter10Mins(bDate);
+			    Date eDate = new Date();
+			    
+			    List<Price> priceList = priceService.findPriceByServiceIdAndType("6",scanType);
+			    if(scanType.equals("9")){//包年
+			    	
+			    	countPrice =priceList.get(0).getPrice();
+			    	eDate = DateUtils.getDateAfterOneYear(bDate);
+			     
+			    }else{//包月
+			    	countPrice = priceList.get(0).getPrice()*timeswaf;
+			    	eDate = DateUtils.getDateAfterMonths(bDate, timeswaf);
+			    
+			    }
+			    
+			//新增订单
+
+			//生成订单id，当前日期加5位随机数
+			SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			String orderDate = odf.format(new Date());
+	     //   String orderId = orderDate+String.valueOf(Random.fivecode());
+	      //新增联系人
+	        Linkman linkObj = new Linkman();
+	        int linkmanId = Random.eightcode();
+	        linkObj.setId(linkmanId);
+	        linkObj.setName(linkname);
+	        linkObj.setMobile(phone);
+	        linkObj.setEmail(email);
+	        linkObj.setUserId(globle_user.getId());
+	        selfHelpOrderService.insertLinkman(linkObj);
+	        
+		
+			selfHelpOrderService.updateBuyRenewOrder(2,0, (Date)orderInfo.get("end_date"), eDate, DateUtils.stringToDateNYRSFM(beginDate), countPrice, orderId, scanType);
+			//新增服务资产
+			OrderAsset orderAsset = new OrderAsset();
+			orderAsset.setOrderId(orderId);
+			orderAsset.setAssetId(Integer.parseInt(orderDetail.getAsstId()));
+			orderAsset.setServiceId(orderDetail.getServiceId());
+			orderAsset.setScan_type(orderDetail.getType());
+			    if(String.valueOf(orderDetail.getType()).equals("8")){//包月
+			    	orderAsset.setSermonth(orderDetail.getWafTimes());
+			    }else{
+			    	orderAsset.setSermonth(12);
+			    }
+			orderAsset.setIpArray(orderDetail.getIpArray());
+			orderAsset.setAssetAddr(_asset.getAddr());
+	        orderAsset.setAssetName(_asset.getName());
+			orderAssetService.update(orderAsset);
+			  //插入数据到order_list
+		    OrderList ol = new OrderList();
+		    //生成订单id
+			id = orderDate+String.valueOf(Random.fivecode());
+		    ol.setId(id);
+		    ol.setCreate_date(new Date());
+		    ol.setOrderId(orderId);
+		    ol.setUserId(globle_user.getId());
+		    ol.setPrice(orderDetail.getPrice());
+		    ol.setServerName(orderDetail.getServiceName());
+		    orderListService.update(ol);
+		    
+			m.put("orderStatus", true);
+			m.put("orderListId", id);
+			//object转化为Json格式
+			//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+				    // 把数据返回到页面
+				    CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+				    e.printStackTrace();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	    }
 }

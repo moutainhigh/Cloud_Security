@@ -26,5 +26,8 @@ public class IPPositionDaoImpl extends DaoCommon implements IPPositionDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public int deleteIP(String ip){
+		return getSqlSession().delete(ns + "deleteIP",ip);
+	}
 
 }

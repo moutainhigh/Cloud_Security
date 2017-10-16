@@ -31,8 +31,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <update id="update" parameterType="com.cn.ctbri.entity.OrderList">
     	update cs_order_list
-    	set
-    		orderId = #{orderId}
+    	<set>
+    		orderId = #{orderId},
+    		<if test="price!=null">
+    		price=#{price},
+    		</if>
+    		<if test="orderId!=null">
+    		   orderId=#{orderId},
+    		</if>
+    		<if test="create_date!=null">
+    		  create_date=#{create_date}
+    		</if>
+    		</set>
     	where id= #{id}
     </update>
     

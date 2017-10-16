@@ -45,4 +45,11 @@ public class PriceDaoImpl extends DaoCommon implements PriceDao {
 		return this.getSqlSession().selectList(ns+"findPriceByScanTypeNull", map);
 	}
 
+	public List<Price> findPriceByServiceIdAndType(String serviceId, String type) {
+		Map map = new HashMap();
+		map.put("serviceId", serviceId);
+		map.put("type", type);
+		return this.getSqlSession().selectList(ns+"findPriceByServiceIdAndType", map);
+	}
+
 }

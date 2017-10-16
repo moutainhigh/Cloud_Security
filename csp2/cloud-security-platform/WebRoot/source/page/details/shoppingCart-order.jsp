@@ -92,9 +92,9 @@
                                         	
                                         </td>
                                        
-                                       <td width="18%">资产内容</td>
-                                        <td width="14%">服务时间</td>
-                                        <td width="6%">价格</td>
+                                       <td width="12%">资产内容</td>
+                                        <td width="25%" style="text-align: center">服务时间</td>
+                                        <td width="7%">价格</td>
                                         <td width="4%">操作</td>
                                     </tr>
                                 </tbody>
@@ -177,9 +177,9 @@
                                         	
                                         </td>
                                        
-                                        <td width="18%">数量</td>
-                                         <td width="14%">服务时间</td>
-                                        <td width="6%">价格</td>
+                                        <td width="12%">数量</td>
+                                         <td width="25%" style="text-align: center">服务时间</td>
+                                        <td width="7%">价格</td>
                                         <td width="4%">操作</td>
                                     </tr>
                                 </tbody>
@@ -247,9 +247,9 @@
                                             <i class="check-all"></i>
                                            	系统安全帮                                   	
                                         </td>                                     
-                                       	<td width="18%">数量</td>
-                                        <td width="14%">服务时间</td>
-                                        <td width="6%">价格</td>
+                                       	<td width="12%">数量</td>
+                                        <td width="25%" style="text-align: center">服务时间</td>
+                                        <td width="7%">价格</td>
                                         <td width="4%">操作</td>
                                     </tr>
                                 </tbody>
@@ -275,7 +275,7 @@
                                             <a href="${ctx}/systemOrderOperaInit.html?serviceId=${shopCar.serviceId}&indexPage=4" target="_blank">${shopCar.serverName}</a>
                                             </c:if>                              
                                             </td>
-                                    <td width="20%">                                    	
+                                    <td width="20%" style="padding-left: 44px;">                                    	
                                     	<c:if test="${shopCar.serviceId==7 }">${shopCar.scan_type }IP</c:if>
                                     	<c:if test="${shopCar.serviceId==8 }">${shopCar.scan_type }节点</c:if>
                                     	<c:if test="${shopCar.serviceId==9 }">1个</c:if>

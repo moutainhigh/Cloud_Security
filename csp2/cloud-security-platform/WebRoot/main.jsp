@@ -104,7 +104,7 @@ html, body {
 									<c:if test="${list.id !=4 && list.image != 'NewVIP.png' && list.id !=13 && list.image != 'xthd.png'}">
 										<a href="#"><img
 											src="${ctx}/source/images/ad/${list.image }" alt=""
-											style="width:100%;height:100%"></a>
+											style="width:100%;height:100%;cursor: default;"></a>
 									</c:if>
 
 								</div>
@@ -308,7 +308,7 @@ html, body {
 							<c:forEach var="apiList" items="${servAPIList}"
 								varStatus="status">
 								<c:choose>
-									<c:when test="${apiList.id >=3 && apiList.id <=5}">
+									<c:when test="${apiList.id<=3}">
 
 										<li class="fl"><a href="javascript:;"
 											onclick="buySelfHelpOrderAPIMain(${apiList.id});">

@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 	 * 功        能： OrderListMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.OrderListMapper.";
+	private String nv = "com.cn.ctbri.entity.SelfHelpOrderMapper.";
 
 	public void insert(OrderList ol) {
 		this.getSqlSession().insert(ns + "insert", ol);
@@ -69,6 +71,21 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 		paramMap.put("oldId", oldId);
 		paramMap.put("newId", newId);
 		this.getSqlSession().update(ns+ "updateId" , paramMap);
+	}
+	public List getOrderInfoById(String orderId) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		List list = new ArrayList();
+		if(orderId.contains(",")){
+			String orders[]=orderId.split(",");
+			for(int i=0;i<orders.length;i++){
+				list.add(orders[i]);
+			}
+		}else{
+			list.add(orderId);
+		}
+		paramMap.put("orderIds",list);
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(nv+"getOrderInfoById",paramMap);
 	}
 	
 }

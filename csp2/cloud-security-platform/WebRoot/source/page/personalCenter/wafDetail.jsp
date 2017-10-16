@@ -13,6 +13,8 @@
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet" />	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/tab.css" type="text/css" rel="stylesheet" />
+
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
@@ -26,6 +28,11 @@
 <script type="text/javascript" src="${ctx}/source/scripts/order/wafPic.js"></script>
 
 <script type="text/javascript">
+ <%   
+         java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM"); 
+         java.util.Date currentTime = new java.util.Date();//得到当前系统时间 
+         String str_date = formatter.format(currentTime); //将日期时间格式化 
+ %> 
 $(function() {
      $(".data_cuo").on('click', function() {
         $(".mark,.data_tanc").hide();
@@ -56,46 +63,7 @@ function websecDetail(logId){
      });
 }
 </script>
-
 </head>
-<style type="text/css">
-   .data_box{ width: 1180px; margin-top: 20px;margin-bottom: 60px; }
-   .data_nav{ height: 38px; border-bottom: 1px solid #cfcfcf; margin-bottom: 10px;} 
-   .data_nav ul li { width: 160px; float:left; text-align: center; line-height: 38px; height: 38px; font-size: 16px; border: 1px solid #a6a6a6;  border-bottom: 0px; border-radius: 10px 10px 0 0 ;}
-   .data_min{clear: both; overflow: hidden; }
-   .data_1{ width:382px; border:1px solid #cbcbcb; height: 380px; float: left; margin-right: 13px;}
-   .data_table{ width: 1138px; height: 360px; border:1px solid #cbcbcb; margin-top: 15px; padding: 20px;}
-   .data_table_tab {margin-bottom: 20px; width: 100%; }
-   .data_table_tab tr th{ border-bottom: 1px solid #000;height: 40px; text-align: left;} 
-   .data_table_tab tr td{ height: 40px; background: #f0f8fa;} 
-   .data_table_cont a{ color: #00bfff;}
-   .mark{ width: 100%; 
-    height: 100%;
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: #000;
-    filter: alpha(opacity=40);
-    opacity: 0.4;
-    z-index: 400;}
-   .data_tanc{ width: 680px; height: 355px;  position: fixed; z-index: 500; top: 50%; margin-top: -202px; left: 50%; margin-left:-340px; background: #fff;  border: 1px solid #787878; display: none; }
-   .data_tanctop{ height: 46px; border-bottom: 1px solid #787878; background: #3c85db;}
-   .data_tanctop h2{ color: #fff; font-size: 18px; line-height: 46px; padding-left: 30px; width: 200px; float: left;}
-   .data_cuo{ width: 21px; height: 21px; float: right; background: url(${ctx}/source/images/dailog-close.png); margin-right: 10px; margin-top: 10px; cursor: pointer;}
-   .data_tancmain{ padding: 10px 20px; }
-   .tancmain_table{  width: 100%;}
-   .tancmain_table tr th{ border: 1px solid #787878; height: 28px; text-align: center;} 
-   .tancmain_table tr td{ height: 28px; font-size: 14px; line-height: 29px;} 
-   .data_btn{ width: 145px; height: 30px; line-height: 30px; font-size: 16px; text-align: center; background: #cdcdcd; border-radius: 10px; margin:auto; color: #323232; cursor: pointer;}
-   .nodata{
-	    text-align: center;
-	    margin: auto;
-	    padding-top: 100px;
-	}
-   
-
-</style>
 
 <body>
 
@@ -113,12 +81,12 @@ function websecDetail(logId){
                                      
                  </tr>
                   <tr>
-                     <th width="25%">服务器IP</th>
+                     <th width="25%">源IP</th>
                      <th width="75%" id="srcIp" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
-                     <th width="25%">服务器端口</th>
+                     <th width="25%">源端口</th>
                      <th width="75%" id="srcPort" style="text-align:left"></th>
                                      
                  </tr>
@@ -138,7 +106,7 @@ function websecDetail(logId){
                                      
                  </tr>
                   <tr>
-                     <th width="25%">告警信息</th>
+                     <th width="25%">URL</th>
                      <th width="75%" id="alertinfo" style="text-align:left"></th>
                                      
                  </tr>
@@ -194,14 +162,32 @@ function websecDetail(logId){
 			</div>
 		</div>
 		<div class="dataCent seetlentBox order" style="width: 1156px;">
-		
+		<form id="exportForm" action="${ctx}/exportWAF.html" method="post">
+      <div>
+          <p><span>资产名称：</span>${domainName }</p>
+      </div>
+
        <div class="data_box">
         <div class="data_nav">
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
-          <ul>
-            <li>最新数据</li>
+          <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
+
+          <ul class="navlist centlist clearfix">
+            <li class="active"><a href="${ctx}/warningWaf.html?orderId=${order.id }" title="">实时数据</a></li>
+            <li><a href="${ctx}/warningWaf.html?orderId=${order.id }&isHis=1&type=month&beginDate=<%=str_date %>" title="">历史数据</a></li>
           </ul>
+          <!--  
+          <p align='right'><span>下载Word报表&nbsp;</span>
+            <span><a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          </p>
+          -->
         </div> 
+
+        <input type="hidden" name="imgPieLevel" id="imgPieLevel" />
+        <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
+        <input type="hidden" name="imgBar" id="imgBar" />
+
         <div class="data_min">
         	<c:if test="${websecNum>0}">
              <div class="data_1" id="levelPie"></div>
@@ -250,7 +236,8 @@ function websecDetail(logId){
 	            	<div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
         </div>
-       </div>        
+       </div>  
+       </form>      
 		</div>
         
 		<div class="safe04">

@@ -48,6 +48,12 @@ public interface IPPositionDao {
 	 * 异        常：
 	 */
 	IPPosition findIPPositionByIP(String ip);
+	/**
+	 * 功能描述：删除废弃ip
+	 * @param ipPosition
+	 * @return
+	 */
+	int deleteIP(String ip);
 	
 	
 }

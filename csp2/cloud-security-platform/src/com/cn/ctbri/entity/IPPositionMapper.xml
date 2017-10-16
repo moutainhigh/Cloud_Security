@@ -20,4 +20,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getIPPositionList" resultMap="IPPosition">
 		select * from cs_ipposition
     </select>
+    <delete id="deleteIP" parameterType="string">  
+    	delete from cs_ipposition WHERE 1=1
+    	 <if test="_parameter != null">
+    	AND ip=#{ip}  
+    	</if> ;
+    </delete>
 </mapper>

@@ -2,6 +2,7 @@ package com.cn.ctbri.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
@@ -136,5 +137,9 @@ public interface SelfHelpOrderDao {
 	
 	List<Serv> findServiceByParent(int parent);
 
-	
+	//修改续费订单
+	void updateRenewOrder(int isAPI,int payFlag,Date beginDate,Date eDate,Date task_date,Date createDate, double price,String orderId);
+	//立即支付修改续费订单
+	void updateBuyRenewOrder(int isAPI,int payFlag,Date beginDate,Date eDate,Date task_date,double price,String orderId,String scanType);
+		
 }

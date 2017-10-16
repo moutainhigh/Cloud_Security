@@ -19,6 +19,11 @@ public class Linkman {
 	private String address;
 	//创建人Id
 	private int userId;
+	//7日短信提醒
+	private int sendDayStatus;
+	//24小时短信提醒
+	private int sendHourStatus;
+		
     public int getId() {
         return id;
     }
@@ -62,4 +67,16 @@ public class Linkman {
         this.userId = userId;
     }
 
+    public int getSendDayStatus() {
+		return sendDayStatus;
+	}
+	public void setSendDayStatus(int sendDayStatus) {
+		this.sendDayStatus = sendDayStatus;
+	}
+	public int getSendHourStatus() {
+		return sendHourStatus;
+	}
+	public void setSendHourStatus(int sendHourStatus) {
+		this.sendHourStatus = sendHourStatus;
+	}
 }

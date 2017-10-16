@@ -298,4 +298,58 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    /**
+     * 获取当前日期24小时后的日期
+     * @param date
+     * @return
+     */
+    public static Date getDateAfterHour(Date d){
+    	Date date = d;
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(date);  
+        calendar.add(Calendar.HOUR,24); 
+        date = calendar.getTime();  
+        return date;
+    }
+    
+    /**
+     * 获取当前日期24小时前的日期
+     * @param date
+     * @return
+     */
+    public static Date getDateBeforeHour(Date d){
+    	Date date = d;
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(date);  
+        calendar.add(Calendar.HOUR,-24); 
+        date = calendar.getTime();  
+        return date;
+    }
+    /**
+     * 获取当前日期7天前的日期
+     * @param date
+     * @return
+     */
+    public static Date getDateBeforeDay(Date d){
+    	Date date = d;
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(date);  
+        calendar.add(Calendar.DATE,-7); 
+        date = calendar.getTime();  
+        return date;
+    }
+    
+    /**
+     * 得到当前日期的十分钟后的时间
+     * @param d
+     * @return
+     */
+    public static int getMonthSpace(Date d1,Date d2){
+         Calendar calendar1 = Calendar.getInstance();  
+         Calendar calendar2 = Calendar.getInstance();  
+         calendar1.setTime(d1);  
+         calendar2.setTime(d2);  
+         int result = calendar2.get(Calendar.MONTH)-calendar1.get(Calendar.MONTH); 
+         return result == 0 ? 1 : Math.abs(result);
+    }
 }

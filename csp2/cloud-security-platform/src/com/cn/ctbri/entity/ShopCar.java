@@ -27,8 +27,14 @@ public class ShopCar implements Serializable{
 	private Date end_date;//结束日期
 	private Date createDate;
 	private int scan_type;	
+	private String remarks;
 	
-	
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 	public int getScan_type() {
 		return scan_type;
 	}

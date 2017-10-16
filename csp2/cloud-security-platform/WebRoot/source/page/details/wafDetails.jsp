@@ -93,7 +93,7 @@
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong id="price">880</strong><strong></strong></div> 
+                            <div class="fl price"><strong id="price">${monthPrice }</strong><strong></strong></div> 
                           	<span style="position: relative;top: 7px;left:7px;color:#d00000">安全币</span>
 						</li>
                           <li class="clearfix">
@@ -397,6 +397,8 @@
 </div>
 <div class="shade"></div>
 <script>
+  var monthPrice =${monthPrice};
+  var yearPrice =${yearPrice};
 $(function(){
 	//单选JS
 $(document).ready(function(){

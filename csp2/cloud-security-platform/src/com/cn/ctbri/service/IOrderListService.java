@@ -40,4 +40,5 @@ public interface IOrderListService {
 	List<OrderList> getPayRecord(Map<String, Object> param);
 	
 	void updateOrderListId(String oldId, String newId);
+	List getOrderInfoById(String orderId);
 }

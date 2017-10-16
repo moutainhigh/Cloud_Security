@@ -70,6 +70,7 @@ public class MyAssetsController {
 	@Autowired
     ISelfHelpOrderService selfHelpOrderService;
 	
+	private String  CODE_STRING = "<a href=\"http://www.anquanbang.net/userAssetsUI.html\">网站安全帮</a>";
 	/**
 	 * 功能描述： 我的资产页面
 	 * 参数描述： Model model,HttpServletRequest request
@@ -800,9 +801,9 @@ public class MyAssetsController {
 			//代码验证
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
-				 String code1 = StringEscapeUtils.unescapeHtml(String.valueOf(request.getParameter("code1"))).trim();
+	//			 String code1 = StringEscapeUtils.unescapeHtml(String.valueOf(request.getParameter("code1"))).trim();
 //				 String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
-				 
+				 String code1 = CODE_STRING;
 				 String str = GetNetContent.getNodeList(path);
 //				 String str= rt.toString();
 //				 String str= rt.toHtml();

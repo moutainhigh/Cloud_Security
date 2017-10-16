@@ -79,7 +79,7 @@ function buySys(serviceId){
 		</div>
 		<div class="safe02" style="padding-bottom:30px;">
         
-        	<div class="imgBox index_child">
+        	<div class="imgBox index_child" id='buydiv'>
 				<h2>系统安全监测服务</h2>
                 <div class="listBox" style="width: 100%;">
                 	<div class="listR" style="width:1108px; margin:0 auto;">
@@ -93,25 +93,25 @@ function buySys(serviceId){
 		                                    <span style="padding-right: 30px">
 		                                    	${list.remarks }
 		                                    </span>
-		                                    <div class="purchase">
+		                                    <div class="purchase buydiv">
 			                                     <c:if test="${!empty list.price}">
-			                                    	<strong style="text-decoration:none;font-size: 22px;">
+			                                    	<strong style="text-decoration:none;font-size: 22px;" class="buystrong">
 			                                    	<fmt:formatNumber type="number" value="${list.price}" maxFractionDigits="2" minFractionDigits="2"/>
 			                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
 			                                    	</strong>
 			                                    </c:if>
 			                                    <c:if test="${empty list.price}">
-			                                    	<strong>
+			                                    	<strong class="buystrong">
 			                                    		0<em style="font-size: 14px;color:#D00000;">&nbsp;安全币</em>
 			                                    	</strong>
-			                                    	<strong style="text-decoration:line-through;text-decoration-color:#D00000;">
+			                                    	<strong style="text-decoration:line-through;text-decoration-color:#D00000;" class="buystrong">
 			                                    		<em style="font-family:Arial Regular;font-size:22px;">99 </em> 
 			                                    		<em style="font-size: 14px;">安全币</em>
 			                                    	</strong>
 		                                    	</c:if>
 		                                    	<!--<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
 		                                    -->
-		                                    <a style="left:62px" href="javascript:;" onclick="buySys(${list.id });" class="btn">购买</a>
+		                                    <a style="left:62px" href="javascript:;" onclick="buySys(${list.id });" class="btn buy">购买</a>
 		                                    <form action="systemOrderOperaInit.html" method="post" id="systemOrderOperaInitNewForm">
 												<input type="hidden" id="sysIdNew" name="serviceId"/>
 												<input type="hidden" id="indexPage" name="indexPage" value="4"/>

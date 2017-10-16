@@ -103,4 +103,9 @@ public interface IAssetService {
      *       @time 2016-8-24
      */
 	String getProvinceIdByName(String provinceName);
+	 /**
+     * 功能描述： 根据userId查询addr列表
+     *       @time 2017-9-26
+     */
+	List<String>findDomainByUserId(int userid);
 }

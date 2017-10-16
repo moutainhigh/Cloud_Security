@@ -166,9 +166,6 @@
 		l=$('#content_ul').offset().top;
 		//$('#content_ul').height(h-l);
 		//$('#content').height(h-t);
-		
-		
-
 	});
 	
 	function getDate(strDate) {
@@ -199,10 +196,10 @@
 
 <div class="safeBox">
 	<div class="contentBox" id="content">
-		<div style="position:absolute; z-index:1">
-			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"/>
+		<div style="position:absolute; z-index:9999" id="img_index">
+			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"   />
 		</div>
-		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='liuyanzhe' ||sessionScope.globle_user.name =='timelysnow' ||sessionScope.globle_user.name =='test11'}">
+		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' ||sessionScope.globle_user.name =='timelysnow' ||sessionScope.globle_user.name =='test11'}">
 		<nav>
 			<ul class="clearfix navlist">
 				<li class="active">
@@ -436,6 +433,9 @@
 </div>
 
 <script>
+	$("#logo_img").click(function(){
+		parent.location.href = "index.html";
+	});
 	$(function(){
 		/* $('.tab-pane span').click(function(){
 		  var index = $(this).index();

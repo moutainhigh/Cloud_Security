@@ -1223,6 +1223,10 @@
 			'latitude' : 54.1,
 			'longitude' : -4.3
 		};
+		latlong.AX = {
+				'latitude' : 60.05,
+				'longitude' : 19.56
+			};
 		
 		$(document)
 				.ready(
@@ -1464,6 +1468,7 @@
 															data : mapData
 																	.map(function(
 																			itemOpt) {
+																		//console.log(itemOpt.code);
 																		return {
 																			name : itemOpt.name,
 																			//xvalue:itemOpt.value,

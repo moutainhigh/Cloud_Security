@@ -127,4 +127,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		getSqlSession().insert(ns+"insertTaskWarn", taskwarn);
 	}
 	
+	public List<Task> getExecuteTimeById(String orderId) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"getExecuteTimeById",orderId);
+	}
+	
 }

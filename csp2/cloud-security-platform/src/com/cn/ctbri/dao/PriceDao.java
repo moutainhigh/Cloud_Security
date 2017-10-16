@@ -27,4 +27,9 @@ public interface PriceDao {
      * 根据serviceid查询scanType为空的价格列表
      */
 	List<Price> findPriceByScanTypeNull(int serviceId);
+	
+	/*
+     * 根据serviceid和选类型查询价格列表
+     */
+	List<Price> findPriceByServiceIdAndType(String serviceId, String type);
 }
