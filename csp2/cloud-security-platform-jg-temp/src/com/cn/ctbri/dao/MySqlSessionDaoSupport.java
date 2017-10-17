@@ -11,9 +11,9 @@ import static org.springframework.util.Assert.notNull;
  
 /**
  * MyBatis数据源切换
- * @author : zoutuo
+ * @author : hansheng
  * @version : 1.0
- * @date : 14-3-27 下午3:57
+ * @date : 17-10-12 下午3:57
  */
 public class MySqlSessionDaoSupport extends DaoSupport {
  

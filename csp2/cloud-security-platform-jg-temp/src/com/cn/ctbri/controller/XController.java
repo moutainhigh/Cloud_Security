@@ -141,9 +141,14 @@ public class XController {
 		return flag;
 	}
 
-	@RequestMapping("/source/page/Xpage/portScanMethod2.html")
+	/**
+	 * 接收端口扫描的数据，但扫描数据等待时间较长，先直接返回在检测中效果。
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/portScanMethod.html")
 	@ResponseBody
-	public void portScanMethod2(HttpServletRequest request,
+	public void portScanMethod(HttpServletRequest request,
 			HttpServletResponse response) {
 		String target = request.getParameter("target");
 		String port = request.getParameter("port");
@@ -170,52 +175,15 @@ public class XController {
 		return;
 	}
 
-	public static JSONObject downResultParse(String port,String sendTime,String target,String value){
-		JSONObject jsonObject = new JSONObject();
-		List<Integer> list = new ArrayList<Integer>();
-		String[] strArr = port.split(",");
-		for (String str : strArr) {
-			str = str.trim();
-			if (str.contains("-")) {
-				int number = str.indexOf('-');
-				int begin = Integer.valueOf(str.substring(0, number).trim());
-				int end = Integer.valueOf(str.substring(number + 1,
-						str.length()).trim());
-				if (begin > end) {
-					int middle = end;
-					end = begin;
-					begin = middle;
-				}
-				for (int i = begin; i <= end; i++) {
-					list.add(i);
-				}
-			} else {
-				list.add(Integer.valueOf(str));
-			}
-		}
-		int total = list.size();
-		jsonObject.put("total", total);
-		JSONArray jsonArray = new JSONArray();
-		for (int i = 0; i < total; i++) {
-			JSONObject jsonObject2 = new JSONObject();
-			jsonObject2.put("id", i + 1);
-			jsonObject2.put("port", list.get(i));
-			jsonObject2.put("agreement", "unknown");
-			jsonObject2.put("state", value);
-			jsonObject2.put("time", sendTime);
-			jsonArray.add(jsonObject2);
-		}
-		jsonObject.put("rows", jsonArray);
-		return jsonObject;
-	}
-	@RequestMapping("/source/page/Xpage/portScanMethod.html")
+	/**
+	 * 真正的post请求南向数据，大概需要两分钟
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/portScanPostMethod.html")
 	@ResponseBody
-	public void portScanMethod(HttpServletRequest request,
+	public void portScanPostMethod(HttpServletRequest request,
 			HttpServletResponse response) {
-		/*
-		 * String target="tcp"; String port="34,45,78,89-102"; String
-		 * scan="tcp"; String agreement="tcp";
-		 */
 		String target = request.getParameter("target");
 		String port = request.getParameter("port");
 		SimpleDateFormat timeFormat = new SimpleDateFormat(
@@ -255,20 +223,37 @@ public class XController {
 			}
 			return;
 		}
-		try {
-			Thread.sleep(120000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		//String id=createTaskResult.getString("taskid");
-		String id="40";
-		System.out.println("id:"+id);
+		
+		String id=createTaskResult.getString("taskid");
+		//String id="40";
+		//System.out.println("id:"+id);
 		AppReport appReport=xlistService.getAppReportById(Integer.valueOf(id));
+		int index=0;
+		while(appReport==null&&index<4){
+			appReport=xlistService.getAppReportById(Integer.valueOf(id));
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			index++;
+		}
+		if(index==4){
+			try {
+				// CommonUtil.writeJsonToJsp(response, jsonArray);
+				// CommonUtil.writeToJsp(response, jsonObject);
+				response.getWriter().write(result.toString());
+				response.getWriter().flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
 		JSONObject portLists = new JSONObject();
 		JSONArray rows = new JSONArray();
 		int total = 0;
-		System.out.println(appReport.toString());
+		//System.out.println(appReport.toString());
 		if(appReport.getPortReport()==null){
 			try {
 				// CommonUtil.writeJsonToJsp(response, jsonArray);
@@ -344,5 +329,53 @@ public class XController {
 		System.out.println(appReport.toString());
 		return null;
 	}
+	
+	/**
+	 * 直接不请求返回检测中，拼接json
+	 * @param port
+	 * @param sendTime
+	 * @param target
+	 * @param value
+	 * @return
+	 */
+	public static JSONObject downResultParse(String port,String sendTime,String target,String value){
+		JSONObject jsonObject = new JSONObject();
+		List<Integer> list = new ArrayList<Integer>();
+		String[] strArr = port.split(",");
+		for (String str : strArr) {
+			str = str.trim();
+			if (str.contains("-")) {
+				int number = str.indexOf('-');
+				int begin = Integer.valueOf(str.substring(0, number).trim());
+				int end = Integer.valueOf(str.substring(number + 1,
+						str.length()).trim());
+				if (begin > end) {
+					int middle = end;
+					end = begin;
+					begin = middle;
+				}
+				for (int i = begin; i <= end; i++) {
+					list.add(i);
+				}
+			} else {
+				list.add(Integer.valueOf(str));
+			}
+		}
+		int total = list.size();
+		jsonObject.put("total", total);
+		JSONArray jsonArray = new JSONArray();
+		for (int i = 0; i < total; i++) {
+			JSONObject jsonObject2 = new JSONObject();
+			jsonObject2.put("id", i + 1);
+			jsonObject2.put("port", list.get(i));
+			jsonObject2.put("agreement", "unknown");
+			jsonObject2.put("state", value);
+			jsonObject2.put("time", sendTime);
+			jsonArray.add(jsonObject2);
+		}
+		jsonObject.put("rows", jsonArray);
+		return jsonObject;
+	}
+	
 	
 }

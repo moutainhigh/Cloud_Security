@@ -11,11 +11,11 @@ import static org.springframework.util.Assert.notNull;
  
 /**
  * MyBatis数据源切换
- * @author : zoutuo
+ * @author : hansheng
  * @version : 1.0
- * @date : 14-3-27 下午3:57
+ * @date : 17-10-10 下午3:57
  */
-public class MySqlSessionDaoSupport2 extends DaoSupport {
+public class PortScanSqlSessionDaoSupport extends DaoSupport {
  
     private SqlSession sqlSession;
  
@@ -23,7 +23,6 @@ public class MySqlSessionDaoSupport2 extends DaoSupport {
  
     @Autowired(required = false)
     public  void setSqlSessionFactory(@Qualifier("sqlSessionFactoryB") SqlSessionFactory sqlSessionFactory) {
-    	System.out.println("aaaaaaa+++++bbbb");
         if (!this.externalSqlSession) {
             this.sqlSession = new SqlSessionTemplate(sqlSessionFactory);
         }
@@ -31,7 +30,6 @@ public class MySqlSessionDaoSupport2 extends DaoSupport {
  
     @Autowired(required = false)
     public final void setSqlSessionTemplate(@Qualifier("sqlSession2")SqlSessionTemplate sqlSessionTemplate) {
-        System.out.println("sqlswssssssssssss");
     	this.sqlSession = sqlSessionTemplate;
         this.externalSqlSession = true;
     }

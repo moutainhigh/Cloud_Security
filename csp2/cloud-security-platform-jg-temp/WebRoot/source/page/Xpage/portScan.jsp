@@ -534,7 +534,7 @@ function submitForm(){
 		//alert("1");
 		jQuery.ajax({
 			type : 'POST',
-			url : "/csp/source/page/Xpage/portScanMethod2.html",
+			url : "${ctx}/portScanMethod.html",
 			dataType : 'json',
 			data:{'target':target,'port':port,'scan':scan,'agreement':'tcp'},
 			success : function(data) {
@@ -544,7 +544,7 @@ function submitForm(){
 					 $('#tb_departments').bootstrapTable('load',data.portLists.rows);
 					 jQuery.ajax({
 							type : 'POST',
-							url : "/csp/source/page/Xpage/portScanMethod.html",
+							url : "${ctx}/portScanPostMethod.html",
 							dataType : 'json',
 							data:{'target':target,'port':port,'scan':scan,'agreement':'tcp'},
 							success : function(data) {
