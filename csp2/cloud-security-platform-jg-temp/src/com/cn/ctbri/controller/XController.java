@@ -208,7 +208,7 @@ public class XController {
 				);
 		String status=createTaskResult.getString("status");
 		JSONObject result = new JSONObject();
-		if("ok".equals(status)){
+		if(!"ok".equals(status)){
 			result.put("status", "false");
 			try {
 				// CommonUtil.writeJsonToJsp(response, jsonArray);
