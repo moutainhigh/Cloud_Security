@@ -22,14 +22,14 @@ public class PortScanSqlSessionDaoSupport extends DaoSupport {
     private boolean externalSqlSession;
  
     @Autowired(required = false)
-    public  void setSqlSessionFactory(@Qualifier("sqlSessionFactoryB") SqlSessionFactory sqlSessionFactory) {
+    public  void setSqlSessionFactory(@Qualifier("portScanSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         if (!this.externalSqlSession) {
             this.sqlSession = new SqlSessionTemplate(sqlSessionFactory);
         }
     }
  
     @Autowired(required = false)
-    public final void setSqlSessionTemplate(@Qualifier("sqlSession2")SqlSessionTemplate sqlSessionTemplate) {
+    public final void setSqlSessionTemplate(@Qualifier("portScanSqlSession")SqlSessionTemplate sqlSessionTemplate) {
     	this.sqlSession = sqlSessionTemplate;
         this.externalSqlSession = true;
     }

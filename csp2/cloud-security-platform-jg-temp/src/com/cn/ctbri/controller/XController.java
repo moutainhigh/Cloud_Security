@@ -208,7 +208,7 @@ public class XController {
 				);
 		String status=createTaskResult.getString("status");
 		JSONObject result = new JSONObject();
-		if(!"ok".equals(status)){
+		if("ok".equals(status)){
 			result.put("status", "false");
 			try {
 				// CommonUtil.writeJsonToJsp(response, jsonArray);
@@ -223,7 +223,7 @@ public class XController {
 		}
 		
 		String id=createTaskResult.getString("taskid");
-		//String id="40";
+		//String	id="40";
 		//System.out.println("id:"+id);
 		AppReport appReport=xlistService.getAppReportById(Integer.valueOf(id));
 		int index=0;
