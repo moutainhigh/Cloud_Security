@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa" 
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
+    xmlns:security="http://www.springframework.org/schema/security"  
+    xsi:schemaLocation="  
+        http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/security   
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd  
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/data/jpa   
+        http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd  
+        http://www.springframework.org/schema/tx   
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">  
+    
+    <!-- Timer schedule -->
+    <!--要调度的对象,HW
+    <bean id="taskHWJobBean" class="com.cn.ctbri.scheduler.HuaweiScheduler4Task" />
+    <bean id="taskHWJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskHWJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskHWTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="taskHWJobDetail" />
+        <property name="cronExpression" value="0 0/1 * * * ?" />
+    </bean>-->
+    
+    <!--要调度的对象，结果获取-->
+    <bean id="resultJobBean" class="com.cn.ctbri.common.Scheduler4Result" />
+    <bean id="resultJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="resultJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="resultTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="resultJobDetail" />
+    	<!-- <property name="cronExpression" value="0/30 * * * * ?" /> 
+    	<property name="cronExpression" value="0 16 20 ? * *" />-->
+    	<property name="cronExpression" value="0 0/1 * * * ?" />
+    </bean>
+    
+    <!--要调度的对象-->
+    <bean id="taskHRSJobBean" class="com.cn.ctbri.common.HighRiskSiteAnalysisTask" />
+    <bean id="taskHRSJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskHRSJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskHRSTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="taskHRSJobDetail" />
+        <property name="startDelay" value="0" /><!-- 调度工厂实例化后，经过0秒开始执行调度 -->  
+		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
+    </bean>
+    
+    <!--要调度的对象,WAF告警数量统计任务-->
+    <bean id="taskWafAlarmJobBean" class="com.cn.ctbri.common.WafAlarmAnalysisWorker" />
+    <bean id="taskWafAlarmJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskWafAlarmJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskWafAlarmTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="taskWafAlarmJobDetail" />
+        <property name="startDelay" value="0" /><!-- 调度工厂实例化后，经过0秒开始执行调度 -->  
+		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
+    </bean>
+    
+    <!--要调度的对象waf-->
+    <bean id="wafJobBean" class="com.cn.ctbri.common.SchedulerWaf" />
+    <bean id="wafJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="wafJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="wafTrigger"
+    	class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    	<property name="jobDetail" ref="wafJobDetail" />
+    	<property name="startDelay" value="60000" /><!-- 调度工厂实例化后，经过60秒开始执行调度 -->  
+		<property name="repeatInterval" value="3600000" /><!-- 每60分调度一次 --> 
+    </bean>
+    
+    <!--要调度的对象,WAF删除-->
+    <bean id="delJobBean" class="com.cn.ctbri.common.SchedulerWaf" />
+    <bean id="delJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="delJobBean" />
+        <property name="targetMethod" value="executeDel" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="delTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="delJobDetail" />
+        <property name="startDelay" value="120000" /><!-- 调度工厂实例化后，经过120秒开始执行调度 -->  
+		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
+    </bean>
+    
+    <!--要调度的对象,WAF信息处理-->
+    <bean id="sendMessageJobBean" class="com.cn.ctbri.common.SchedulerWaf" />
+    <bean id="sendMessageJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="sendMessageJobBean" />
+        <property name="targetMethod" value="executeSendMessage" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="sendMessageTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="sendMessageJobDetail" />
+        <property name="cronExpression" value="0 15 10 ? * *" /><!-- 每天上午10:15触发 -->
+    </bean>
+    
+    <!--要调度的对象,api使用情况处理-->
+    <bean id="apiStatusJobBean" class="com.cn.ctbri.common.SchedulerApi" />
+    <bean id="apiStatusJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="apiStatusJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="apiStatusTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="apiStatusJobDetail" />
+        <property name="cronExpression" value="0 59 15 ? * *" /><!-- 每天01:15触发 -->
+    </bean>
+    <!-- 续费短信提醒 -->
+      <bean id="renewOrderBean" class="com.cn.ctbri.common.RenewOrder" />
+       <bean id="renewOrderDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="renewOrderBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean  id="renewOrderTrigger"  
+     class="org.springframework.scheduling.quartz.CronTriggerBean">
+      <property name="jobDetail" ref="renewOrderDetail" />
+        <property name="cronExpression" value="0 00 01 ? * *" /><!-- 每天01:00触发 -->
+    </bean>
+    
+    <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
+    <bean id="startQuertz"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+        lazy-init="false">
+        <property name="triggers">
+            <list>
+                 
+                <!--<ref bean="resultTrigger" />
+                <ref bean="taskWafAlarmTrigger" />
+                <ref bean="wafTrigger" />
+                <ref bean="delTrigger"/>
+                <ref bean="sendMessageTrigger"/>
+                <ref bean="apiStatusTrigger"/>
+                <ref bean="renewOrderTrigger"/>-->
+            </list>
+        </property>
+    </bean>
+</beans>  
