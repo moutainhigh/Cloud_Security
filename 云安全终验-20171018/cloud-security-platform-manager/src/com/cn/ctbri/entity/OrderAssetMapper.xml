@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderAssetMapper">
+<sql id="cols">id,orderId,assetId,serviceId,scan_type,scan_date</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderAsset" id="OrderAssetRM">
+		<id property="id" column="id"/>
+		<result property="orderId" column="orderId"/>
+		<result property="assetId" column="assetId"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="scan_type" column="scan_type"/>
+		<result property="scan_date" column="scan_date"/>
+	</resultMap> 
+	<!-- 按资产id查询订单资产 -->
+	<select id="findAssetById" parameterType="int" resultMap="OrderAssetRM">
+		select o.id,o.orderId,o.assetId,o.serviceId
+		from cs_order_asset o
+		where o.assetId = #{assetId}
+	</select>
+	
+	<!-- 插入服务资产 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAsset">
+        insert into cs_order_asset
+        (orderId, assetId, serviceId, scan_type, scan_date) 
+        values(#{orderId}, #{assetId}, #{serviceId}, #{scan_type}, #{scan_date})
+    </insert>
+    
+    <!-- 插入ip段 -->
+    <insert id="insertIP" parameterType="com.cn.ctbri.entity.OrderIP">
+        insert into cs_order_ip
+        (orderId, ip, bandwidth, serviceId) 
+        values(#{orderId}, #{ip}, #{bandwidth}, #{serviceId})
+    </insert>
+    <!-- 根据orderid查询OrderAsset -->
+    <select id="findOrderAssetByOrderId" parameterType="String" resultMap="OrderAssetRM">
+        select * from cs_order_asset where orderId=#{orderId}
+    </select>
+    
+    <!-- 根据orderid查询Asset名称 -->
+    <select id="findAssetNameByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Asset">
+        select a.name,a.addr from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
+    </select>
+    <select id="findLastTimeByOrderId" parameterType="hashmap" resultType="hashmap">
+        select t.execute_time from cs_order_asset oa,cs_task t 
+            where oa.id = t.order_asset_id 
+            and oa.orderId=#{orderId}
+            and t.status=3
+            order by t.execute_time desc 
+            <if test="limitNum!=null">
+                limit #{limitNum}
+            </if>
+    </select>
+    
+    <!-- 根据orderid查询ip -->
+    <select id="findIpByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.OrderIP">
+        select * from cs_order_ip where orderId=#{orderId}
+    </select>
+    
+    <!-- 删除订单资产 -->
+    <delete id="deleteOaByOrderId" parameterType="String">
+        delete from cs_order_asset where orderId = #{orderId}
+    </delete>
+    
+    <!-- 按资产id查询订单信息 -->
+	<select id="getOrdersByAsset" parameterType="int" resultType="hashmap">
+        select o.id,o.type,o.websoc,o.create_date,s.name,o.status
+		from cs_order o,cs_order_asset oa,cs_service s
+		where o.id = oa.orderId
+        and o.serviceId = s.id
+        and oa.assetId = #{assetId}
+        and o.status != 0
+        order by o.create_date desc 
+	</select>
+	
+	    <!-- 根据orderid查询Asset -->
+    <select id="findAssetsByOrderId" parameterType="String" resultType="hashmap" >
+        <!-- select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id -->
+    	select oa.assetName as name,oa.assetAddr as addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa where oa.orderId=#{orderId}
+    </select>
+</mapper>

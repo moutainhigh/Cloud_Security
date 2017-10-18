@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.ServMapper">
+	<sql id="cols">id,name,factory,module_name,type,status,remarks,ordertype,parentC,websoc</sql>
+	<resultMap type="com.cn.ctbri.entity.Serv" id="ServRM">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="factory" column="factory"/>
+		<result property="module_name" column="module_name"/>
+		<result property="type" column="type" javaType="int" jdbcType="INTEGER"/>
+		<result property="status" column="status"/>
+		<result property="remarks" column="remarks"/>
+		<result property="orderType" column="ordertype"/>
+		<result property="parentC" column="parentC"/>
+		<result property="websoc" column="websoc"/>
+		<result property="home_icon" column="homeIcon"/>
+		<result property="category_icon" column="categoryIcon"/>
+		<result property="detail_icon" column="detailIcon"/>
+	</resultMap>
+	<!-- 查询所有记录 -->
+	<select id="list" resultMap="ServRM">
+		select<include refid="cols"/>from cs_service
+	</select>
+	<select id="findById" resultMap="ServRM" parameterType="int">
+		select * from cs_service
+		where id=#{id}
+	</select>
+	
+	<select id="findServiceByParam" resultMap="ServRM" parameterType="com.cn.ctbri.entity.Serv">
+        select * from cs_service s
+        <where>
+            <if test="type!=0">
+            and s.type=#{type}
+            </if>
+            <if test="orderType!=null">
+            and s.orderType in(0,#{orderType})
+            </if>
+            <if test="factory!=null">
+            and s.factory=#{factory}
+            </if>
+            <if test="parentC!=0">
+            and s.parentC=#{parentC}
+            </if>
+            <if test="websoc==1">
+            and s.websoc=#{websoc}
+            </if>
+        </where>
+    </select>
+	
+	<!-- 查询所有服务 -->
+	<select id="findSerList" resultType="hashmap" parameterType="hashmap">
+		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,s.parentC, ptype.name parentCName,s.home_icon homeIcon,s.category_icon categoryIcon,s.detail_icon detailIcon  FROM cs_service s,cs_service_type type,cs_service_dictionary ptype 
+		WHERE s.type=type.id and s.parentC = ptype.id
+		<if test="name!=null and name!=''">
+			and s.name like CONCAT('%','${name}','%') 
+        </if>
+		<if test="type!=-1 and type!=null">
+            and s.type=#{type}
+        </if>
+		<if test="parent!=null and parent!=-1">
+            and s.parentC=#{parent}
+        </if>			
+		union select a.id,a.name,'',a.type servType,a.remarks,a.parentC, ptype.name parentCName,a.home_icon homeIcon,a.category_icon categoryIcon,a.detail_icon detailIcon 
+		from cs_service_api a,cs_service_dictionary ptype
+		where a.parentC = ptype.id
+		<if test="name!=null and name!=''">
+            and a.name like CONCAT('%','${name}','%') 
+        </if>
+		<if test="type!=-1 and type!=null">
+            and a.type=#{type}
+        </if>
+		<if test="parent!=null and parent!=-1">
+            and a.parentC=#{parent}
+        </if>
+	</select>
+	
+	<!-- 添加API服务 -->
+	<insert id="insertAPI" parameterType="hashmap">
+		insert into cs_service_api(id,name,type,parentC,remarks,home_icon,category_icon,detail_icon)
+		values(#{id},#{name},#{type},#{parent},#{remarks},#{homeIcon},#{categoryIcon},#{detailIcon})
+		
+	</insert>
+	<!-- 添加普通服务 -->
+	<insert id="insertServ" parameterType="hashmap">
+		insert into cs_service(id,name,type,parentC,remarks,home_icon,category_icon,detail_icon)
+		values(#{id},#{name},#{type},#{parent},#{remarks},#{homeIcon},#{categoryIcon},#{detailIcon})
+	</insert>
+	
+	<!-- 添加服务详情 -->
+	<insert id="insertServiceDetail" parameterType="com.cn.ctbri.entity.ServiceDetail">
+		insert into cs_service_detail(serviceId,priceTitle,typeTitle,servType,ratesTitle,detailIcon,createTime,parentC,detailFlag)
+		values(#{serviceId},#{priceTitle},#{typeTitle},#{servType},#{ratesTitle},#{detailIcon},#{createTime},#{parentC},#{detailFlag})
+	</insert>
+	
+	<!-- 添加服务频率 -->
+	<insert id="insertScanType" parameterType="map">
+		insert into cs_scanType(serviceId,scan_name,scan_type) values
+		(#{serviceId},#{scanName},#{scanType})
+	</insert>
+	
+	<!-- 查询cs_scanType表 -->
+	<select id="selectScanType" parameterType="map" resultType="String">
+		select scan_name from cs_scanType where serviceId = #{serviceId} and scan_name = #{scanName}
+	</select>
+	
+	<!-- 查询cs_scanType中scan_type的最大值 -->
+	<select id="selectMaxScanType" parameterType="map" resultType="int">
+		select ifnull(max(scan_type),0) from cs_scanType where serviceId = #{serviceId}
+	</select>
+	<!-- 删除服务 -->
+	<delete id="delServ" parameterType="String">
+            delete from cs_service where id=#{servId}
+	</delete>
+	<!-- 删除服务API -->
+	<delete id="delServAPI" parameterType="String">
+            delete from cs_service_api where id=#{servId}
+	</delete>
+	<!-- 修改API服务 -->
+	<update id="updateAPI" parameterType="hashmap">
+		update cs_service_api
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="remarks!=null">
+				remarks=#{remarks},
+			</if>
+			<if test="parent!=null">
+				parentC=#{parent},
+			</if>
+			<if test="homeIcon!=null">
+				home_icon=#{homeIcon},
+			</if>
+			<if test="categoryIcon!=null">
+				category_icon=#{categoryIcon},
+			</if>
+			<if test="detailIcon!=null">
+				detail_icon=#{detailIcon},
+			</if>
+			<if test="type!=null">
+				type=#{type},
+			</if>
+			<if test="scanTypes!=null">
+				scanTypes=#{scanTypes},
+			</if>
+			<if test="servRates!=null">
+				servRates=#{servRates},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 修改普通服务 -->
+	<update id="updateServ" parameterType="hashmap">
+		update cs_service
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="type!=null">
+				type=#{type},
+			</if>
+			<if test="remarks!=null">
+				remarks=#{remarks},
+			</if>
+			<if test="parent!=null">
+				parentC=#{parent},
+			</if>
+			<if test="homeIcon!=null">
+				home_icon=#{homeIcon},
+			</if>
+			<if test="categoryIcon!=null">
+				category_icon=#{categoryIcon},
+			</if>
+			<if test="detailIcon!=null">
+				detail_icon=#{detailIcon},
+			</if>
+			<if test="scanTypes!=null">
+				scanTypes=#{scanTypes},
+			</if>
+			<if test="servRates!=null">
+				servRates=#{servRates},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!-- 查询服务详情配置信息 -->
+	<select id="findServiceDetail" parameterType="hashmap" resultType="com.cn.ctbri.entity.ServiceDetail">
+		select * from cs_service_detail where serviceId = #{serviceId} and parentC = #{parent}
+	</select>
+
+	<!-- 根据服务详情一级分类名字查询服务ID -->
+	<select id="selectParentId" parameterType="String" resultType="int">
+		select id from cs_service_dictionary where name = #{parent}
+	</select>
+	<!-- 删除相应serviceId的cs_scanType表 -->
+	<delete id="delScanType" parameterType="int">
+		delete from cs_scanType where serviceId = #{serviceId}
+	</delete>
+	<!-- 更新serviceDetail表 -->
+	<update id="updateServiceDetail" parameterType="com.cn.ctbri.entity.ServiceDetail">
+		update cs_service_detail
+		set createTime = #{createTime}
+		<if test="priceTitle != null and priceTitle != ''">,priceTitle = #{priceTitle}</if>
+		<if test="typeTitle != null and typeTitle != ''">,typeTitle = #{typeTitle}</if>
+		<if test="servType != null and servType != 9">,servType = #{servType}</if>
+		<if test="ratesTitle != null and ratesTitle != ''">,ratesTitle = #{ratesTitle}</if>
+		<if test="detailIcon != null and detailIcon != ''">,detailIcon = #{detailIcon}</if>
+		<if test="detailFlag != null and detailFlag != ''">,detailFlag = #{detailFlag}</if>
+		where serviceId = #{serviceId} and parentC = #{parentC}
+	</update>
+	
+	<!-- 根据serviceId查询cs_scanType列表 -->
+	<select id="findScanTypeList" parameterType="hashmap" resultType="hashmap">
+		select scan_type, scan_name from cs_scanType where serviceId = #{serviceId}
+	</select>
+	
+	<!-- 删除信息详情表 -->
+	<delete id="delServDetail" parameterType="hashmap">
+		delete from cs_service_detail where serviceId = #{servId} 
+		and parentC = (select id from cs_service_dictionary where name = #{parent})
+	</delete>
+</mapper>

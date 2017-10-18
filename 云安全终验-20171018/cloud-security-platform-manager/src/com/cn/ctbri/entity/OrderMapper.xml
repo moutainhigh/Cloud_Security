@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderMapper">
+	<sql id="cols">id,type,begin_date,end_date,serviceId,create_date,task_date,scan_type,userId,contactId,remarks,status</sql>
+	<resultMap type="com.cn.ctbri.entity.Order" id="OrderRM">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="begin_date" column="begin_date"/>
+		<result property="end_date" column="end_date"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="create_date" column="create_date"/>
+		<result property="task_date" column="task_date"/>
+		<result property="scan_type" column="scan_type"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="price" column="price"/>
+		<result property="count" column="count"/>
+		<result property="remarks" column="remarks"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<!-- 根据订单Id查询记录 -->
+    <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
+        select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+        from cs_order o,cs_service s
+        where o.id = #{orderId} and o.serviceId = s.id
+    </select>
+	<!-- 根据用户查询所有记录 -->
+    <select id="findOrderByUserId" resultMap="OrderRM" parameterType="Integer">
+        select * from cs_order
+        where userId = #{userId}
+    </select>
+	<!-- 查询所有记录 -->
+	<select id="list" resultType="hashmap" parameterType="int">
+		select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+		from cs_order o,cs_service s
+		where o.userId = #{id} and o.serviceId = s.id and o.status in (1,2)
+		order by o.create_date desc
+	</select>
+
+    	<!-- 根据page查询记录 -->
+    <select id="getOderByPage" resultType="hashmap" parameterType="hashmap">
+        select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+        from cs_order o,cs_service s
+        where o.userId = #{userId} and o.serviceId = s.id  
+       
+        <if test="state==2"><!-- 已结束 -->
+               AND o.status in (1,2)
+        </if>
+        <if test="state==3"><!--有警告的  -->
+               AND o.status =2
+        </if>
+         <if test="type!=null"><!--有警告的  -->
+              and o.status in (1,2)
+        </if>
+        order by o.create_date desc limit #{pageNow},#{pageSize}
+    </select>
+	<!-- 条件查询 -->
+	<!-- SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
+		FROM (SELECT o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
+		      FROM cs_order o,cs_service s,cs_user u
+		      WHERE u.id = 103 AND o.serviceId = s.id) c 
+		WHERE
+			1=1 AND c.type =2 AND c.name =1;  
+			.addCondition("o.createTime>= " + "str_to_date('"+dateBegin+"','%Y-%m-%d %H:%i:%s')")
+				.addCondition("o.createTime<= " + "str_to_date('"+dateEnd+"','%Y-%m-%d %H:%i:%s')")
+			-->
+	<select id="findByCombine" resultType="hashmap" parameterType="hashmap">
+	   SELECT c.id,c.type,c.sid,c.name,c.begin_date,c.end_date,c.create_date,c.scan_type
+		 FROM (SELECT o.id,o.type,s.id as sid,s.name,o.scan_type,o.begin_date,o.end_date,o.create_date
+		      FROM cs_order o,cs_service s
+		      WHERE o.userId = #{userId} AND o.serviceId = s.id and o.status in (1,2) order by o.create_date desc) c 
+		WHERE
+			1=1  
+			
+			<if test="type!=null and type!=''">
+				AND c.type = #{type}
+			</if>
+			<if test="servName!=null and servName!=''">	
+				AND c.sid = #{servName} 
+			</if>	 
+			<if test="begin_date!=null and begin_date!=''">
+				AND c.begin_date &gt;= #{begin_date}
+			</if>
+			<if test="end_date!=null and end_date!=''">
+				AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR (c.begin_date &lt;=#{end_date} AND type=2))
+			</if>
+			
+	</select>
+	  <!-- 滚动加载 -->
+	   <select id="findByCombineByPage" resultType="hashmap" parameterType="hashmap">
+        SELECT c.id,c.type,c.sid,c.name,c.begin_date,c.end_date,c.create_date,c.scan_type
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.scan_type,o.begin_date,o.end_date,o.create_date
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id and o.status in (1,2) order by o.create_date desc) c 
+        WHERE
+            1=1  
+            <if test="type!=null and type!=''">
+                AND c.type = #{type}
+            </if>
+            <if test="servName!=null and servName!=''"> 
+                AND c.sid = #{servName} 
+            </if>    
+            <if test="begin_date!=null and begin_date!=''">
+                AND c.begin_date &gt;= #{begin_date}
+            </if>    
+            <if test="end_date!=null and end_date!=''">
+              AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR (c.begin_date &lt;=#{end_date} AND type=2))
+            </if>
+            limit #{pageNow},#{pageSize}    
+    </select>
+	
+	
+	<select id="findByCombineOrderTrack" resultType="hashmap" parameterType="hashmap">
+        select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
+        (
+        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
+        WHERE
+            1=1  
+            <if test="type!=null">
+                AND c.type = #{type}
+            </if>
+            <if test="servName!=null and servName!=''"> 
+                AND c.sid = #{servName} 
+            </if>    
+            <if test="begin_date!=null">
+                AND c.begin_date &gt;= #{begin_date}
+            </if>    
+            <if test="end_date!=null">
+            AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR (c.begin_date &lt;=#{end_date} AND type=2))
+           
+            </if>
+            <if test="state==3"><!-- 已下单 -->
+                AND c.begin_date &gt; #{currentDate}
+            </if>
+            <if test="state==1"><!-- 服务中 -->
+                AND c.begin_date &lt;= #{currentDate}
+                AND c.status in (0,3)
+            </if>
+            <if test="state==2"><!-- 已结束 -->
+                <!-- AND c.end_date &lt; #{currentDate} -->
+                AND c.status in (1,2)
+            </if>
+            ) b order by b.create_date desc
+    </select>
+    
+    <select id="findByCombineOrderTrackByPage" resultType="hashmap" parameterType="hashmap">
+        select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
+        (
+        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
+        WHERE
+            1=1  
+            <if test="type!=null and type!=''">
+                AND c.type = #{type}
+            </if>
+            <if test="servName!=null and servName!=''"> 
+                AND c.sid = #{servName} 
+            </if>    
+            <if test="begin_date!=null and begin_date!=''">
+                AND c.begin_date &gt;= #{begin_date}
+            </if>    
+            <if test="end_date!=null and end_date!=''">
+              AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR (c.begin_date &lt;=#{end_date} AND type=2))
+            </if>
+            <if test="state==3"><!-- 已下单 -->
+                AND c.begin_date &gt; #{currentDate}
+            </if>
+            <if test="state==1"><!-- 服务中 -->
+                AND c.begin_date &lt;= #{currentDate}
+                AND c.status in (0,3)
+            </if>
+            <if test="state==2"><!-- 已结束 -->
+                <!-- AND c.end_date &lt; #{currentDate} -->
+                AND c.status in (1,2)
+            </if>
+            ) b order by b.create_date desc limit #{pageNow},#{pageSize}
+    </select>
+      <select id="findByCombineDataAnalysis" resultType="hashmap" parameterType="hashmap">
+        		SELECT DISTINCT b.name as name ,SUM(b.count) as count 
+        		FROM(
+					SELECT c.name,COUNT(c.name) as count
+					FROM (SELECT s.name
+						  FROM cs_order o,cs_service s
+						  WHERE 1=1 
+						  and o.serviceId=s.id
+						  <if test="type!=null">
+							AND o.type = #{type}
+						  </if>
+						 <if test="state==1">
+			                AND o.type = 1
+			                AND o.begin_date &gt;= #{currentDate}
+			             </if>
+			             <if test="state==2">
+			                AND o.type = 1
+			                AND o.begin_date &lt; #{currentDate}
+			             </if>
+						<!-- <if test="begin_date!=null">
+							AND o.begin_date &gt;= #{begin_date}
+						</if>	 
+						<if test="end_date!=null">
+							AND o.end_date &lt;=#{end_date}
+						</if> -->
+						
+						<if test="begin_date!=null and end_date!=null">
+                            AND o.begin_date &gt;= #{begin_date}
+                            AND o.begin_date &lt;=#{end_date}            
+                        </if>    
+                        <if test="begin_date!=null and end_date==null">
+                            AND o.begin_date &gt;= #{begin_date}                            
+                        </if>
+			            <if test="begin_date==null and end_date!=null">
+			              AND o.begin_date &lt;= #{end_date}                                             
+                        </if>
+						<if test="servName!=null and servName!=''">	
+							AND s.name = #{servName} 
+						</if>
+						  ) c 
+					GROUP BY c.name
+			        UNION
+			          SELECT c.name,COUNT(c.name) as count
+						FROM (SELECT s.name
+							  FROM cs_order o,cs_service s
+							  WHERE 
+							  1=1
+							  and o.serviceId=s.id 
+							  <if test="type!=null">
+								AND o.type = #{type}
+							  </if>
+							  <if test="state==1">
+			                AND o.type = 2
+			                AND o.begin_date &gt;= #{currentDate}
+			            </if>
+			            <if test="state==2">
+			                AND o.type = 2
+			                AND o.begin_date &lt; #{currentDate}
+			            </if>
+			            <!-- <if test="begin_date!=null">
+							AND o.begin_date &gt;= #{begin_date}
+						</if>	 
+						<if test="end_date!=null">
+							AND o.end_date &lt;=#{end_date}
+						</if> -->
+						
+						<if test="begin_date!=null and end_date!=null">
+                            AND o.begin_date &gt;= #{begin_date}
+                            AND o.begin_date &lt;=#{end_date}            
+                        </if>    
+                        <if test="begin_date!=null and end_date==null">
+                            AND o.begin_date &gt;= #{begin_date}                            
+                        </if>
+                        <if test="begin_date==null and end_date!=null">
+                          AND o.begin_date &lt;= #{end_date}                                             
+                        </if>
+						<if test="servName!=null and servName!=''">	
+							AND s.name = #{servName} 
+						</if>
+							  ) c 
+					  GROUP BY c.name
+			  ) b
+			  GROUP BY b.name
+		</select>
+		<select id="findScanCountByOrderId" parameterType="String" resultType="int">
+				SELECT IFNULL(COUNT(o.id),0)  
+				FROM cs_order o, cs_order_asset oa, cs_task t
+				WHERE o.id=oa.orderId AND oa.id=t.order_asset_Id AND o.id=#{orderId}
+		</select>
+		    <!-- 根据orderid查询IP名称 -->
+    <select id="findIPByOrderId" parameterType="String" resultType="hashmap">
+    	select a.ip from cs_order_ip  a  where a.orderId=#{orderId}
+    </select>
+    <!-- 查询有告警的订单-->
+    <select id="findOrder" parameterType="int" resultMap="OrderRM">
+    	select * from cs_order where id=( select orderId from cs_order_ip where id=#{order_ip_Id})
+    </select>
+    
+    <!-- 修改订单 -->
+	<update id="update" parameterType="com.cn.ctbri.entity.Order">
+		update cs_order
+		<set>
+			<if test="message!=null">
+				message=#{message},
+			</if>
+			<if test="status!=null">
+                status=#{status},
+            </if>
+		</set>
+		where id=#{id}
+	</update>
+	 <!-- 根据orderId查询正在执行的任务-->
+    <select id="findTaskRunning" parameterType="String" resultType="hashmap">
+        SELECT t.*
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 2
+    </select>
+    
+    <select id="getOrderById" resultType="String" parameterType="hashmap">
+    SELECT c.id FROM cs_order  c WHERE c.id=#{orderId} AND c.type =#{type}
+    <if test="userId != null and userId != 0">AND c.userId=#{userId}</if>
+    </select>
+    
+    <!-- 删除订单 -->
+    <delete id="deleteOrderById" parameterType="String">
+        delete from cs_order where id = #{orderId}
+    </delete>
+    
+    <!-- 查找订单 -->
+    <select id="findOrderById" resultMap="OrderRM" parameterType="String">
+        SELECT * FROM cs_order c WHERE c.id=#{orderId}
+    </select>
+    
+    <!-- 查找用户下单最集中时间段top5 -->
+    <select id="findOrderTimesTop5" parameterType="hashmap" resultType="hashmap">
+    SELECT DATE_FORMAT(create_date,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(create_date,INTERVAL 1 hour),'%H:00:00')as time1,count(*) as count
+	FROM cs_order WHERE 1=1
+	<if test="begin_date!=null and begin_date!=''">
+	<![CDATA[
+		AND create_date>=#{begin_date}
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+	<![CDATA[
+		AND create_date<=#{end_date}
+	]]>	
+	</if>
+	group by HOUR(time) ORDER BY count desc LIMIT 5
+    </select>
+    
+    <!-- 根据行业查询下订单用户数量 -->
+    <select id="findUserCountByIndus" parameterType="hashmap" resultType="hashmap">
+    <!-- SELECT u.industry,u.name,COUNT(DISTINCT u.name) count -->
+    SELECT DISTINCT u.name,u.industry
+	FROM cs_order o, cs_user u
+	WHERE o.userId=u.id 
+	<if test="begin_date!=null and begin_date!=''">
+	<![CDATA[
+		AND o.create_date>=#{begin_date}
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+	<![CDATA[
+		AND o.create_date<=#{end_date}
+	]]>	
+	</if>
+    <if test="industry!=null and industry!='' and industry!='-1'">
+        AND u.industry like CONCAT(CONCAT('%', #{industry}), '%')
+    </if>
+     <!-- GROUP BY u.industry -->
+    </select>
+     <!-- 当前时间前5小时数据 -->
+    <select id="findOrderTimesLine" parameterType="hashmap" resultType="hashmap">
+    SELECT DATE_FORMAT(create_date,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(create_date,INTERVAL 1 hour),'%H:00:00')as time1,count(*) as count
+	FROM cs_order 
+	<![CDATA[
+	WHERE create_date>=#{begin_date} AND create_date<=#{currentDate}
+	]]>	
+	group by HOUR(time) ORDER BY time limit 6
+    </select>
+    <select id="findOrderTimesPie" parameterType="hashmap" resultType="hashmap">
+    SELECT o.serviceId serviceid,count(o.serviceId) count,s.name name FROM cs_order o,cs_service s 
+    WHERE 1=1 
+    <if test="begin_date!=null">
+    <![CDATA[
+	AND o.create_date>=#{begin_date} 
+	]]>	
+	</if>
+	<if test="begin_date!=null">
+    <![CDATA[
+	AND o.create_date<=#{currentDate} 
+	]]>	
+	</if>
+	AND o.serviceId=s.id 
+	group by o.serviceId;
+    </select>
+    <!-- 查询订单时间段分布统计	-->
+    <select id="findOrderWithServiceId" parameterType="hashmap" resultType="hashmap">
+    SELECT o.serviceId serviceid,DATE_FORMAT(o.create_date,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(o.create_date,INTERVAL 1 hour),'%H:00:00')as time1,count(*) count,s.name name FROM cs_order o,cs_service s 
+	<![CDATA[
+	WHERE 1=1 
+	]]>	
+	<if test="begin_date!=null and begin_date!=''">
+    <![CDATA[
+	AND o.create_date>=#{begin_date}  
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+    <![CDATA[
+	AND o.create_date<=#{end_date}
+	]]>	
+	</if>
+	AND o.serviceId=s.id 
+	<if test="serviceId!=null and serviceId!=''">
+	AND serviceId=#{serviceId} 
+	</if>
+	<!-- GROUP BY s.id  -->
+	AND o.create_date is not null
+	GROUP BY DATE_FORMAT(o.create_date,'%H:00:00')
+	<if test="repeat==1">
+	having count(*)>=2
+	</if>
+    </select>
+    
+    <!-- 查询订单回购率	-->
+    <select id="findOrderWithServiceIdReBuy" parameterType="hashmap" resultType="hashmap">
+    SELECT o.serviceId serviceid,o.userId,count(*) count,s.name name FROM cs_order o,cs_service s 
+	<![CDATA[
+	WHERE 1=1 
+	]]>	
+	<if test="begin_date!=null and begin_date!=''">
+    <![CDATA[
+	AND o.create_date>=#{begin_date}  
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+    <![CDATA[
+	AND o.create_date<=#{end_date}
+	]]>	
+	</if>
+	AND o.serviceId=s.id 
+	<if test="serviceId!=null and serviceId!=''">
+	AND serviceId=#{serviceId} 
+	</if>
+	GROUP BY o.userId
+    having count(*)>=2
+    </select>
+    
+    <!-- 查询订单购买数	-->
+    <select id="findOrderWithServiceIdBuy" parameterType="hashmap" resultType="hashmap">
+    SELECT o.serviceId serviceid,o.userId,count(*) count,s.name name FROM cs_order o,cs_service s 
+	<![CDATA[
+	WHERE 1=1 
+	]]>	
+	<if test="begin_date!=null and begin_date!=''">
+    <![CDATA[
+	AND o.create_date>=#{begin_date}  
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+    <![CDATA[
+	AND o.create_date<=#{end_date}
+	]]>	
+	</if>
+	AND o.serviceId=s.id 
+	<if test="serviceId!=null and serviceId!=''">
+	AND serviceId=#{serviceId} 
+	</if>
+	GROUP BY o.userId
+    </select>
+    
+    <select id="findOrderByOrderIdMatch" parameterType="String" resultMap="OrderRM">
+    select *  from cs_order where 1=1 
+    <if test="id != null and id != ''">and id like concat('%',concat(#{id}, '%'))</if>
+    <if test="userId != null and userId != 0"> and userId = #{userId}</if>
+    order by userId
+    </select>
+    
+    		<!-- 根据orderId查询购买api数量 -->
+    <select id="findAPICountByParam" resultType="int" parameterType="hashMap">
+  		select api.num from cs_order_api api,cs_order order1 where api.id=#{orderId} and order1.payFlag=1 and order1.id=api.id
+    </select>
+    
+    <select id="getServiceUserCount" resultType="hashmap">
+    	select 1 as type,count(t1.type) as userNums from (
+			select type,userId from cs_order 
+			where delFlag=0
+			and payFlag=1
+			and type=1
+			group by type,userId
+		) as t1
+		union 
+		select 2 as type,count(t2.type) as userNums from (
+				select type,userId from cs_order 
+							where delFlag=0
+							and payFlag=1
+							and type=2
+							group by type,userId
+							having userId not in( 
+								select userId from cs_order 
+								where delFlag=0
+								and payFlag=1
+								and type=1
+								group by userId
+				)
+		) as t2
+    </select>
+    
+    <!--  统计当日交易总额  -->
+    <select id="countOrderAmount" parameterType="hashmap" resultType="hashmap">
+      SELECT IFNULL(sum(o.price),0) price FROM cs_order o,cs_user u
+      WHERE u.id = o.userId AND o.payFlag = '1' 
+	  <if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+    </select>
+    
+    <!--  各类服务订单交易额总数  -->
+    <select id="findServiceAmount" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT sum(o.price) price,s.name servName FROM cs_order o,cs_service s 
+		WHERE o.serviceId = s.id AND o.payFlag = '1' 
+		<if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+		GROUP BY s.name
+    </select>
+    
+    <!--  最近6小时交易额变化曲线  -->
+    <select id="findTradingCurve" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+      SELECT o.price price,DATE_FORMAT(o.create_date,'%H:%I:%S') AS time FROM cs_order o,cs_user u
+      WHERE u.id=o.userId AND o.payFlag = '1'
+      	<if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+	   order by time
+    </select>
+    
+    <!--  当日内各类服务订单交易额占比情况  -->
+    <select id="findOrderAmountDayPie" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,s.name servName FROM cs_order o,cs_service s
+        WHERE s.id=o.serviceId AND o.payFlag = '1' 
+        and o.price is not null and o.price !=0
+        <if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+	   GROUP BY s.name
+	   order by price
+    </select>
+    
+    <!--  当月内各类服务订单交易额占比情况  -->
+    <select id="findOrderAmountMonthPie" parameterType="String" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,s.name servName FROM cs_order o,cs_service s
+        WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate}
+	    and o.price is not null and o.price !=0
+	   GROUP BY s.name
+	   order by price
+    </select>
+    
+     <!--  日交易额总数 -->
+    <select id="findOrderAmounDayLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,DATE_FORMAT(o.create_date,'%H:00:00') time FROM cs_order o,cs_service s
+          WHERE s.id=o.serviceId AND o.payFlag = '1' and o.price is not null and o.price !=0
+        <if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+	    <if test="serviceId!=null and serviceId!=''">
+	    <![CDATA[
+		AND o.serviceId=#{serviceId}
+		]]>	
+	   </if>
+	   GROUP BY time
+	   order by time
+    </select>
+    
+    <!--  当月交易额总数  -->
+    <select id="findOrderAmountMonthLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,DATE_FORMAT(o.create_date,'%Y-%m-%d') AS time FROM cs_order o,cs_service s
+        WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate} 
+        and s.id=#{serviceId}  and o.price is not null and o.price !=0
+	   GROUP BY time
+	   order by time
+    </select>
+    
+    <select id="getServiceCount" resultType="hashmap">
+    	select t1.type,t2.`name`,count(t1.id) as countNums 
+		from cs_order as t1
+		inner join cs_service as t2
+		on t1.serviceId=t2.id
+		and  t1.delFlag=0
+		and t1.payFlag=1
+		group by t1.type,t1.serviceId
+    </select>
+    
+    <!--  总订单  -->
+    <select id="getOrder" resultType="com.cn.ctbri.entity.Order">
+       SELECT * FROM cs_order o
+        WHERE 
+        <![CDATA[
+        o.payFlag = '1' and o.delFlag <> 1
+        ]]>	
+    </select>
+</mapper>

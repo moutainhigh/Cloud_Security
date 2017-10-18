@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.AssetMapper">
+<sql id="cols">id,name,type,addr,status,userid,create_date,remarks</sql>
+	<resultMap type="com.cn.ctbri.entity.Asset" id="AssetRM">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="type" column="type"/>
+		<result property="addr" column="addr"/>
+		<result property="status" column="status"/>
+		<result property="userid" column="userid"/>
+		<result property="create_date" column="create_date"/>
+		<result property="remarks" column="remarks"/>
+	</resultMap> 
+	<resultMap type="com.cn.ctbri.entity.Asset" id="AssetRM1">
+		<result property="name" column="name"/>
+		<result property="disName" column="disName"/>
+		<result property="cityName" column="cityName"/>
+		<result property="num" column="num"/>
+	</resultMap>
+	<!-- 按用户id查询资产 -->
+	<select id="findByUserId" parameterType="int" resultMap="AssetRM">
+		select a.id,a.name,a.type,a.addr,a.status,a.userid,a.create_date,a.remarks
+		from cs_asset a
+		where a.userid = #{userid}
+	</select>
+	<!-- 新增资产 -->
+	<insert id="saveAsset" parameterType="com.cn.ctbri.entity.Asset">
+		insert into cs_asset 
+		(name,type,addr,status,userid,create_date,remarks) values(#{name},#{type},#{addr},#{status},#{userid},#{create_date},#{remarks})
+	</insert>
+	<!-- 删除资产 -->
+	<delete id="delete">
+		delete from cs_asset 
+		where id=#{id}
+	</delete>
+	<!-- 根据资产状态和资产名称搜索资产 -->
+	<select id="searchAssetsCombine" parameterType="com.cn.ctbri.entity.Asset" resultMap="AssetRM">
+		select a.id,a.name,a.type,a.addr,a.status,a.userid,a.create_date,a.remarks
+		from cs_asset a
+		where a.userid = #{userid}
+		<if test="status!=null">
+			and a.status=#{status}
+		</if>
+		<if test="name!=null and name!=''">
+			and a.name like CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+	</select>
+	<!-- 根据资产id查询资产 -->
+	<select id="findById" parameterType="int" resultMap="AssetRM">
+		select * from cs_asset
+		where id=#{id} 
+	</select>
+	<!-- 修改资产状态 -->
+	<update id="updateAsset" parameterType="com.cn.ctbri.entity.Asset">
+		update cs_asset
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="addr!=null">
+				addr=#{addr},
+			</if>
+				status=#{status}
+		</set>
+		where id=#{id}
+	</update>
+	
+	<!-- 按服务id查询订单资产 -->
+    <select id="findorderAssetByServId" parameterType="com.cn.ctbri.entity.OrderAsset" resultMap="AssetRM">
+        select a.id,a.name,a.addr from cs_asset a,
+        (select distinct oa.assetId from cs_order o left join 
+        cs_order_asset oa on 
+        o.id = oa.orderId 
+        where oa.serviceid = #{serviceId}
+        <if test="scan_type!=0">
+            and oa.scan_type=#{scan_type}
+        </if>
+        <if test="scan_date!=null">
+            and oa.scan_date=#{scan_date}
+        </if>
+        and o.status=0 
+        and o.userId = #{userId}) b 
+        where a.id = b.assetId 
+    </select>
+    
+    <!-- 按服务id查询订单IP段 -->
+    <select id="findorderIP" resultType="hashmap" parameterType="hashmap">
+      select * from cs_order where  begin_date  &gt;= #{beginDate} and  end_date &lt;= #{endDate}  
+      and  id=(select  orderId  from cs_order_ip where serviceId = #{serviceId} and ip = #{ip})
+    </select>
+		<!-- 根据资产地址查询资产 -->
+	<select id="findByAssetAddr" parameterType="hashmap" resultMap="AssetRM">
+		select * from cs_asset
+		where userid=#{userId} and (name=#{name} or  addr=#{addr})
+	
+		 
+	</select>
+	<!-- 检测网站 -->
+	<select id="findAllAssetAddr" resultMap="AssetRM">
+		 <!-- SELECT DISTINCT a.addr
+		 FROM cs_asset a -->
+		 SELECT a.id,a.addr,a.name,dis.name
+		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc
+	</select>
+	<!-- 分页查询 -->
+	<select id="queryByPage" resultMap="AssetRM">
+		 <!-- SELECT DISTINCT a.addr
+		 FROM cs_asset a LIMIT #{pageNow},#{pageSize} -->
+		 SELECT a.id,a.addr,a.name,dis.name as disName
+		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc LIMIT #{pageNow},#{pageSize} 
+	</select>
+	<!-- 资产地理位置统计分析 -->
+	<select id="findAssetByProviceAndCity" parameterType="hashmap" resultMap="AssetRM1">
+	  	select (case when cu.type=2 then '个人用户' else '企业用户' end),  cu.name name,
+      		cd.name disName,cc.name cityName, ca.num 
+     	from (select a.districtId,ifnull(a.city,0) city,a.userid,count(1) num 
+           		from cs_asset a 
+           		 <if test="province!=null and province!=''">
+           		    where  a.districtId=#{province}
+           		 </if> 
+           		 <if test="city!=null and city!=''">
+           		    and a.city=#{city}
+           		 </if>  
+           		group by a.districtId,a.city,a.userid ) ca,
+		cs_district cd,cs_city cc,cs_user cu 
+		where ca.districtId=cd.id and ca.city=cc.id and ca.userid=cu.id
+		<if test="assetUserType!=null and assetUserType!=''">
+            and cu.type=#{assetUserType}
+        </if> 
+	</select>
+	<!-- 资产用途统计分析 -->
+ 	<select id="findAssertPurpose" parameterType="hashmap" resultMap="AssetRM1">
+		 <!-- select cu.name name ,
+		   IFNULL(ca.purpose,'其他') disName,
+		   '' cityName,count(1) num 
+           from cs_asset ca,cs_user cu 
+           where ca.userid=cu.id 
+           
+           <if test="assetUserType!=null and assetUserType!=''">
+             and cu.type=#{assetUserType}
+           </if>
+           and ca.purpose=#{purpose}
+           <if test="begin_date!=null and begin_date!=''">
+              and ca.create_date &gt;= #{begin_date}
+           </if>
+           <if test="end_date!=null and end_date!=''">
+             and  ca.create_date &lt;= #{end_date}
+           </if>
+           group by cu.type,IFNULL(ca.purpose,'其他') -->
+           select cu.name name, ca.purpose disName,count(ca.id) num 
+           from cs_asset ca join cs_user cu on cu.id=ca.userid
+  		   where 1=1 
+  		   <if test="assetUserType!=null and assetUserType!=''">
+             and cu.type=#{assetUserType}
+           </if>
+          	 and ca.purpose=#{purpose}
+          	 <if test="begin_date!=null and begin_date!=''">
+              and ca.create_date &gt;= #{begin_date}
+           </if>
+           <if test="end_date!=null and end_date!=''">
+             and  ca.create_date &lt;= #{end_date}
+           </if>
+		   group by cu.id,IFNULL(ca.purpose,'其他') 
+	</select>
+	<!-- 查询所有网站数 -->
+	<select id="getAssetCount" resultType="int">
+	 select count(*) from cs_asset
+	</select>
+	<!-- 根据资产地址或名称查询资产 -->
+	<select id="findByAssetAddrOrName" parameterType="hashmap" resultMap="AssetRM">
+		select * from cs_asset
+		where 1=1
+		<if test="name != null and name != ''">and name like concat('%', concat(#{name}, '%'))</if>
+		<if test="addr != null and addr != ''">and addr = #{addr}</if>
+		<if test="userId != null and userId != 0">and userid = #{userId}</if>
+		 order by userid
+	</select>
+	
+	    <!-- 根据orderAssetId查询资产 -->
+	<select id="findByOrderAssetId" parameterType="int" resultMap="AssetRM">
+		select a.* from cs_asset a,cs_order_asset oa
+		where oa.assetId = a.id
+   		and oa.id = #{orderAssetId}
+	</select>
+	
+		<!-- 根据资产id查询资产 -->
+	<select id="findByIdAndUserId" parameterType="Map" resultMap="AssetRM">
+		select * from cs_asset
+		where id=#{id} and userid=#{userid}
+	</select>
+</mapper>
