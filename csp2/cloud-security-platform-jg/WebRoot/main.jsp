@@ -152,7 +152,7 @@ html, body {
 						<ul class="newlist newlist-top fl">
 							<c:forEach var="list" items="${servList}" varStatus="status">
 								<c:choose>
-									<c:when test="${status.index<3}">
+									<c:when test="${list.id<3 || list.id==6}">
 										<li class="fl">
 											<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1">
                                     --> <a href="javascript:;"
