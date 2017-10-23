@@ -122,7 +122,19 @@ function buySystemService(servId){
 					<a href="${ctx}/malicious_URL.html" target="_blank">钓鱼网站监测</a>
 				</li>
 				<li style="border: none;">
-					<a href="${ctx}/Xpage.html">X专区</a>
+					<a href="${ctx}/Xlist.html">X专区</a>
+					<ol id="anquanbangAPI_ol">
+						<c:forEach var="list" items="${xList}"  varStatus="status">
+							<c:if test="${status.count == 1}">
+							  <li style="border: none;">
+							</c:if>
+							<c:if test="${status.count != 1}">
+							  <li>
+							</c:if>
+							<a href="${ctx}/${list.linkPage}">${list.name }</a>
+							</li>
+						</c:forEach>
+					</ol>
 				</li>
 			</ul>
 

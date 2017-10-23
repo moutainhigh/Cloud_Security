@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insert" parameterType="com.cn.ctbri.entity.LoginHistory">
 		insert into cs_login_history
-		(userId,userType,loginTime,IPAddr) values(#{userId},#{userType},#{loginTime},#{IPAddr})
+		(userId,userType,loginTime) values(#{userId},#{userType},#{loginTime})
 	</insert>
 </mapper>
 

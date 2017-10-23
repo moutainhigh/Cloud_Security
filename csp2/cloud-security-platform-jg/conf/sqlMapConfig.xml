@@ -64,5 +64,8 @@
 
 		<!-- add by cy 系统安全帮  2017-2-20 -->
 		<mapper resource="com/cn/ctbri/entity/ServiceSysMapper.xml"/>
+		
+		<!-- add by peidandan X专区   2017-8-22 -->
+		<mapper resource="com/cn/ctbri/entity/XlistMapper.xml"/>
 	</mappers>
 </configuration>  

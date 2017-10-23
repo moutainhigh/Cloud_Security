@@ -11,10 +11,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
  * 描        述：  Dao实现类共有属性与方法
  * 版        本：  1.0
  */
-public class DaoCommon extends SqlSessionDaoSupport{
+public class DaoCommon extends MySqlSessionDaoSupport{
 	
-	@Resource(name="sqlSession")
-	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-		super.setSqlSessionTemplate(sqlSessionTemplate);
-	}
+	
 }

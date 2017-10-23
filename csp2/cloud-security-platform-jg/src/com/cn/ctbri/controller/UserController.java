@@ -43,6 +43,7 @@ import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.entity.Xlist;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
@@ -56,6 +57,7 @@ import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.IServiceSysService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.service.IXlistService;
 import com.cn.ctbri.util.AddressUtils;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
@@ -105,7 +107,8 @@ public class UserController{
     IServiceSysService serviceSysService;
 	@Autowired
     IPriceService priceService;
-	
+	@Autowired
+    IXlistService xlistService;
 
 	/**
 	 * 功能描述： 基本资料
@@ -323,6 +326,7 @@ public class UserController{
         List adList = adService.findAdvertisementByType(0);
         
         List servSyslist = serviceSysService.findSysPriceList();
+//        List xlist = xService.findXList();
         
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
@@ -2087,9 +2091,12 @@ public class UserController{
         //获取服务API类型
         List<ServiceAPI> servAPIList = serviceAPIService.findServiceAPI();
         List<Serv> systemServList = selfHelpOrderService.findServiceByParent(3);
+        List <Xlist> xList = xlistService.listXlist();
         m.addAttribute("servList", servList);
         m.addAttribute("servAPIList", servAPIList);
         m.addAttribute("systemServList", systemServList);
+        m.addAttribute("xList", xList);
+        
         return "/category";
 	} 
 	

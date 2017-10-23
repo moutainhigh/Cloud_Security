@@ -85,6 +85,29 @@ input::-webkit-input-placeholder {
 	margin-top:20px;
 
 }
+.imgBox {
+    margin-top: 35px;
+}
+.bannerbox:{
+    margin-top: -35px;
+}
+/* X专区下导航栏 */
+.top {
+background-color: RGB(13,24,106);
+color: #fff;
+height: 45px;
+line-height: 68px;
+}
+.link {
+width: 1104px;
+margin: 0 auto;
+}
+.link a {
+color:#fff;
+}
+.link i {
+margin:0px 8px;
+}
 </style>
 <script>
 	$(function(){
@@ -133,8 +156,12 @@ function detectionUrl(){
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
+						<a href="${ctx}/index.html">
+							<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
+						</a>
+						<a href="${ctx}/Xlist.html">
 						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">X专区</span>
+						</a>
                         <!-- <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">X专区</strong>
 						 -->
 					</div>
@@ -172,7 +199,13 @@ function detectionUrl(){
 		</div>
 		
 	   	<div style="height:550px;width:100%">
-	        <iframe src="http://0day.websaas.com.cn/ctcc.html" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
+	   	    <div class='top'>
+	   	        <div class='link'>
+	   	            <a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/Xlist.html">X专区</a><i>&gt;</i><a href="javascript:;">漏洞检测</a>
+	   	        </div>
+	   	    </div>
+	        <iframe id="iframe1" src="http://0day.websaas.com.cn/ctcc.html" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
+	        
 	    </div>
 		<div class="safe04">
 			<div class="imgBox clearfix">
@@ -241,5 +274,7 @@ function detectionUrl(){
 	
 <div class="shade"></div>
 </body> 
+<script type="text/javascript">
 
+</script>
 </html>

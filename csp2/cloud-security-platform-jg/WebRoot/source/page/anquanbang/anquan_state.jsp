@@ -199,7 +199,7 @@
 		<div style="position:absolute; z-index:9999" id="img_index">
 			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"   />
 		</div>
-		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' ||sessionScope.globle_user.name =='timelysnow' ||sessionScope.globle_user.name =='test11'}">
+		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' ||sessionScope.globle_user.name =='anquanbang_demo'}">
 		<nav>
 			<ul class="clearfix navlist">
 				<li class="active">

@@ -832,9 +832,14 @@ public class MaliciousUrlValidDataController {
 		map.put("Online Services","在线服务");
 		map.put("Payment Services","支付服务");
 		map.put("Telecommunications","通讯");
+		map.put("Social Networking", "社交网络");
 		while(it.hasNext()){
 			JSONObject ob=(JSONObject) it.next();
-			jsonArray1.add(map.get(ob.getString("field")));
+			String chineseName=map.get(ob.getString("field"));
+			if(chineseName==null){
+				chineseName="其他";
+			}
+			jsonArray1.add(chineseName);
 			jsonArray2.add(ob.getString("count"));
 			
 		}
