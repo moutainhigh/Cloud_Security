@@ -127,8 +127,13 @@ topshow3();
 })
 
 function buySelfHelpOrderMain(serviceId){
-	$("#serviceIdHidden").val(serviceId);
-	$("#mainForm").submit();
+	$("#serviceIdHidden").val(serviceId);	
+	if(serviceId != 6){
+		$("#selfHelpOrderInitForm").submit();
+	}else{
+		$("#wafDetailsForm").submit();
+	}
+	//$("#mainForm").submit();	
 }
 function buySelfHelpOrderAPIMain(apiId){
 	$("#apiIdHidden").val(apiId);
