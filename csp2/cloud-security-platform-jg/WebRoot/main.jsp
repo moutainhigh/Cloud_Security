@@ -155,14 +155,27 @@ html, body {
 									<c:when test="${list.id<3 || list.id==6}">
 										<li class="fl">
 											<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1">
-                                    --> <a href="javascript:;"
-											onclick="buySelfHelpOrderMain(${list.id });">
-												<form action="selfHelpOrderInit.html" method="post"
-													id="mainForm">
+                                    --> 
+                                    	<a href="javascript:;" onclick="buySelfHelpOrderMain(${list.id });">
+											<c:if test="${list.id==6 }">												
+												<form action="wafDetails.html" method="post"
+													id="wafDetailsForm">
 													<input type="hidden" id="serviceIdHidden" name="serviceId" />
 													<input type="hidden" id="indexPage" name="indexPage"
 														value="1" />
-												</form> <i><img src="${ctx}/source/images/portal/HOT.png"
+												</form>
+											</c:if>
+											<c:if test="${list.id<3 }">												
+												<form action="selfHelpOrderInit.html" method="post"
+													id="selfHelpOrderInitForm">
+													<input type="hidden" id="serviceIdHidden" name="serviceId" />
+													<input type="hidden" id="indexPage" name="indexPage"
+														value="1" />
+												</form>
+											</c:if>
+												
+													
+												 <i><img src="${ctx}/source/images/portal/HOT.png"
 													alt=""></i>
 												<p style="width:100%;height:180px;">
 													<!-- <img src="${ctx}/source/images/serviceIcon/${list.icon}" alt="" style="width:auto;height:auto;max-width:50%;max-height:50%;vertical-align:middle;"> -->
