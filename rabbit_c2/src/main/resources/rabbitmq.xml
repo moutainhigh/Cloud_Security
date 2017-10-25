@@ -9,7 +9,7 @@
      http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
 	<!--配置connection-factory，指定连接rabbit server参数 -->
 	<rabbit:connection-factory id="connectionFactory"  virtual-host="vhostMN" 
-		username="mana" password="mana" host="192.168.189.1" port="5672" />
+		username="mana" password="mana" host="192.168.189.1" port="47091" />
 		
 	<!--定义rabbit template用于数据的接收和发送 -->
 	<rabbit:template id="amqpTemplate"  connection-factory="connectionFactory" 
