@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cn.ctbri.entity.AlarmMapper">
+<mapper namespace="com.cn.ctbri.entity.Alarm">
 	<!-- 列集合 -->
 	<sql id="cols">id,name,alarm_time,level,advice,alarm_content,url,userId,taskId,alarm_type</sql>
 	<!-- 结果对象 -->
