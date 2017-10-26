@@ -46,8 +46,6 @@ ON price.serviceId = service.id
 AND service.servType=1
 order by service.id,price.scan_type, price.type,price.timesG) ser
 group by ser.id
-UNION 
- select cs_service.*,-1,-1,-1,-1,0.0 from cs_service where cs_service.type=2
 ) serv
 where parentC=1
 order by serv.id
