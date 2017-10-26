@@ -26,7 +26,7 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	/**
 	 * 功        能： UserMapper命名空间
 	 */
-	private String ns = "com.cn.ctbri.entity.AlarmMapper.";		
+	private String ns = "com.cn.ctbri.entity.Alarm.";		
 	/**
 	 * 功能描述：插入报警日志
 	 * 参数描述：Alarm alarm 报警日志对象
