@@ -142,7 +142,7 @@ function optOrder(orderId,status){
 }
 
 function getServ(c){
-	if(c.slice(-1)=="1"){
+	if(c.slice(-1)=="1" || c.slice(-1)=="3"){
 		$("#search").attr('placeholder','')
 		$("#search").val("");
 		$("#search").attr("disabled","disabled");
@@ -302,15 +302,15 @@ function getServ(c){
 					            <option value="40" >网页敏感内容监测服务</option>
 					            <option value="50" >网站可用性监测服务</option>
 					            <option value="62" >云WAF网站安全防护服务</option>
-					            <option value="73" >极光自助扫描服务</option>
 					            <option value="83" >上网行为管理服务</option>
-					            <option value="93" >云眼APM服务</option>	
-					            <option value="93" >系统服务监测</option>				
+					            <option value="93" >云眼APM服务</option>					
 					            <option value="11" >WEB漏洞监测能力API</option>
 					            <option value="21" >网站挂马监测能力API</option>
 					            <option value="31" >网页篡改监测能力API</option>
 					            <option value="41" >网页敏感内容监测能力API</option>
 					            <option value="51" >网站可用性监测API</option>
+					            <option value="81" >恶意URL数据API</option>
+					            <option value="91" >IP地址与经纬度数据API</option>
 					        </select>
 	                       </label>
 	                       <label class="container fl">
