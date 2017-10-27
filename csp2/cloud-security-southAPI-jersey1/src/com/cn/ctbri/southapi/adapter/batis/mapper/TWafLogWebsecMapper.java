@@ -31,39 +31,6 @@ public interface TWafLogWebsecMapper {
     @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="selectMaxByExample")
     int selectMaxByExample(TWafLogWebsecExample example);
     
-    @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="selectByExampleWithBLOBs")
-    @Results({
-        @Result(column="log_id", property="logId", jdbcType=JdbcType.BIGINT, id=true),
-        @Result(column="resource_id", property="resourceId", jdbcType=JdbcType.INTEGER),
-        @Result(column="resource_uri", property="resourceUri", jdbcType=JdbcType.VARCHAR),
-        @Result(column="resource_ip", property="resourceIp", jdbcType=JdbcType.VARCHAR),
-        @Result(column="site_id", property="siteId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="protect_id", property="protectId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="dst_ip", property="dstIp", jdbcType=JdbcType.VARCHAR),
-        @Result(column="dst_port", property="dstPort", jdbcType=JdbcType.VARCHAR),
-        @Result(column="src_ip", property="srcIp", jdbcType=JdbcType.VARCHAR),
-        @Result(column="src_port", property="srcPort", jdbcType=JdbcType.VARCHAR),
-        @Result(column="method", property="method", jdbcType=JdbcType.VARCHAR),
-        @Result(column="domain", property="domain", jdbcType=JdbcType.VARCHAR),
-        @Result(column="uri", property="uri", jdbcType=JdbcType.VARCHAR),
-        @Result(column="alertlevel", property="alertlevel", jdbcType=JdbcType.VARCHAR),
-        @Result(column="event_type", property="eventType", jdbcType=JdbcType.VARCHAR),
-        @Result(column="stat_time", property="statTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="policy_id", property="policyId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="rule_id", property="ruleId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="action", property="action", jdbcType=JdbcType.VARCHAR),
-        @Result(column="block", property="block", jdbcType=JdbcType.VARCHAR),
-        @Result(column="block_info", property="blockInfo", jdbcType=JdbcType.VARCHAR),
-        @Result(column="alertinfo", property="alertinfo", jdbcType=JdbcType.VARCHAR),
-        @Result(column="proxy_info", property="proxyInfo", jdbcType=JdbcType.VARCHAR),
-        @Result(column="characters", property="characters", jdbcType=JdbcType.VARCHAR),
-        @Result(column="count_num", property="countNum", jdbcType=JdbcType.VARCHAR),
-        @Result(column="protocol_type", property="protocolType", jdbcType=JdbcType.VARCHAR),
-        @Result(column="wci", property="wci", jdbcType=JdbcType.VARCHAR),
-        @Result(column="wsi", property="wsi", jdbcType=JdbcType.VARCHAR),
-        @Result(column="http", property="http", jdbcType=JdbcType.LONGVARBINARY)
-    })
-    List<TWafLogWebsec> selectByExampleWithBLOBsWithRowbounds(TWafLogWebsecExample example, RowBounds rowBounds);
 
     @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="selectByExampleWithBLOBs")
     @Results({

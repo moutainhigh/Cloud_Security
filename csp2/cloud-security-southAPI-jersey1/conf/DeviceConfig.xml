@@ -11,7 +11,7 @@
 				<ScannerEngineAPI>https://219.141.189.187:61443</ScannerEngineAPI>
 			 	<ScannerUserName>admin</ScannerUserName>
 				<ScannerPassword>admin123456</ScannerPassword>
-			</DeviceScanner>
+			</DeviceScanner>-->
 			<DeviceScanner id="10002">
 				<DeviceID>10002</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
@@ -19,7 +19,7 @@
 				<ScannerWebUrl>https://219.141.189.187:62443</ScannerWebUrl>
 				<ScannerEngineAPI>https://219.141.189.187:62443</ScannerEngineAPI>
 			 	<ScannerUserName>admin</ScannerUserName>
-				<ScannerPassword>admin123456</ScannerPassword>
+				<ScannerPassword>1qazcde3!@#</ScannerPassword>
 			</DeviceScanner>
 			<DeviceScanner id="10003">
 				<DeviceID>10003</DeviceID>
@@ -28,8 +28,8 @@
 				<ScannerWebUrl>https://219.141.189.187:63443</ScannerWebUrl>
 				<ScannerEngineAPI>https://219.141.189.187:63443</ScannerEngineAPI>
 			 	<ScannerUserName>admin</ScannerUserName>
-				<ScannerPassword>admin123456</ScannerPassword>
-			</DeviceScanner>-->
+				<ScannerPassword>1qazcde3!@#</ScannerPassword>
+			</DeviceScanner>
 			<!--测试用引擎
 			<DeviceScanner id="10004">
 				<DeviceID>10004</DeviceID>

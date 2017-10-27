@@ -42,6 +42,7 @@ import com.cn.ctbri.southapi.adapter.taskissued.TaskReport;
 import com.cn.ctbri.southapi.adapter.taskissued.taskRequest;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
+import com.cn.ctbri.southapi.adapter.scanservice.ScanServiceSocket;
 
 
 
@@ -75,8 +76,6 @@ public class DeviceAdpaterManager {
 	public static NsfocusSysServOperation nsfocusSysServOperation = new NsfocusSysServOperation();
 	
 	public static ScanServiceSocket scanServiceSocket = new ScanServiceSocket();
-	
-	public static taskRequest taskRequest = new taskRequest();
 	
 	public static TaskReport taskReport = new TaskReport();
 	//加载设备错误信息
@@ -788,6 +787,10 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogWebsecByIp(dstIpList);
 	}
 	
+	public String getWafLogWebSecCount(JSONObject jsonObject){
+		return nsfocusWAFAdapter.getWafLogWebSecCount(jsonObject);
+	}
+	
 	public String getWafLogWebsecInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getWafLogWebsecInTime(jsonObject);
 	}
@@ -1169,10 +1172,6 @@ public class DeviceAdpaterManager {
 	
 	//三类扫描服务
 	public String createScanServiceTask(JSONObject jsonObject) {
-		return taskRequest.sendRequest(jsonObject);
-	}
-	public String getScanServiceReport(JSONObject jsonObject) {
-		return taskReport.getTaskReport(jsonObject);
-	}
-	
+		return scanServiceSocket.createScanServiceTask(jsonObject);
+	}	
 }

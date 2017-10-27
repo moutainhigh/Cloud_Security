@@ -254,6 +254,15 @@ public class DeviceAdapterManagerService {
 		List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
 		return deviceAdpaterManager.getWafLogWebsecByIp(dstIpList);
 	}
+	
+	@POST
+	@Path("/getWafLogWebSecCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebSecCount(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebSecCount(jsonObject);
+	}
+	
 	@POST
 	@Path("/getWaflogWebsecById")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -298,6 +307,7 @@ public class DeviceAdapterManagerService {
 	@Path("/getWafLogWebsecCurrent")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebsecCurrent(String dataJson) {
+		System.out.println("startup");
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getWafLogWebsecCurrent(jsonObject);
 	}
@@ -1054,6 +1064,20 @@ public class DeviceAdapterManagerService {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.renewNsfocusSysOrder(jsonObject);
 	}
+	/**
+	 * 扫描类服务-创建订单
+	 * @param dataJson
+	 * @param example:{
+	"type": "CreateTask",
+    "task_type": "portscan",
+    "target": "http://www.anquanbang.net",
+    "port": "21,22,80,443",
+    "interval_time": "2",
+    "start_time": "2017-05-11 11:11:11",
+    "end_time": "2017-05-11 12:12:12"
+    }
+	 * @return
+	 */
 	@POST
 	@Path("/scanservice/createTask")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -1061,13 +1085,4 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.createScanServiceTask(jsonObject);
 	}
-	@POST
-	@Path("/scanservice/getreport")
-	@Produces
-	public String getScanServiceReport(String dataJson){
-		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		return deviceAdpaterManager.getScanServiceReport(jsonObject);
-	}
-	
-
 }

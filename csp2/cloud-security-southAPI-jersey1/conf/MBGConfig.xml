@@ -19,6 +19,7 @@
     <table schema="t_waf_log_deface" tableName="t_waf_log_deface"></table>
     <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>
     <table schema="t_waf_log_websec_count" tableName="t_waf_log_websec_count"></table> -->
-	<table schema="t_waf_log_websec_dst_src" tableName="t_waf_log_websec_dst_src"></table>
+	<!-- <table schema="t_waf_log_websec_dst_src" tableName="t_waf_log_websec_dst_src"></table> -->
+	<table schema="t_view_ipv4_location" tableName="t_view_ipv4_location"></table>
   </context>
 </generatorConfiguration>

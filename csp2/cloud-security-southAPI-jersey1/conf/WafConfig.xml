@@ -29,16 +29,16 @@
 						<WAFDevTag></WAFDevTag>
 					</WAFDevSyslog>
 				</WAFDevice>
-				<WAFDevice>
+				<!-- <WAFDevice>
 					<WAFDevID>30002</WAFDevID>
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>172.16.100.210</WAFDevPhyIP>
 					<WAFPublicIPList>219.141.189.183</WAFPublicIPList>
 					<WAFDevAPI>
-						<!-- 部署186，内网地址
+						部署186，内网地址
 						<APIAddr>https://172.16.100.210:8443</APIAddr>
-						部署外网 -->
+						部署外网
 						<APIAddr>https://219.141.189.189:58443</APIAddr>
 						<APIKey>vmwaf</APIKey>
 						<APIValue>9E7B-960F-0DA7-4BC0</APIValue>
@@ -48,7 +48,7 @@
 					<WAFDevSyslog identifyType="Tag" syslogVer="6.0.5.0" syslogCode="BASE64">
 						<WAFDevTag>waf_g2</WAFDevTag>
 					</WAFDevSyslog>
-				</WAFDevice>
+				</WAFDevice>-->
 			</WAFDeviceList>
 		</WAFDeviceGroup>
 		<!-- <WAFDeviceGroup>

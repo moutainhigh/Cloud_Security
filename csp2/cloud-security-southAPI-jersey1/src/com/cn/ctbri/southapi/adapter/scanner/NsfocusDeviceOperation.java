@@ -1,24 +1,29 @@
 package com.cn.ctbri.southapi.adapter.scanner;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
 import com.cn.ctbri.southapi.adapter.bean.TaskInfo;
 import com.cn.ctbri.southapi.adapter.bean.URLInfo;
 import com.cn.ctbri.southapi.adapter.bean.VulInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
+import com.cn.ctbri.southapi.adapter.utils.PropertiesUtil;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -27,30 +32,48 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class NsfocusDeviceOperation extends CommonDeviceOperation {
+	private static String API_CONFIG_NAME = "NsfocusScannerAPI";
 	private static String nsfocusServerWebrootUrl = "";
-	private String username = "admin";
-	private String password = "1qa2ws3ed";
-	private String connectSessionId = "";
-	
+	private static String username;
+	private static String password;
+	private static String connectSessionId = "";
+	static{
 
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			username = p.readValue("username");
+			password = p.readValue("password");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//用于格式化配置文件，给配置信息赋值
+	private String formatConfig(String[] params,String configKey) throws IOException{
+		PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+		String fcString = MessageFormat.format(p.readValue(configKey), params);
+		return fcString;
+		
+	}
 	
 	public boolean createSessionId(String username, String password, String serverWebRoot) {
-		this.username = username;
-		this.password = password;
+		NsfocusDeviceOperation.username = username;
+		NsfocusDeviceOperation.password = password;
 		nsfocusServerWebrootUrl = serverWebRoot;
-		
-		String xmlContent = "xml=<?xml version='1.0' encoding='utf-8' ?><root>"
-				+"<username><![CDATA["+username+"]]></username>"
-				+"<password><![CDATA["+password+"]]></password></root>";
 		String url = nsfocusServerWebrootUrl+"/httprpc/login/";
-		
 		ClientConfig config = new DefaultClientConfig();
 		//通信层配置设定
 		buildConfig(url,config);
 		//创建客户端
 		Client client = Client.create(config);
-
 		try {
+			String[] params ={username,password};
+			String xmlContent = formatConfig(params, "task.login");
+
+			
+
+
 			//连接服务器
 			WebResource service = client.resource(url);
 			//获取响应结果
@@ -64,8 +87,13 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 			}
 
 			connectSessionId = cookieHashMap.get("sessionid");
+			System.out.println(connectSessionId);
 			return true;
 		} catch (UniformInterfaceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
@@ -90,7 +118,7 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 		String body = response.getEntity(String.class);
 		//For 2
 		client.destroy();
-		return cookie+"/r/n"+body;
+		return body;
 	}
 	
 	/**
@@ -122,21 +150,24 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	
 	/**
 	 * 下发新建任务
+	 * @time 2017-10-12
 	 * @param scannerTaskUniParam
-	 * @return
+	 * @return 
 	 */
-	//调整格式中
-	public String disposeScanTask(ScannerTaskUniParam scannerTaskUniParam) {
+	//暂停使用该方法
+	//TODO
+	public String disposeScanTask2(ScannerTaskUniParam scannerTaskUniParam) {
 		String xml ="xml=<?xml version='1.0' encoding='utf-8' ?>"+"<task><base>"
 					+"<task_name><![CDATA["+scannerTaskUniParam.getTaskId()+"]]></task_name>"
 					+"<target><![CDATA["+scannerTaskUniParam.getDestIP()+"]]></target>"
-					+"<descripition><![CDATA["+""+"]]></description>"
+					+"<description><![CDATA["+"test task"+"]]></description>"
 					+"<plugin_template_id><![CDATA["+"0"+"]]></plugin_template_id></base>"
 					+"<webauth><item><login_auth>Basic</login_auth>"
-					+"<login_username><!CDATA["+username+"]]></login_username>"
-					+"<login_userpwd><!CDATA["+password+"]]></login_passpwd>"
-					+"<cookie><!CDATA[]]></cookie></item>"
+					+"<login_username><![CDATA["+username+"]]></login_username>"
+					+"<login_userpwd><![CDATA["+password+"]]></login_userpwd>"
+					+"<cookie><![CDATA[]]></cookie></item>"
 					+"</webauth></task>";
+		
 		return postMethod(nsfocusServerWebrootUrl+"/httprpc/newTask/", xml);
 	}
 	/**
@@ -144,41 +175,73 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @return
 	 */
 	//可正常新建并下发
-	public String disposeScanTask2(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><task><base>"+
-					"<task_name><![CDATA["+scannerTaskUniParam.getTaskId()+"]]></task_name>"+
-					"<target><![CDATA["+scannerTaskUniParam.getDestURL()+"]]></target></base>"+
-					"<description><![CDATA[this is a httprpctask]]></description>"+
-					"<plugin_template_id><![CDATA["+scannerTaskUniParam.getTaskSLA()+"]]></plugin_template_id>"+
-					"<webauth></webauth></task>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/newTask/", xml);
+	public String disposeScanTask(ScannerTaskUniParam scannerTaskUniParam) {
+		
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId(),scannerTaskUniParam.getDestIP(),"0",username,password};
+			String xml = MessageFormat.format(p.readValue("task.dispose"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/newTask/", xml);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
+
 	}
 	/**
 	 * 暂停任务
 	 * @param scannerTaskUniParam
 	 * @return
 	 */
+	//TODO
 	public String pauseTask(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/pauseTask/", xml);
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/pauseTask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 	/**
 	 * 继续任务
 	 * @param scannerTaskUniParam
 	 * @return
 	 */
+	//TODO
 	public String resumeTask(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/pauseTask/", xml);
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/resumeTask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 	/**
 	 * 停止任务
 	 * @param scannerTaskUniParam
 	 * @return
 	 */
+	//TODO
 	public String stopTask(ScannerTaskUniParam scannerTaskUniParam){
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/stopTask/", xml);
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/stopTask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 	/**
 	 * 断点续扫
@@ -186,8 +249,16 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @return
 	 */
 	public String createTask(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/createTask/", xml);	
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/createTask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 		
 	}
 	/**
@@ -196,8 +267,16 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @return
 	 */
 	public String rescanTask(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/rescanTask/", xml);			
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/rescanTask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}	
 	}
 	/**
 	 * 删除任务
@@ -205,8 +284,16 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @return
 	 */
 	public String  deleteTask(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/deleteTask/", xml);		
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/deleteTask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 	/**
 	 * 暂停周期任务
@@ -214,8 +301,16 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @return
 	 */
 	public String pauseCrontask(ScannerTaskUniParam scannerTaskUniParam){
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/pauseCrontask/", xml);		
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/pauseCrontask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 	/**
 	 * 继续扫描周期任务
@@ -223,20 +318,40 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @return
 	 */
 	public String createCrontask(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/createCrontask/", xml);			
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/createCrontask", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}	
 	}
 	/**
 	 * 获取任务状态
+	 * @time 2017-10-12
 	 * @param scannerTaskUniParam
 	 * @return
 	 */
 	public String getStatusByTaskId(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/taskStatus/", xml);			
+		
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId(),scannerTaskUniParam.getDestIP(),"0",username,password};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/taskStatus/", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
+			
 	}
 	/**
 	 * 获取模板列表
+	 * @time 2017-10-12
 	 * @param scannerTaskUniParam
 	 * @return
 	 */
@@ -245,12 +360,21 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	}
 	/**
 	 * 获取任务报表
+	 * @time 2017-10-12
 	 * @param scannerTaskUniParam
 	 * @return
 	 */
 	public String getReportByTaskId(ScannerTaskUniParam scannerTaskUniParam) {
-		String xml="xml=<?xml version='1.0' encoding='utf-8' ?><root><task_id>"+scannerTaskUniParam.getTaskId()+"</task_id></root>";
-		return postMethod(nsfocusServerWebrootUrl+"/httprpc/getTaskreport/", xml);		
+		try {
+			PropertiesUtil p = new PropertiesUtil(API_CONFIG_NAME);
+			String[] params = {scannerTaskUniParam.getTaskId()};
+			String xml = MessageFormat.format(p.readValue("task.id"), params);
+			return postMethod(nsfocusServerWebrootUrl+"/httprpc/getTaskreport", xml);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 	public void getNsfocusReport(String nsfocusReportString) {
 		try {
@@ -310,6 +434,30 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 		}
 	}
 	
+	public void temp() {
+		NsfocusDeviceOperation operation = new NsfocusDeviceOperation();
+		nsfocusServerWebrootUrl = "https://192.168.50.184";
+		operation.createSessionId(operation.username,operation.password, nsfocusServerWebrootUrl);
+		ScannerTaskUniParam scannerTaskUniParam = new ScannerTaskUniParam();
+		scannerTaskUniParam.setTaskId("test");
+		scannerTaskUniParam.setDestIP("http://www.testfire.net");
+		String taskString = operation.disposeScanTask2(scannerTaskUniParam);
+		System.out.println(taskString);
+
+		try {
+			SAXReader reader = new SAXReader();
+			Document doc= reader.read(IOUtils.toInputStream(taskString));
+			Element ele = doc.getRootElement();
+			String eString = ele.element("response_msg").getStringValue();
+			System.out.println(eString);
+			String pString = eString.substring(eString.indexOf("任务号:")+4);
+			System.out.println(pString);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * @param args
@@ -317,6 +465,13 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 */
 	public static void main(String[] args) {
 		NsfocusDeviceOperation operation = new NsfocusDeviceOperation();
-		nsfocusServerWebrootUrl = "";
+		operation.temp();
+//		nsfocusServerWebrootUrl = "https://192.168.50.184";
+//		operation.createSessionId(operation.username,operation.password, nsfocusServerWebrootUrl);
+//		ScannerTaskUniParam scannerTaskUniParam = new ScannerTaskUniParam();
+//		scannerTaskUniParam.setTaskId("49");
+//		scannerTaskUniParam.setDestIP("http://www.testfire.net");
+//		String taskString = operation.getStatusByTaskId(scannerTaskUniParam);
+//		System.out.println(taskString);
 	}
 }
