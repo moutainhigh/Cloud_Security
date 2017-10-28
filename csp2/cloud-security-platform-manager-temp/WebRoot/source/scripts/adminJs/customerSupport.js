@@ -167,11 +167,54 @@ function activeQueryOrder(){
         				html += '<td>'+format(order.begin_date.time, 'yyyy-MM-dd HH:mm:ss')+'</td>';
         			}
         			if(order.isAPI == 0){
-        				html += '<td>监测服务</td>';
+        				switch(order.serviceId)
+        					{
+        					case 1:html += '<td>WEB漏洞监测</td>';
+        					break;
+        					case 2:html += '<td>网站挂马监测</td>';
+        					break;
+        					case 3:html += '<td>网页篡改监测</td>';
+        					break;
+        					case 4:html += '<td>敏感内容监测</td>';
+        					break;
+        					case 5:html += '<td>网站可用性监测</td>';
+        					break;
+        					default: html += '<td>监测服务</td>';break;
+        					}
+        				
         			} else if(order.isAPI == 1){
-        				html += '<td>API服务</td>';
-        			} else {
+        				
+        				switch(order.serviceId)
+    					{
+    					case 1:html += '<td>WEB漏洞监测API</td>';
+    					break;
+    					case 2:html += '<td>网站挂马监测API</td>';
+    					break;
+    					case 3:html += '<td>网页篡改监测API</td>';
+    					break;
+    					case 4:html += '<td>敏感内容监测API</td>';
+    					break;
+    					case 5:html += '<td>网站可用性监测API</td>';
+    					break;
+    					case 8:html += '<td>恶意URL数据API</td>';
+    					break;
+    					case 9:html += '<td>IP地址与经纬度数据API</td>';
+    					break;
+    					default: html += '<td>API服务</td>';break;
+    					}
+        			} else if(order.isAPI == 2){
         				html += '<td>WAF防护</td>';
+        			}else if(order.isAPI ==3){
+        				switch(order.serviceId)
+    					{
+    					case 7:html += '<td>极光监测服务</td>';
+    					break;
+    					case 8:html += '<td>上网行为管理服务</td>';
+    					break;
+    					case 9:html += '<td>云眼APM服务</td>';
+    					break;
+    					default: html += '<td>系统服务</td>';break;
+    					}
         			}
         			
         			$("#queryOrder").append(html);
