@@ -27,6 +27,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order o,cs_service s
         where o.id = #{orderId} and o.serviceId = s.id
     </select>
+    <!--  根据订单Id查询API订单  记录 -->
+    
+    <select id="findAPIInfoByOrderId" resultType="hashmap" parameterType="String">
+        select o.id,o.serviceId,o.type,sapi.name,sapi.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+        from cs_order o,cs_service_api sapi
+        where o.id = #{orderId} and o.serviceId = sapi.id and o.isAPI = 1
+    </select>
+    
 	<!-- 根据用户查询所有记录 -->
     <select id="findOrderByUserId" resultMap="OrderRM" parameterType="Integer">
         select * from cs_order
