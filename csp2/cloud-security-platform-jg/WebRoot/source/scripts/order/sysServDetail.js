@@ -347,6 +347,9 @@ function getCreateDate(){
 //计算价格
 function changePrice(){	
   var serviceId = $('#serviceIdHidden').val();
+  if(typeof(serviceId) == "undefined"){
+		return;
+	}
   var duration = $("#duration").val();
   var scanType = null;
   if(serviceId==7)
