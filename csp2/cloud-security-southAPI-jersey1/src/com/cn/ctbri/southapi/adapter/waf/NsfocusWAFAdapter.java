@@ -362,10 +362,6 @@ public class NsfocusWAFAdapter {
 		JSONArray createVirtSiteJsonArray = new JSONArray();
 		String targetId = UUID.randomUUID().toString();
 		int statusCount = 0;
-		System.out.println("***resourceId="+resourceId+"***");
-		System.out.println("***NsfocusWaf***");
-		System.out.println(map);
-		System.out.println("******");
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			//新建站点
 			String siteJsonString = entry.getValue().createSite(jsonObject);
@@ -2397,14 +2393,6 @@ public class NsfocusWAFAdapter {
 			closeSqlSession(sqlSession);
 		}
 		
-	}
-	public static void main(String[] args) {
-		NsfocusWAFAdapter adapter = new NsfocusWAFAdapter();
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("topNum","500");
-		jsonObject.put("domain", new JSONArray().add("www.testfire.net"));
-		String aString =adapter.getWafLogWebsecCurrent(jsonObject);
-		System.out.println(aString);
 	}
 
 }
