@@ -12,8 +12,14 @@ public class LocationUtil {
         StringBuffer sb = new StringBuffer();
         List<String> strings = null;
     	if (!array[0].equals("中国")) {
-			sb.append(array[0]);
-		} else if (array[1].contains("市")) {
+    		if (array[0].equals("台湾")) {
+				sb.append("中国/台湾");
+			}else if(array[0].equals("大韩民国")){
+				sb.append("韩国");
+			}else {
+				sb.append(array[0]);
+			}
+		} else if (array[1].contains("市")||array[1].equals("香港")) {
 			sb.append(array[0]);
 			sb.append("/"+array[1]);
 		} else {

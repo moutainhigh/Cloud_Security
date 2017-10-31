@@ -67,7 +67,7 @@ public class RequestUtil {
     public void requestByPostMethod(){
         CloseableHttpClient httpClient = getHttpClient();
         try {
-            HttpPost post = new HttpPost("http://localhost/....");          //这里用上本机的某个工程做测试
+            HttpPost post = new HttpPost("http://localhost/....");
             //创建参数列表
             List<NameValuePair> list = new ArrayList<NameValuePair>();
             list.add(new BasicNameValuePair("j_username", "admin"));

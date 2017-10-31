@@ -132,17 +132,25 @@ public class SqlReport {
 
 	public static void main(String[] args) {
 		try {
-			String startDate = "2016-10-01 00:00:00.0";
-			String endDate = "2017-10-11 00:00:00";
+			String startDate = "2017-10-28 00:00:00.0";
+			String endDate = "2017-10-29 00:00:00";
 			
-			String domainString = "'www.crcc.cn','english.crcc.cn','pxzx.crcc.cn','youth.crcc.cn','www.crccy.cn','www.tcjl.com.cn','www.crucg3.com','crfc.crcc.cn','www.crccfc.com.cn'";
-			String domainString2 = "'www.criponline.com'";
-			
-			String name="中铁建十一假期";
+			//中铁建
+			String domainString = "'www.crcc.cn'";
+			//没有备案，暂时删除,'www.crccy.cn'
+			String domainString2 = "'www.crcc.cn','english.crcc.cn','pxzx.crcc.cn','youth.crcc.cn','www.tcjl.com.cn','www.crucg3.com','crfc.crcc.cn','www.crccfc.com.cn'";
+			//风云朗健
+			String domainString4 = "'www.criponline.com'";
+			//吴江日报社
+			String domainString3 = "'www.wjdaily.com'";
+			//中铁建
+			//风云朗健
+			//吴江日报社
+			String name="中铁建主站上海周六";
 			
 			//ip
 			//List<List<String>> ipList = getSqlList("select src_ip,count(*) as count from t_waf_log_websec where domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' GROUP BY src_ip ORDER BY count desc");
-			List<List<String>> ipList = getSqlList("select src_ip,count(*) as count from t_waf_log_websec where domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' GROUP BY src_ip ORDER BY count desc");
+			List<List<String>> ipList = getSqlList("select src_ip,count(*) as count from t_waf_log_websec where domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' and src_ip='114.89.113.248' GROUP BY src_ip ORDER BY count desc");
 
 			//ip地理信息
 			//LocationUtil.location(ipList);
@@ -151,25 +159,25 @@ public class SqlReport {
 			String[] ipTop10String = getTopNameValue(ipList,"ip_name", 1, true, "ip_data", 2,false,10);
 			//事件类型
             //List<List<String>> eventList = getSqlList("SELECT t.event_type,e.typeValue,count(t.event_type) as count FROM t_waf_log_websec as t LEFT JOIN t_websec_eventtype as e on t.event_type=e.typeName WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' GROUP BY event_type order by count desc ");
-            List<List<String>> eventList = getSqlList("SELECT t.event_type,e.typeValue,count(t.event_type) as count,t.src_ip FROM t_waf_log_websec as t LEFT JOIN t_websec_eventtype as e on t.event_type=e.typeName WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' GROUP BY event_type order by count desc ");
+            List<List<String>> eventList = getSqlList("SELECT t.event_type,e.typeValue,count(t.event_type) as count FROM t_waf_log_websec as t LEFT JOIN t_websec_eventtype as e on t.event_type=e.typeName WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' and src_ip='114.89.113.248' GROUP BY event_type order by count desc ");
             
 			String[] eventString = getNameValue(eventList,"event_name", 2, true, "event_data", 3, false);
             
             String[] eventTop10String = getTopNameValue(eventList,"event_name", 2, true, "event_data", 3, false,10);
             //时间
-            List<List<String>> timeList = getSqlList("SELECT date_format(stat_time,'%Y-%m-%d') as time,count(*),src_ip FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' group by time");
+            List<List<String>> timeList = getSqlList("SELECT date_format(stat_time,'%Y-%m-%d') as time,count(*) FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' and src_ip='114.89.113.248' group by time");
             String[] timeString = getNameValue(timeList,"time", 1, true, "time_data", 2, false);
             
             //等级
-            List<List<String>> levelList = getSqlList("SELECT alertlevel,count(*) as count FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"'  GROUP BY alertlevel");
+            List<List<String>> levelList = getSqlList("SELECT alertlevel,count(*) as count FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' and src_ip='114.89.113.248' GROUP BY alertlevel");
             String[] levelString = getNameValue(levelList, "level", 1, true, "level_data", 2, false);
             
             //网站统计
-            List<List<String>> domainCountList = getSqlList("SELECT domain,count(*) as count FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' GROUP BY domain");
+            List<List<String>> domainCountList = getSqlList("SELECT domain,count(*) as count FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' and src_ip = '114.89.113.248' GROUP BY domain");
             String[] domainCountString = getNameValue(domainCountList, "level", 1, true, "level_data", 2, false);
             
             //网站等级统计
-            List<List<String>> domainLevelCountList = getSqlList("SELECT domain,alertlevel,count(*) as count FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' GROUP BY domain,alertlevel");
+            List<List<String>> domainLevelCountList = getSqlList("SELECT domain,alertlevel,count(*) as count FROM t_waf_log_websec WHERE domain in ("+domainString+") and stat_time between '"+startDate+"' and '"+endDate+"' and src_ip='114.89.113.248' GROUP BY domain,alertlevel");
             String[] domainLevelCountString = getNameValue(domainLevelCountList, "level", 2, true, "level_data", 3, false);
             //打印chart图表变量语句
             printStrings(ipString);
@@ -178,7 +186,8 @@ public class SqlReport {
             printStrings(eventTop10String);
             printStrings(timeString);
             printStrings(levelString);
-            
+            printStrings(domainCountString);
+            printStrings(domainLevelCountString);
             
 			//chart图表变量语句放入复合list中
            List<List<String>> chartList = new ArrayList<List<String>>();
@@ -196,6 +205,7 @@ public class SqlReport {
            hashMap.put("time", timeList);
            hashMap.put("level", levelList);
            hashMap.put("domainCount", domainCountList);
+           hashMap.put("domainLevel", domainLevelCountList);
            hashMap.put("chart", chartList);
            
            /*
