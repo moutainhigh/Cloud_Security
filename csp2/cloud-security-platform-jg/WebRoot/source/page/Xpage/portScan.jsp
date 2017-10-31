@@ -421,7 +421,7 @@ cursor:auto;
 					             </div>
 					             <div class="form-group xport">
 						             <label for="name">扫描端口</label>
-						             <input type="text" class="form-control" id="xport"  name="port" placeholder="例如：0-65535 or 21，23，80"/>
+						             <input type="text" class="form-control" id="xport"  name="port" placeholder="例如：0-65535 or 21，23，80（单次扫描端口数不超过100个）"/>
 					             </div>
 					             <div class="form-group xbutton">
 					                 <button type="reset" class="btn" onclick="resetForm()">重置</button>
