@@ -199,7 +199,7 @@
 		<div style="position:absolute; z-index:9999" id="img_index">
 			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"   />
 		</div>
-		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' ||sessionScope.globle_user.name =='anquanbang_demo'}">
+		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' }">
 		<nav>
 			<ul class="clearfix navlist">
 				<li class="active">
@@ -231,6 +231,28 @@
 		<!-- 攻击态势 -->
         <div class="contentcenter not-used" style="display:block">
             <div class="words_map">
+            <!-- 
+            	<div  id="totalFontDiv" style="margin:10px auto; text-align:center;">
+			 -->
+			 <div style="width: 200px;height: 70px;background: rgba(3,47,155, 0.39);position:absolute;top:220px;left:7px;text-align:center; line-height:35px;">
+			 	<font id="totalFon" color="#c1c7da" size='5'  style="font-weight:bold;">2684403</font><br/>
+			 	<font color="#c1c7da" size='3'>攻击总数</font>
+			 </div>
+			 <div style="width: 200px;height: 70px; background: rgba(3,47,155, 0.39);position:absolute;top:320px;left:7px;text-align:center; line-height:35px;">
+			 	<font id="dayTotalFon" color="#c1c7da" size='5'  style="font-weight:bold;">62207</font><br/>
+			 	<font color="#c1c7da" size='3'>今日攻击总数</font>
+			 </div>
+			 <!--  
+			 <c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' }">
+			 	<div  id="totalFontDiv" style="margin:10px auto; text-align:center;">
+					<font id="totalFont" color="#f3e925" size='3'  style="font-weight:bold;">攻击总数62207</font>
+				</div>
+			</c:if>
+			<c:if test="${sessionScope.globle_user.name !='anquanbang' &&sessionScope.globle_user.name !='anquanbangtest' }">
+			 	<div  id="totalFontDiv" style="margin:0px auto; text-align:center;">
+					<font id="totalFont" color="#f3e925" size='3'  style="font-weight:bold;">攻击总数62207</font>
+				</div>
+			</c:if>-->
                 <div class="word" style="width: 100%; height: 600px;">
                 <!-- 世界地图背景色 -->
 <!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
@@ -305,6 +327,11 @@
 					<script type="text/javascript">
 					var typejson ='${wafEventTypeCount}';
 					window.currentId='${currentId}';
+					var wafTotalNumber='${wafTotalNumber}';
+					var fontValue=wafTotalNumber;
+					var todayFontVal='${wafDayTotalNumber}';
+					document.getElementById("totalFon").firstChild.nodeValue=fontValue;
+					document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
 					var error = '${error}';
 					if(error!=''){
 						alert(error);

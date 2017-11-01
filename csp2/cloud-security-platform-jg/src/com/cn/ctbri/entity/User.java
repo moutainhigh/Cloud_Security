@@ -25,7 +25,7 @@ public class User implements java.io.Serializable{
 	private String email;
 	//用户状态(1：正常，0：停用)
 	private int status;
-	//用户类型（0：超级管理员，1：管理员，2：用户）
+	//用户类型（0：超级管理员，1：管理员，2：用户,4:展示用户）
 	private int type;
 	//备注
 	private String remarks;

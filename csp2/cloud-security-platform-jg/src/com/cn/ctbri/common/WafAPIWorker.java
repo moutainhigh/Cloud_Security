@@ -2,6 +2,7 @@ package com.cn.ctbri.common;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -33,7 +34,7 @@ public class WafAPIWorker {
 	}
 	
     final static WebTarget mainTarget = ContextClient.mainSouthTarget;
-	
+    private static ResourceBundle bundle=ResourceBundle.getBundle("northAPI");
 	/**
 	 * 功能描述： 获取全部站点、虚拟站点信息
 	 * @param resourceId 设备资源编号，
@@ -338,7 +339,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("currentId", currentId);
-		if(type!=0){
+		if(type!=0&&type!=4){
 			json.put("domain", addrList);
 		}
 		//System.out.println("json:"+json);
@@ -390,10 +391,15 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		int type=user.getType();
-		if(user.getName().equals("anquanbang")){
+		//这部分因为权限原因暂时写死
+		if(user.getName().equals("anquanbang")||user.getName().equals("anquanbang_test")){
 			type=0;
 		}
-		if(type!=0){
+		if(user.getName().equals("anquanbang_demo")){
+			type=4;
+		}
+		//写死end
+		if(type!=0&&type!=4){
 			json.put("domain", domainList);
 		}
 		json.put("topNum",topNum);
@@ -403,6 +409,56 @@ public class WafAPIWorker {
         response.close();
         return str;
 	}
+	
+	/**
+	 * 
+	 *获取攻击总条数
+	 */
+	public static long[] getWafTotalCount(User user, List<String>domainList){
+		JSONObject json = new JSONObject();
+		JSONObject dayCountJson=new JSONObject();
+		int type=user.getType();
+		//这部分因为权限原因暂时写死
+		if(user.getName().equals("anquanbang")||user.getName().equals("anquanbang_test")){
+			type=0;
+		}
+		if(user.getName().equals("anquanbang_demo")){
+			type=4;
+		}
+		//写死end
+		if(type!=0&&type!=4){
+			json.put("domain", domainList);
+			dayCountJson.put("domain", domainList);
+		}
+		json.put("interval", 500);
+		dayCountJson.put("interval", 500);
+		WebTarget target = mainTarget.path(bundle.getString("getWafLogWebSecCount"));
+		WebTarget dayCountTarget = mainTarget.path(bundle.getString("getDayWafLogWebSecCount"));
+		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		Response dayCountResponse=dayCountTarget.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		String totalString=(String)response.readEntity(String.class);
+		String dayTotalString=(String)dayCountResponse.readEntity(String.class);
+		
+		JSONObject totalJson=JSONObject.fromObject(totalString);
+		long wafTotalNumber=0L;
+  		if("success".equals(totalJson.getString("status"))){
+  			wafTotalNumber=totalJson.getLong("count");
+  		}
+  		
+  		JSONObject dayTotalJson=JSONObject.fromObject(dayTotalString);
+		long dayWafNumber=0L;
+  		if("success".equals(dayTotalJson.getString("status"))){
+  			dayWafNumber=dayTotalJson.getLong("count");
+  		}
+  		
+  		long []result=new long[2];
+  		result[0]=wafTotalNumber;
+  		result[1]=dayWafNumber;
+  		dayCountResponse.close();
+		response.close();
+		return result;
+	}
+	
 	/**
 	 * 获取最新前N条数据
 	 */

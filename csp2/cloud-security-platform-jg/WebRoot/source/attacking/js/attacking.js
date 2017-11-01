@@ -795,7 +795,11 @@ function start(loc, psk) {
 	        datum.srcLongitude = -5;
 	        datum.srcLatitude = -50;
 	    }
-	
+	    wafTotalNumber++;
+	    todayFontVal++;
+	    //alert(fontVal);
+		document.getElementById("totalFon").firstChild.nodeValue=wafTotalNumber;
+		document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
 	    // 攻击源坐标
 	    var startLoc = projection([datum.srcLongitude, datum.srcLatitude]);
 	    // 攻击目的坐标

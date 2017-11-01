@@ -20,7 +20,7 @@ $(function(){
 		        success:function(obj){
 		        	var user = obj.LoginUser;
 		        	if (user != null) {
-		        		if (zindex != 0 && !(user.name =='anquanbang' ||user.name =='anquanbangtest' ||user.name =='anquanbang_demo')) {
+		        		if (zindex != 0 && !(user.name =='anquanbang' ||user.name =='anquanbangtest' )) {
 		        			window.location.href = "sa_anquanbang.html";
 		        		}else {
 							if (zindex == 1) {        //数据总览 
@@ -79,7 +79,7 @@ $(function(){
 		        success:function(obj){
 		        	var user = obj.LoginUser;
 		        	if (user != null) {
-		        		if (!(user.name =='anquanbang' ||user.name =='anquanbangtest' ||user.name =='anquanbang_demo')) {
+		        		if (!(user.name =='anquanbang' ||user.name =='anquanbangtest' )) {
 		        			window.location.href = "sa_anquanbang.html";
 		        		}else {
 			        		if(index == 0){

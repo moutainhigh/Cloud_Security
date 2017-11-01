@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -109,7 +110,7 @@ public class UserController{
     IPriceService priceService;
 	@Autowired
     IXlistService xlistService;
-
+	
 	/**
 	 * 功能描述： 基本资料
 	 * 参数描述： Model model,HttpServletRequest request
@@ -1948,8 +1949,7 @@ public class UserController{
   						  countAll += jsonTemp.getInt("count");
   					  }
   				  }
-
-  				 
+ 
   			  }
   		  }
   		  if(countAll>100){
@@ -1982,10 +1982,19 @@ public class UserController{
   			Integer count = (Integer) obj.get("count");
   			attackCountList.add(new AttackCount(eventType, count));
   		}
+  		
+  		
+  		long []result=worker.getWafTotalCount(user,domainList);
+  		m.addAttribute("wafTotalNumber",result[0]);
+  		m.addAttribute("wafDayTotalNumber",result[1]);
+  		
   		m.addAttribute("wafEventTypeCount",attackCountList.toString());
   		m.addAttribute("currentId", currentId);
+  		
+  		//请求总数
+  		
 	  	} catch (Exception e) {
-  		e.printStackTrace();
+	  		e.printStackTrace();
 	  		m.addAttribute("error", "服务器异常，请您耐心等待...");
 	  		return "/source/page/anquanbang/anquan_state";
 	  	}  	  

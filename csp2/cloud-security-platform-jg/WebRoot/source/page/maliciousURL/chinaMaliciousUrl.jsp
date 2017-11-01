@@ -235,7 +235,7 @@
 															},
 															data : data
 														},
-														{
+														{ 
 															id : 'bar',
 															zlevel : 2,
 															type : 'bar',

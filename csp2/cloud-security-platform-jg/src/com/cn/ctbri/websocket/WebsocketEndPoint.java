@@ -107,11 +107,14 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						int userid=user.getId();
 						int type=user.getType();
 						//由于type功能无法使用，为了临时方便看效果加上该条
-						if(user.getName().equals("anquanbang")){
+						if(user.getName().equals("anquanbang")||user.getName().equals("anquanbangtest")){
 							type=0;
 						}
+						if(user.getName().equals("anquanbang_demo")){
+							type=4;
+						}
 						List<String>addrList=new ArrayList<String>();
-						if(type!=0){
+						if(type!=0&&type!=4){
 							addrList=assetService.findDomainByUserId(userid);
 						}
 						dataText = getWafData(startId,addrList,type);
