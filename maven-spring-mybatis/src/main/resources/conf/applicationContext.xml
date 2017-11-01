@@ -28,6 +28,17 @@
 		<property name="maxActive" value="${jdbc.maxActive}" />
 		<property name="maxIdle" value="${jdbc.maxIdle}" />
 		<property name="maxWait" value="${jdbc.maxWait}" />
+		
+		<property name="validationQuery" value="select 1"/>
+		<property name="testOnBorrow" value="false"/>
+		<property name="testWhileIdle" value="true"/>
+		<property name="testOnReturn" value="false"/>
+		<property name="numTestsPerEvictionRun" value="${jdbc.maxActive}"/>
+		<!-- 6s 每6秒钟检測空暇连接超过10秒的连接-->
+		<property name="timeBetweenEvictionRunsMillis" value="6000" />  
+		<property name="minEvictableIdleTimeMillis" value="10000" /> 
+		 
+		<property name="removeAbandoned" value="true"/>
 	</bean>  
   <!-- 使用JDBC事物 -->  
     <bean id="transactionManager"  
