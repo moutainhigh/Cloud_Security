@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<!DOCTYPE configuration   
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">   
+<configuration>   
+    <settings>   
+        <setting name="cacheEnabled" value="false" />   
+        <setting name="useGeneratedKeys" value="true" />   
+        <setting name="defaultExecutorType" value="REUSE" />   
+    </settings>   
+    <typeAliases>   
+       <typeAlias alias="CsUser" type="com.ctbri.vo.CsUser"/>   
+       <typeAlias alias="CsAlarm" type="com.ctbri.vo.CsAlarm"/>   
+       <typeAlias alias="CsAsset" type="com.ctbri.vo.CsAsset"/>   
+       <typeAlias alias="CsOrder" type="com.ctbri.vo.CsOrder"/>   
+       <typeAlias alias="CsOrderAsset" type="com.ctbri.vo.CsOrderAsset"/>   
+    </typeAliases>
+    <environments default="development">   
+       <environment id="development">   
+           <transactionManager type="jdbc"/>   
+           <dataSource type="POOLED">
+ 		<!-- 驱动类路径 -->
+ 		<property name="driver" value="com.mysql.jdbc.Driver"/>
+ 		<!-- 数据服务器地址 -->	
+ 		<property name="url" value="jdbc:mysql://localhost:3306/mydb?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+ 		<!-- 用户名 -->
+ 		<property name="username" value="root"/>
+ 		<!-- 密码 -->
+ 		<property name="password" value="root"/>
+ 	</dataSource>   
+       </environment>   
+    </environments>   
+    <mappers>   
+      <mapper resource="com/ctbri/sqlmap/CsUserMapper.xml"/> 
+	  <mapper resource="com/ctbri/sqlmap/CsAlarmMapper.xml"/> 
+	  <mapper resource="com/ctbri/sqlmap/CsAssetMapper.xml"/>
+	  <mapper resource="com/ctbri/sqlmap/CsOrderAssetMapper.xml"/>
+	  <mapper resource="com/ctbri/sqlmap/CsOrderMapper.xml"/>
+    </mappers>   
+</configuration>  

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderListMapper">
+	<sql id="cols">id,create_date,userId,contactId,remarks</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderList" id="OrderListRM">
+		<id property="id" column="id"/>
+		<result property="create_date" column="create_date"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="remarks" column="remarks"/>
+		<result property="orderId" column="orderId"/>
+		<result property="price" column="price"/>
+		<result property="pay_date" column="pay_date"/>
+		<result property="serverName" column="serverNames"/>
+		<result property="balanceFlag" column="balanceFlag"/>
+	</resultMap>
+    
+    <!-- 插入购物车订单 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderList">
+        insert into cs_order_list
+        (id, create_date, userId, contactId, remarks, orderId, price,serverNames) 
+        values(#{id}, #{create_date}, #{userId}, #{contactId}, #{remarks}, #{orderId}, #{price},#{serverName})
+    </insert>
+    
+    <select id="findById" resultMap="OrderListRM" parameterType="String">
+    	select * from cs_order_list
+    	where id= #{id}
+    </select>
+    
+    <update id="update" parameterType="com.cn.ctbri.entity.OrderList">
+    	update cs_order_list
+    	set
+    		orderId = #{orderId}
+    	where id= #{id}
+    </update>
+    
+    <select id="queryPayRecordByPageAndUserId" resultMap="OrderListRM" parameterType="hashmap">
+	     select * from cs_order_list
+		 where
+			userId = #{userId}
+			and
+			pay_date is not null
+	      order by pay_date desc 
+		  <if test="pageNow != null and pageSize!= null">
+		   LIMIT #{pageNow},#{pageSize}
+		  </if>
+      
+    </select>
+    <update id="updateBalanceFlag" parameterType="com.cn.ctbri.entity.OrderList">
+    	update cs_order_list
+    	set
+    		balanceFlag = #{balanceFlag}
+    	where id= #{id}
+    </update>
+    
+    <update id="updateId" parameterType="hashmap">
+    	update cs_order_list
+    	set
+    		id = #{newId}
+    	where id= #{oldId}
+    </update>
+</mapper>

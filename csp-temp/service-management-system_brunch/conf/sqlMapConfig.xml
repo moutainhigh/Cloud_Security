@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC   
+    "-//mybatis.org//DTD Config 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>  
+	<!-- 
+    <typeAliases>  
+        <typeAlias alias="UserInfo" type="ctbri.cn.entity.UserInfo" />  
+    </typeAliases>  
+    
+     --> 
+     <mappers>  
+        <mapper resource="com/cn/ctbri/entity/AlarmMapper.xml" />  
+        <mapper resource="com/cn/ctbri/entity/TaskMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/AssetMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/ServMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/OrderMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml" />  
+        <mapper resource="com/cn/ctbri/entity/TaskWarnMapper.xml"/>
+        <mapper resource="com/cn/ctbri/entity/EngineMapper.xml"/>
+        <!-- add by tangxr 2015-11-10 -->
+        <mapper resource="com/cn/ctbri/entity/OrderTaskMapper.xml" /> 
+        <!-- end -->
+        <!-- add by tangxr 2016-3-30 -->
+        <mapper resource="com/cn/ctbri/entity/APIKeyMapper.xml" />
+        <mapper resource="com/cn/ctbri/entity/OrderAPIMapper.xml" /> 
+        <!-- end -->
+        <!-- add by tangxr 2016-4-9 -->
+        <mapper resource="com/cn/ctbri/entity/UserMapper.xml" /> 
+        <!-- end -->
+		<mapper resource="com/cn/ctbri/entity/APIMapper.xml" /> 
+    </mappers> 
+</configuration>  

@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+.user_center{ width:1110px; margin:auto; margin-top:28px; margin-bottom:25px;}
+.user_left{ float:left; width:93px; height:300px;}
+.user_left h2{ font-size:16px; font-weight:500; line-height:28px; color:#45b62b; text-align:center;}
+.user_left ul li{ height:30px; width:93px; font-size:14px; line-height:30px; text-align:center;}
+.user_left ul li a{ color:#888;}
+.user_left ul li:hover{background:#e0e0e0; }
+.user_right{ float:left; width:1004px; border:1px solid #e0e0e0; height:500px;}
+

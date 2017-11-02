@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderAPIMapper">
+	<sql id="cols">id,begin_date,end_date,apiId,create_date,package_type,num,userId,contactId,remarks,message,payFlag</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderAPI" id="OrderAPIRM">
+		<id property="id" column="id"/>
+		<result property="begin_date" column="begin_date"/>
+		<result property="end_date" column="end_date"/>
+		<result property="apiId" column="apiId"/>
+		<result property="create_date" column="create_date"/>
+		<result property="package_type" column="package_type"/>
+		<result property="num" column="num"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="remarks" column="remarks"/>
+		<result property="message" column="message"/>
+		<result property="payFlag" column="payFlag"/>
+	</resultMap>
+    
+    <!-- 插入API订单 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAPI">
+        insert into cs_order_api
+        (id, begin_date, end_date, apiId, create_date, package_type, num, apiKey) 
+        values(#{id}, #{begin_date}, #{end_date}, #{apiId}, #{create_date}, #{package_type}, #{num}, #{apiKey})
+    </insert>
+    
+    <!-- 插入或更新API数量 -->
+    <insert id="insertOrUpdateCount" parameterType="com.cn.ctbri.entity.APICount">
+        insert into cs_api_count
+        (userId, api#{apiId}) 
+        values(#{userId}, #{count})
+        ON DUPLICATE KEY UPDATE 
+			api#{apiId}=#{count}
+    </insert>
+    
+    <select id="findByParam" resultType="com.cn.ctbri.entity.OrderAPI" parameterType="hashmap">
+        select end_date
+        from cs_order_api
+		WHERE 1 = 1
+		<if test="apiId != null">
+			AND apiId=#{apiId}
+		</if>
+		<if test="apiKey != null">
+			AND apiKey=#{apiKey}
+		</if>
+		order by end_date desc limit 1
+    </select>
+    
+    <select id="findUseableByParam" resultType="com.cn.ctbri.entity.OrderAPI" parameterType="hashmap">
+        select *
+        from cs_order_api
+		WHERE 1 = 1
+		<if test="apiId != null">
+			AND apiId=#{apiId}
+		</if>
+		<if test="apiKey != null">
+			AND apiKey=#{apiKey}
+		</if>
+		and num!=0
+		order by begin_date limit 1
+    </select>
+    
+    <!-- 插入或更新API数量 -->
+    <update id="updateCount"  parameterType="hashmap">
+		update cs_order_api
+		set
+          num = num - #{count}
+		  where id = #{id}
+	</update>
+	
+	<select id="findUsedByParam" resultType="com.cn.ctbri.entity.API" parameterType="hashmap">
+        select *
+        from cs_api
+		WHERE 1 = 1
+		<if test="api_type != null">
+			AND api_type=#{api_type}
+		</if>
+		<if test="orderId != null">
+			AND orderId=#{orderId}
+		</if>
+    </select>
+</mapper>

@@ -1,0 +1,454 @@
+@charset "utf-8";
+
+.weixinshow{
+	width:660px; height:540px;
+	margin-left:-330px;
+	margin-top:-270px;
+		
+}
+.weixinshow .Pophead{
+	height:60px; line-height:60px;
+	background-color:#f5f5f5;
+	text-align:center;	
+}
+.weixinshow .Pophead h1{
+	font-size:18px;
+	color:#333;
+	font-family:"微软雅黑";
+	text-align:center;
+	
+}
+.weixinshow .popBox p{ text-align:center; margin:28px 0 10px 0; font-size:14px; font-family:"微软雅黑"; font-weight:bold; color:#333}
+
+.shade{ width:100%; height:100%; background:#000;position: relative;filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; opacity: 0.3; position:fixed; top:0px; left:0px; z-index:98; overflow:hidden; display:none;}
+.hide{ display:none;}
+
+.popBoxhide{ position:absolute; left:50%; top:-180%; z-index:1000; background:#FFF; border-radius:4px; overflow:hidden;}
+
+
+.popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; right:12px; top:13px; background:url(../images/portal/user_ico_4.jpg) no-repeat; cursor:pointer;}
+
+
+.title h2{
+	height: 30px;
+    color: #666666;
+    font-size: 18px;
+    line-height: 30px;
+	
+}
+.text_bottm {
+    width: 570px;
+    margin-left: 40px;
+}
+.text_bottm table {
+	margin-top: 26px;
+    width: 630px;
+    word-break: break-all;
+    word-wrap: break-word;
+    border-collapse: collapse;
+    text-align: center;
+}
+.text_bottm table tr {
+    font-size: 14px;
+    height: 43px;
+    line-height: 40px;
+}
+.boz_inout_1 {
+    border: 1px solid #e0e0e0;
+    height: 36px;
+    line-height: 36px;
+    width: 240px;
+}
+
+/*签到弹框*/
+.succeed{
+    display: none;
+    position:absolute;
+    width: 353px;
+    height: 88px;
+    background-color: #fff;
+    border: #f3f3f3 solid 1px;
+    left: 50%;
+    top:50%;
+    margin-left: -177px;
+    margin-top: -44px;
+    
+}
+.succeed .spopo{
+    text-align: center;
+    padding-top: 30px;
+}
+.succeed .spopo span{
+    font-size: 14px;
+     vertical-align: middle;
+    color: #696969;
+    padding-right: 32px;
+}
+.succeed .spopo i{
+	width:30px;
+	height:30px;
+	vertical-align: middle;
+	display:inline-block;
+}
+.succeed .icof{
+	padding-right:10px;
+	background:url(../images/balance/c.png) no-repeat left center;
+
+}
+.succeed .icoc{
+	padding-right:10px;
+	background:url(../images/balance/cg.png) no-repeat left center;
+}
+.succeed .spopo em{
+     vertical-align: middle;
+    color: #eb9712;
+    font-size: 16px;
+    padding-right: 10px;
+}
+.succeed .spopo b{
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+/*waf弹框*/
+.waf-detais-pop{
+    width: 598px;
+    max-height:566px; 
+    height:auto;
+    background-color: #fff;
+    border: #ccc solid 1px;
+    margin-left: -288px;
+    margin-top: -285px;
+    left: 50%;
+}
+.waf-detais-pop .close{
+     width: 28px;
+    height: 28px;
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 13px;
+    background: url(../images/close.png) no-repeat;
+    cursor: pointer;
+    z-index: 200;
+}
+.waf-detais-pop  .Pophead{
+    padding: 34px 34px 34px 34px;
+    position: relative;
+     border-bottom: #e7e9eb solid 1px;
+
+}
+.waf-detais-pop  .Pophead h2{
+    font-size: 20px;
+    color: #2c3a60;
+}
+.waf-detais-pop  .Pophead a{
+ position: absolute;
+ font-size: 14px;
+ color: #2499fb;
+ right: 40px;
+ top:44px;
+}
+.waf-detais-pop .Pophead a i{
+    margin-right: 10px;
+}
+.waf-detais-pop .popBox ul{
+    overflow-y: auto;
+    height: 225px;
+}
+.waf-detais-pop .popBox ul li{
+    padding:14px 40px; 
+    font-size: 16px;
+    color: #566180;
+    border-bottom: #e7e9eb solid 1px;
+}
+.waf-detais-pop .popBox ul li h3{
+    font-size: 16px;
+}
+.waf-detais-pop ul .ac{
+    background-color: #f9fbfc;
+}
+#wafpop #senone ul li.ac{
+    background-color: #f9fbfc;
+}
+#wafpop #senone li label i{
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+	background:url(../images/rdw.png) no-repeat left center;
+	cursor:pointer;
+}
+#wafpop #senone li label{
+    margin-right: 15px;
+    position: relative;
+    top:4px;
+}
+#wafpop #senone li label .this{
+	background:url(../images/raio.png) no-repeat left center;	
+}
+
+.waf-detais-pop .popBox ul li .radio{
+  margin-right: 24px;
+  display: inline-block;
+}
+.waf-detais-pop .popBox ul li .tBox{
+    padding-left: 38px;
+    font-size: 14px;
+    color: #afb8bf;
+  }
+.waf-detais-pop .popBox p{
+    margin:20px 0 20px 0;
+    font-size: 16px;
+    color: #444f6e;
+    /*padding-left: 40px;*/
+}
+.add_ip{ 
+        padding-left: 40px;
+}
+.waf-detais-pop ol li{
+    margin-top: 15px;
+}
+
+.waf-detais-pop ol li .text{
+    width: 190px;
+    height: 38px;
+    border:#e5e5e5 solid 1px;
+    color: #979cab;
+    font-size: 16px;
+    margin-right: 20px; 
+    padding-left: 10px;
+}
+.waf-detais-pop ol li a{
+    font-size: 14px;
+    color: #2499fb;
+}
+.waf-detais-pop ol li i{
+   margin-right: 10px; 
+}
+.waf-detais-pop .bottom{
+    float: right;
+    padding-right: 40px;
+    margin-top: 10px;
+}
+.waf-detais-pop .Btnbottom a{
+     height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 178px;
+     font-size: 16px;
+     line-height: 50px;
+
+}
+/*waf添加网站*/
+.addhttp{ padding-left:80px; height:290px; overflow-y:auto}
+.waf-detais-pop #sentwo .bottom{ text-align:center; float:none; height:40px;}
+.waf-detais-pop #sentwo .bottom a{
+     height: 40px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 148px;
+     font-size: 16px;
+     line-height: 40px;
+
+}
+.addhttp ul{ padding-top:20px;}
+.addhttp li{
+    min-height: 50px;
+}
+.addhttp li{ 
+	padding:0 !important;
+	border-bottom:none !important;
+}
+.addhttp li > label{
+    width: 88px;
+    font-size: 14px;
+    color: #4e4e4e;
+    vertical-align: middle;
+    /*margin-right: 45px;*/
+}
+.addhttp .text{
+    width: 240px;
+    height: 34px;
+    border: #e1e1e1 solid 1px;
+}
+.addhttp .radio{
+    margin-right: 10px;
+    vertical-align: middle;
+
+}
+.addhttp p{
+    height: 20px;
+    line-height: 20px;
+    color: #999999;
+    font-size: 16px;
+}
+.addhttp .select{
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    border: #e1e1e1 solid 1px;
+}
+.addhttp .bottom{
+    height: 80px;
+
+}
+.addhttp a{
+     height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 178px;
+     font-size: 16px;
+     line-height: 50px;
+
+}
+
+/*漏洞扫描监测*/
+.flaw .rcent .cek,.flaw .cheall{
+	width: 16px;
+    height: 16px;
+       background: url(../images/k.png) no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: -2px;
+}
+
+
+
+.flaw .rcent .this,.flaw .bl .this{
+	background: url(../images/d.png) no-repeat;	
+}
+
+.disabled{
+	background:url(../images/p-dle.png) no-repeat;;	
+}
+
+.flaw{
+    width: 596px;
+    height: 448px;
+}
+.flaw .rcent .checkbox{
+    margin-right: 20px;
+}
+
+.flaw .bottom .bl{
+    padding-left: 40px;
+    color: #2c3a60;
+    font-size: 16px;
+    position: relative;
+    top:15px;
+}
+.flaw .bottom .bl .ck{
+    margin-right: 10px;
+}
+.flaw .bottom span{
+    color: #b2bac1;
+    padding-left: 14px;
+}
+
+.flaw .centone ul div p{
+	line-height:20px;
+	height:20px;
+	margin:0;
+	
+}
+.flaw .centone ul div{ margin-bottom:10px;}
+.flaw .bottom a{
+	height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 148px;
+     font-size: 16px;
+     line-height: 50px;
+}
+
+/*waf新增*/
+.add_ip{
+
+}
+.add_ip .waf-addBox li{ width:218px; height:32px; border:#e5e5e5 solid 1px; position:relative; float:left; margin-right:18px;}
+.add_ip .waf-addBox li .text{
+        width:190px; 
+        height:30px; 
+        border:none;
+        color: #2c3a60;
+}
+.add_ip .waf-addBox li i{ 
+    position:absolute; 
+    right:-11px; 
+    top:-1px;
+    cursor: pointer;
+}
+.add_ip span{
+    width: 160px;
+    height: 32px;
+    display: inline-block;
+    border: #2499fb solid 1px;
+    text-align: center;
+    line-height: 32px;
+    color: #2499fb;
+    cursor: pointer;
+    position: relative;
+    top:14px;
+}
+.add_ip span em{
+    vertical-align: middle;
+    margin-right: 16px;
+}
+
+.waf-detailsbtoom{
+    float: right;
+    padding-right: 36px;
+    margin-top: 15px;
+}
+.waf-detailsbtoom a{
+    height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 148px;
+     font-size: 16px;
+     line-height: 50px;
+     color: #fff;
+     text-align: center;
+}
+
+.waf-ym i{
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background: url(../images/rdw.png) no-repeat left center;
+    cursor: pointer;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+.waf-ym b{
+    vertical-align: middle;
+}
+.waf-ym .this{
+    background: url(../images/raio.png) no-repeat left center;
+}
+
+.fack{ margin-bottom: 10px;}
+.fack li{
+	line-height: 20px;
+}
+#port{
+    padding-left: 7%;
+    margin: 16px 0 10px 0;
+    position: relative;
+    top:14px;
+    left: 1px;*/
+    }
+    #port em{
+        font-size: 16px;
+        color: #444f6e; 
+    }
+    #port .text{
+        width: 142px;
+        height: 30px;
+        border: #e5e5e5 solid 1px;
+        color: #2c3a60;     
+    }
+
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC   
+    "-//mybatis.org//DTD Config 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>  
+	 <settings>
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
+    <typeAliases>  
+        <typeAlias type="com.cn.ctbri.portscanEntity.AppReport" alias="appReport"/>
+        
+    </typeAliases>  
+    
+    <!-- 指定映射文件 -->
+	<mappers>
+		<mapper resource="com/cn/ctbri/portscanEntity/AppReportMapper.xml"/>
+	</mappers>
+</configuration>  

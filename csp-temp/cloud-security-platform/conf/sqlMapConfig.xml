@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC   
+    "-//mybatis.org//DTD Config 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>  
+	 <settings>
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
+    <typeAliases>  
+        <typeAlias type="com.cn.ctbri.entity.ServiceType" alias="serviceType"/>
+        <typeAlias type="com.cn.ctbri.entity.Factory" alias="factory"/>
+        <typeAlias type="com.cn.ctbri.entity.Asset" alias="asset"/>
+        <typeAlias type="com.cn.ctbri.entity.Order" alias="order"/>
+        <typeAlias type="com.cn.ctbri.entity.Linkman" alias="linkman"/>
+        <typeAlias type="com.cn.ctbri.entity.Alarm" alias="alarm"/>
+        <typeAlias type="com.cn.ctbri.entity.Task" alias="task"/>
+        <typeAlias type="com.cn.ctbri.entity.District" alias="district"/>
+    </typeAliases>  
+    
+    <!-- 指定映射文件 -->
+	<mappers>
+		<mapper resource="com/cn/ctbri/entity/UserMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/SelfHelpOrderMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ServMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AssetMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderAssetMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/TaskMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/Alarm.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AuthorityMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/Authority_UserTypeMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/NoticeMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/TaskWarnMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/TaskHWMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/DistrictDataMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/CityMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/LoginHistoryMapper.xml"/>
+		
+		<!-- add by tangxr 2016-3-28 -->
+		<mapper resource="com/cn/ctbri/entity/ServiceAPIMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderListMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderAPIMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderSearchMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/PriceMapper.xml"/>
+		
+		<!-- add by zhangshaohua 2016-7-27 -->
+		<mapper resource="com/cn/ctbri/entity/ApiPriceMapper.xml"/>
+		<!-- add by lvcongliang 2016-8-17 -->
+		<mapper resource="com/cn/ctbri/entity/IPPositionMapper.xml"/>
+		
+		<!-- add by zhangshaohua 2016-6-21 -->
+		<mapper resource="com/cn/ctbri/entity/AdvertisementMapper.xml"/>
+		
+		<!-- add by zhangshaohua 2016-8-5 -->
+		<mapper resource="com/cn/ctbri/entity/DataAnalysisMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AttackSourceMapper.xml"/>
+		
+		<mapper resource="com/cn/ctbri/entity/ServDetailMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ScanTypeMapper.xml"/>
+		
+		<!-- 2016-12-01 update by tangxr -->
+		<mapper resource="com/cn/ctbri/entity/PartnerMapper.xml"/>
+
+		<!-- add by cy 系统安全帮  2017-2-20 -->
+		<mapper resource="com/cn/ctbri/entity/ServiceSysMapper.xml"/>
+	</mappers>
+</configuration>  

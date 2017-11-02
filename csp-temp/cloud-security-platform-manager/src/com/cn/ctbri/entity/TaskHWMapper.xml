@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.TaskHWMapper">
+<sql id="cols">taskId,order_ip_Id,execute_time,status,remarks</sql>
+	<resultMap type="com.cn.ctbri.entity.TaskHW" id="TaskHWRM">
+		<id property="taskId" column="taskId"/>
+		<result property="order_ip_Id" column="order_ip_Id"/>
+		<result property="execute_time" column="execute_time"/>
+		<result property="status" column="status"/>
+		<result property="remarks" column="remarks"/>
+		<result property="end_time" column="end_time"/>
+		<result property="drainage" column="drainage"/>
+		<result property="zone_id" column="zone_id"/>
+	</resultMap> 
+	
+	<!-- 插入任务信息 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.TaskHW" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cs_taskhuawei
+		(order_ip_Id,execute_time,status,remarks,end_time) 
+		VALUES( #{order_ip_Id} , #{execute_time},#{status},#{remarks}, #{end_time})
+	</insert>
+	
+	<!-- 根据条件查询任务表 -->
+    <select id="findTaskhw" parameterType="hashmap" resultMap="TaskHWRM">
+        select * from cs_taskhuawei t
+        where t.status = #{status} 
+        <if test="status==1">
+          and t.execute_time between date_add(now(),interval -1 minute) and now()
+        </if>
+        <if test="status==2">
+          and t.end_time between date_add(now(),interval -1 minute) and now()
+        </if>
+    </select>
+    
+    
+    <!-- 更新任务信息 -->
+    <update id="update"  parameterType="com.cn.ctbri.entity.TaskHW">
+        update cs_taskhuawei
+        <set>
+            <if test="status!=null">
+                status=#{status} , 
+            </if>
+            <if test="execute_time!=null">
+                execute_time=#{execute_time},
+            </if>
+            <if test="drainage!=null">
+                drainage=#{drainage},
+            </if>
+            <if test="zone_id!=null">
+                zone_id=#{zone_id},
+            </if>
+        </set>
+        where taskId = #{taskId}
+    </update>
+    
+    <!-- 根据taskId查询OrderIP表 -->
+    <select id="getIpByTaskId" parameterType="int" resultType="com.cn.ctbri.entity.OrderIP">
+        select * from cs_order_ip oi
+        where oi.id = #{order_ip_id}
+    </select>
+    
+    <!-- 根据任务查询攻击日志 -->
+    <select id="findAlarmbyTaskhw" parameterType="hashmap" resultType="com.cn.ctbri.entity.TaskHW">
+        select t.* from cs_taskhuawei t,cs_order_ip oi
+        where oi.id = t.order_ip_id and t.status = #{status}
+        <if test="drainage==0">
+        and t.drainage = #{drainage} and oi.serviceId = 7
+        </if>
+        <if test="drainage==1">
+        and t.drainage = #{drainage} and oi.serviceId in(7,8)
+        </if>
+    </select>
+</mapper>

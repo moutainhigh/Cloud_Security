@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.SelfHelpOrderMapper">
+	
+	<!-- 查询服务类型所有记录 -->
+	<select id="findServiceType" resultType="serviceType">
+		select * from cs_service_type
+	</select>
+	
+	<!-- 查询厂商所有记录 -->
+    <select id="findFactory" resultType="factory">
+        select * from cs_factory
+    </select>
+    
+    <!-- 查询服务资产 -->
+    <select id="findServiceAsset" resultType="asset" parameterType="Integer">
+    	<!-- modify by tangxr 2016-7-23 放开资产验证 -->
+        select * from cs_asset where userid = #{userId} order by status desc,create_date asc,id asc
+        <!--select * from cs_asset where userid = #{userId} order by addr-->
+    </select>
+	
+	<!-- 插入联系人 -->
+    <insert id="insertLinkman" parameterType="linkman">
+        insert into cs_linkman
+        (id, name, mobile, email, company, address, userId) 
+        values(#{id}, #{name}, #{mobile}, #{email}, #{company}, #{address}, #{userId})
+    </insert>
+    
+	<!-- 插入订单 -->
+    <insert id="insert" parameterType="order">
+        insert into cs_order
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, tasknum, payFlag, isAPI,price,num) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{tasknum}, #{payFlag}, #{isAPI}, #{price}, #{wafTimes})
+    </insert>
+    
+    <!-- 查询漏洞个数 -->
+    <select id="findLeakNum" parameterType="Integer" resultType="com.cn.ctbri.entity.Alarm">
+        <!-- select * from cs_alarm a,
+		(select t.taskId from cs_task t,
+		(select oa.id from cs_order o,cs_service s,cs_order_asset oa where o.serviceId = s.id and o.id = oa.orderId and s.parentC = 1 and s.id=#{i}) asset
+		where t.order_asset_id = asset.id) task where a.taskId = task.taskId 
+		
+		select count(a.id) as count
+			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s
+			where o.id = oa.orderId 
+			and t.order_asset_Id = oa.id 
+			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+			and s.id = oa.assetId
+			and o.serviceId = #{i} -->
+		select sum(dis.count#{i}) as count from cs_district dis
+    </select>
+    
+    <!-- 查询网页数 -->
+    <select id="findWebPageNum" resultType="hashmap">
+        select sum(t.urlCount) url from cs_task t
+        <!-- select * from cs_alarm a,
+        (select t.taskId from cs_task t,
+        (select oa.id from cs_order o,cs_service s,cs_order_asset oa 
+            where o.serviceId = s.id 
+            and o.id = oa.orderId 
+            and s.parentC = 1
+            ) asset
+        where t.order_asset_id = asset.id) task where a.taskId = task.taskId -->
+    </select>
+    
+    <!-- 检测网页数 -->
+    <select id="findWebSite" resultType="hashmap">
+        select * from cs_asset
+        <!-- select * from cs_order_asset oa, cs_asset a where oa.assetId = a.id -->
+    </select>
+    
+    <!-- 断网次数 -->
+    <select id="findBrokenNetwork" resultType="hashmap">
+        select * from cs_taskwarn tw where tw.name = '断网'
+    </select>
+    
+    <!-- 删除联系人 -->
+    <delete id="deleteLinkman" parameterType="hashmap">
+        delete from cs_linkman where id = #{contactId} and userid=#{userId}
+    </delete>
+      <!-- 查询购物车列表 -->
+    <select id="findShopCarList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+  SELECT
+  a.id            orderId,
+  a.serverName,
+  b.astName,
+  a.price,
+a.serviceId,
+a.isAPI,
+ a.status,
+ a.remarks,
+ a.begin_date beginDate,
+a.end_date endDate
+FROM (SELECT
+        co.*,
+        cs.name          serverName
+      FROM cs_order co,
+        cs_service cs
+      WHERE co.serviceId = cs.id
+          AND co.userId = #{userId}
+          AND co.payFlag = #{payFlag}
+          AND (co.isAPI = 0 or co.isAPI = 2)) a,
+  (SELECT
+     GROUP_CONCAT(ast.name) AS astName,
+     cat.orderId
+   FROM cs_asset ast,
+     cs_order_asset cat
+   WHERE ast.id IN(SELECT
+                     cas.assetId
+                   FROM cs_order_asset cas,
+                     cs_order co
+                   WHERE co.userId = #{userId}
+                       AND co.payFlag = #{payFlag}
+                       AND cas.orderId = co.id)
+       AND ast.id = cat.assetId
+   GROUP BY cat.orderId) b
+WHERE a.id = b.orderId
+<if test="orderId!=''">
+    and   a.id=#{orderId}
+</if>
+ORDER BY a.create_date desc
+</select>
+   <!-- 查询购物车列表 -->
+    <select id="findShopCarAPIList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+  SELECT
+  a.id            orderId,
+  a.serverName,
+  a.price,
+  b.package_type pack_type,
+a.serviceId,
+a.isAPI,
+ a.status,
+ a.remarks,
+b.buynum,
+ a.begin_date beginDate,
+a.end_date endDate
+FROM (SELECT
+        co.*,
+        cs.name          serverName
+      FROM cs_order co,
+        cs_service_api cs
+      WHERE co.serviceId = cs.id
+          AND co.userId =#{userId}
+          AND co.payFlag = #{payFlag}
+          AND co.isAPI = 1) a,
+  (SELECT
+     api.id           orderId,
+     api.package_type,
+     api.buynum
+   FROM cs_order_api api
+   WHERE api.id in (SELECT
+                     co.id
+                   FROM cs_order co
+                   WHERE co.userId =#{userId}
+                       AND co.payFlag =#{payFlag}
+                       AND co.isAPI = 1)) b
+WHERE a.id = b.orderId
+<if test="orderId!=''">
+    and   a.id=#{orderId}
+</if>
+ORDER BY a.create_date desc
+    </select>
+ <!-- 查询购物车列表 -->
+    <select id="findShopCarSysList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+    SELECT
+  a.id  orderId,
+  a.serverName,
+  a.price,  
+  a.serviceId,
+  a.isAPI,
+  a.status,
+  a.remarks,
+  a.scan_type,
+  a.begin_date beginDate,
+  a.end_date endDate,
+  a.num buynum
+FROM (SELECT
+          co.*,
+          cs.name          serverName
+      FROM cs_order co,
+           cs_service cs
+      WHERE co.serviceId = cs.id
+          AND co.userId =#{userId}
+          AND co.payFlag = 0
+          AND co.isAPI = 3) a       
+    
+<if test="orderId!=''">
+	WHERE
+    a.id=#{orderId}
+</if>
+ORDER BY a.create_date desc
+    </select>
+    
+    <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+ select * from (   
+ SELECT
+  a.serverName,
+  a.price,
+  a.isAPI,
+  b.astName,
+   b.addr,
+  a.id orderId,
+   a.type          orderType,
+  a.begin_date    beginDate,
+  a.end_date endDate,
+  a.serviceId,
+  a.scan_type     scanPeriod,
+  a.websoc,
+  a.num buynum,
+  a.create_date createDate
+FROM (SELECT
+        s.name           serverName,
+        r.*
+      FROM cs_order r,
+        cs_service s
+      WHERE r.serviceId = s.id
+          AND r.id IN
+             <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>  
+          AND (r.isAPI = 0 OR r.isAPI = 2 OR r.isAPI = 3)
+           AND r.userId=#{userId}        
+          ) a,
+  (SELECT
+     GROUP_CONCAT(t.name) AS astName,
+         GROUP_CONCAT(t.addr) AS addr,
+     ca.orderId
+   FROM cs_asset t,
+     cs_order_asset ca
+   WHERE t.id IN(SELECT
+                   a.assetId
+                 FROM cs_order_asset a
+                 WHERE a.orderId IN(SELECT
+                                      o.id
+                                    FROM cs_order o
+                                    WHERE o.id IN
+                                      <foreach item="orderId" index="index" collection="orderIds" open="("  
+						            separator="," close=")">  
+						          #{orderId} 
+						        </foreach>  
+                                    ))
+       AND t.id = ca.assetId
+        AND t.userid=#{userId}
+   GROUP BY ca.orderId) b
+WHERE a.id = b.orderId 
+    UNION
+  
+   SELECT
+       c.serverName,
+       c.price,
+       c.isAPI,
+       d.astName,
+          d.addr,
+       c.id orderId,
+        c.type          orderType,
+	  c.begin_date    beginDate,
+	  c.end_date endDate,
+	  c.serviceId,
+	  c.scan_type     scanPeriod,
+	    c.websoc,
+        d.buynum,
+        c.create_date
+     FROM (SELECT
+	     s.name            serverName,
+	     r.*
+	   FROM cs_order r,
+	     cs_service_api s
+	   WHERE r.serviceId = s.id
+	       AND r.id IN
+	        <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>
+	       AND isAPI = 1
+	       AND r.userId=#{userId}
+	       ) c,
+       (SELECT
+	  CAST(i.package_type AS CHAR) AS astName,
+	   CAST(i.message AS CHAR) AS addr,
+	  i.id,
+	 i.buynum buynum
+	FROM cs_order_api i
+	WHERE i.id IN(SELECT
+			o.id
+		      FROM cs_order o
+		      WHERE o.id IN
+		    <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>  
+		      )
+	 AND i.userId=#{userId}
+		      ) d
+     WHERE c.id = d.id
+     
+    Union
+
+SELECT
+     e.serverName,
+	 e.price,
+     e.isAPI,
+	 0,<!-- 系统安全帮没有astName字段，0占位 -->
+     0,<!-- 系统安全帮没有addr字段，0占位 -->  
+	e.id orderId,
+    e.type    orderType,
+    e.begin_date    beginDate,
+    e.end_date endDate,
+    e.serviceId,
+    e.scan_type     scanPeriod,
+    e.websoc,
+    e.num buynum,
+    e.create_date createDate
+FROM (SELECT
+		   s.name           serverName,
+		   r.*
+      FROM cs_order r,
+           cs_service s
+      WHERE r.serviceId = s.id
+          AND r.id IN
+             <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>         
+          AND r.isAPI = 3
+		  AND r.userId=#{userId}        
+	  ) e
+ )res    
+     ORDER BY res.createDate desc
+  
+ </select>
+ <select id="findOrderCountByUserId" parameterType="hashmap" resultType="java.lang.Integer">
+ select count(*) from cs_order where userId =#{userId} and
+ id in 
+ 	<foreach item="orderId" index="index" collection="orderIds" open="("  separator="," close=")">  
+      #{orderId} 
+     </foreach>  
+ </select>
+ <update id="updateOrderAsset" parameterType="hashmap">
+ UPDATE cs_order_asset a SET a.orderId=#{newOrderId}  WHERE a.orderId=#{orderId}
+ </update>
+ 
+ <update id="updateOrderAPI" parameterType="hashmap">
+   UPDATE  cs_order_api   api SET api.id=#{newOrderId} WHERE api.id=#{orderId}
+ </update>
+ <update id="updateOrder" parameterType="hashmap">
+ UPDATE  cs_order o 
+ <set>
+	  <if test="newOrderId!=null">
+	    o.id=#{newOrderId}, 
+	    o.create_date=#{createDate},
+	 </if>
+	 
+	 <if test="status!=''">
+	   o.status = #{status},
+	 </if>
+	 <if test="orderListId!=''">
+	   o.orderListId = #{orderListId}
+	 </if>
+ </set>
+ WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ 
+ </update>
+ 
+ <update id="updateSysOrder" parameterType="hashmap">
+ UPDATE  cs_order o 
+ <set>
+	  <if test="newOrderId!=null">
+	    o.id=#{newOrderId}, 
+	    o.create_date=#{createDate},
+	 </if>
+	 
+	 <if test="status!=''">
+	   o.status = #{status},
+	 </if>
+	 <if test="orderListId!=''">
+	   o.orderListId = #{orderListId},
+	 </if>
+	 <if test="remarks!=''">
+	   o.remarks = #{remarks}
+	 </if>
+ </set>
+ WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ 
+ </update>
+ 
+ <update id="updateShopOrder" parameterType="com.cn.ctbri.entity.ShopCar">
+   update cs_order set status=#{status} where id=#{orderId}
+ 
+ </update>
+ 
+ <update id="updatePayDate" parameterType="com.cn.ctbri.entity.OrderList">
+      	update cs_order_list
+      	set
+      	 pay_date = #{pay_date}
+      	where
+      	 id = #{id}
+ </update>
+ <update id="updatePayFlag" parameterType="hashMap">
+  update cs_order set payFlag = #{payFlag} where id = (#{orderId})
+ </update>
+ 
+ <update id="updateOrderStatus" parameterType="hashMap">
+      	update cs_order
+      	set
+      	 payFlag = #{status}
+      	where
+      	 id in (${orderId})
+ </update>
+ <update id="updateOrderDate" parameterType="com.cn.ctbri.entity.ShopCar">
+ 	update cs_order
+ 	set
+ 		begin_date = #{beginDate},
+ 		end_date = #{endDate}
+ 	where
+ 		id= #{orderId}
+ </update>
+ <update id="updateOrderAPIDate" parameterType="com.cn.ctbri.entity.ShopCar">
+ 	update cs_order_api
+ 	set
+ 		begin_date = #{beginDate},
+ 		end_date = #{endDate}
+ 	where
+ 		id= #{orderId}
+ </update>
+ 
+ <update id="updateOrderListId" parameterType="String">
+ 	update cs_order
+ 	set
+ 		orderListId = #{newOrderIds}
+ 	where
+ 		id= #{newOrderIds}
+ </update>
+ <!-- 插入服务详情页操作 -->
+    <insert id="SaveOrderDetail" parameterType="com.cn.ctbri.entity.OrderDetail">
+        insert into cs_settlemet
+        (id, type, begin_date, end_date, serviceId, create_date, userId, isAPI,price,asstId,scan_type,ipArray,wafTimes) 
+   values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{userId}, #{isAPI}, #{price}, #{asstId},#{scan_type},#{ipArray},#{wafTimes})
+    </insert>
+     <!-- 根据主键查询服务详情操作信息 -->
+    <select id="getOrderDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
+        SELECT s.*,c.name serviceName,GROUP_CONCAT(a.name) assetName,
+ GROUP_CONCAT(a.addr) assetAddr from cs_settlemet s, cs_service c,cs_asset a
+        
+        WHERE s.userId = #{userId}
+    AND s.id = #{id}
+AND s.serviceId=c.id
+
+AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" open="("  
+            separator="," close=")">  
+          #{assetId} 
+        </foreach>
+ 
+    </select>
+       <!-- 根据主键查询服务详情操作信息 -->
+    <select id="findOrderDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
+        SELECT * from cs_settlemet s
+        WHERE s.userId = #{userId}
+    AND s.id = #{id}
+
+    </select>
+    <!-- 根据主键查询服务API详情操作信息 -->
+    <select id="getOrderAPIDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
+        SELECT s.*,api.name serviceName FROM cs_settlemet s, cs_service_api api
+        
+        WHERE s.userId =#{userId}
+    AND s.id = #{id}
+AND s.serviceId=api.id
+       
+    </select>
+	<!-- 修改购物车续费订单 -->
+	<update id="updateRenewOrder" parameterType="Map" >
+		update cs_order  set  begin_date=#{begin_date},end_date=#{end_date}, task_date=#{task_date}, payFlag=#{payFlag},isAPI=#{isAPI},price=#{price},create_date=#{create_date}
+		
+	   where id=#{orderId}
+	</update>
+      <!-- 立即支付修改续费订单 -->
+	<update id="updateBuyRenewOrder" parameterType="Map" >
+		update cs_order  set  begin_date=#{begin_date},end_date=#{end_date}, task_date=#{task_date}, payFlag=#{payFlag},isAPI=#{isAPI},price=#{price},scan_type=#{scanType}
+	   where id=#{orderId}
+	</update>
+	<select id="getOrderInfoById" parameterType="Map" resultType="int">
+	
+      SELECT serviceId FROM cs_order  WHERE id in
+           	<foreach item="orderId" index="index" collection="orderIds" open="("
+			separator="," close=")">
+			#{orderId}
+		</foreach>
+	</select>
+    
+</mapper>

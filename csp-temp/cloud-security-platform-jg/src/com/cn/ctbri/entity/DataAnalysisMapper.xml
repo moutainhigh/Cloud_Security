@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.DataAnalysisMapper">
+	<sql id="cols">id,name,districtId</sql>
+
+	<!-- 以省为单位，累加所有漏洞、木马、关键字、篡改、可用性告警数据总和超过100的网站数 -->
+    <select id="findHighRiskSite" resultType="hashmap">
+		<!--  select b.districtId, b.val,d.echart_name
+		from
+			 (select districtId, count(*) val 
+			 	from
+			 		(select districtId,count(url) urlcount 
+			 		 	from cs_alarm_test
+					 	where serviceId != 6
+						group by districtId,url
+						having urlcount>100 )   a
+				group by  a.districtId) b
+		join cs_district d
+		on b.districtId = d.id -->
+		
+		select c.districtId, c.val,d.name
+		from
+		    (select districtId, count(*) val 
+		     from
+		     	(select districtId,url,count(url) urlcount 
+		         from 
+		             (select districtId,url from cs_alarm union all select districtId,url from cs_taskwarn) a
+		         group by a.districtId,a.url 
+		         having urlcount>100) b
+		     group by  b.districtId ) c  
+	    join cs_district d
+		on c.districtId = d.id
+		
+    </select>
+    
+    <!-- 用户地理位置分布:查询每个省份的用户数量 -->
+    <select id="findUserCountByDistrict" resultType="com.cn.ctbri.entity.UserDistribution">
+    <!--select d.name, d.longitude, d.latitude, a.val from
+		(select districtId, count(*) val from cs_user group by districtId) a
+	join
+		cs_district d
+	on a.districtId = d.id -->
+	select ipProvice proviceName, count(*) userCount from cs_user group by ipProvice
+    </select>
+    
+    <select id="findlLongitudeAndLatitude" resultType="com.cn.ctbri.entity.District">
+
+		select *
+		from cs_district
+		where 
+		name like CONCAT(#{proName},'%')
+    </select>
+    
+    <!-- 资产地理位置分布:查询每个省份的资产数量 -->
+    <select id="findAssetCountByDistrict"  resultType="hashmap">
+    	select dis.name,dis.longitude,dis.latitude,a.num
+    	from
+    	(select assetProvince, count(*) num from cs_asset group by assetProvince) a
+    	join cs_district dis
+		on a.assetProvince = dis.id
+    	
+    </select>
+    
+    <select id="findAlarmSum"  resultType="com.cn.ctbri.entity.AlarmSum">
+    select b.*, dis.name districtName from
+    	(select districtId,url,count(url) alarmCount 
+			from 
+		    	(select districtId,url from cs_alarm 
+		    	 union all 
+		    	select districtId,url from cs_taskwarn) a
+		    group by a.districtId,a.url) b
+	join cs_district dis
+	where b.districtId = dis.id
+    </select>
+    
+    <select id="findAssetInfoByIp" resultType="hashmap">
+    select dis.name districtName, asset.addr 
+    from cs_asset asset, cs_district dis 
+    where 
+		asset.assetProvince = dis.id
+	and
+		asset.id in 
+			(select distinct assetid from cs_order_asset where ipArray like #{ip})
+    </select>
+    
+</mapper>

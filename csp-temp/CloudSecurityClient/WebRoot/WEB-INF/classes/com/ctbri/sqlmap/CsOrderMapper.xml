@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ctbri.dao.CsOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ctbri.vo.CsOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="serviceId" property="serviceid" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="task_date" property="taskDate" jdbcType="TIMESTAMP" />
+    <result column="scan_type" property="scanType" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="contactId" property="contactid" jdbcType="INTEGER" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="message" property="message" jdbcType="INTEGER" />
+    <result column="websoc" property="websoc" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, 
+    contactId, remarks, status, message, websoc
+  </sql>
+  <select id="findOrderByOrderId" resultType="java.util.Map" parameterType="java.lang.String" >
+    select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+        from cs_order o,cs_service s
+        where o.id = #{id} and o.serviceId = s.id
+  </select>
+  <select id="findOrderByUserIdAndState" resultType="java.util.Map" parameterType="java.util.Map" >
+   select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
+        (
+        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
+        WHERE
+            1=1  
+            <if test="state==3"><!-- 等待中 -->
+                AND c.begin_date &gt; #{currentDate}
+            </if>
+            <if test="state==1"><!-- 扫描中 -->
+                AND c.begin_date &lt;= #{currentDate}
+                AND c.status in (0,3)
+            </if>
+            <if test="state==2"><!-- 已完成 -->
+                AND c.status in (1,2)
+            </if>
+            ) b order by b.create_date desc
+            <if test="pageNow!=null and pageSize!=null">
+             limit #{pageNow},#{pageSize}
+            </if>
+  </select>
+  <select id="findOrderMessage" resultType="java.util.Map" parameterType="java.util.Map" >
+   select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
+        (
+        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
+        WHERE
+            1=1  
+            ) b where b.id=#{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findByCombineOrderTrack" resultType="hashmap"
+  	parameterType="hashmap">
+  	select
+  	b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status
+  	from ( SELECT
+  	c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
+  	FROM (SELECT o.id,o.type,s.id as
+  	sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
+  	FROM cs_order o,cs_service s WHERE o.userId = #{userId} AND
+  	o.serviceId = s.id) c WHERE 1=1
+  	<if test="type!=null">AND c.type = #{type}</if>
+  	<if test="sid!=null and sid!=''">
+  		AND c.sid = #{sid}
+  	</if>
+  	<if test="begin_date!=null">
+  		AND c.begin_date &gt;= #{begin_date}
+  	</if>
+  	<if test="end_date!=null">
+  		AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR
+  		(c.begin_date &lt;=#{end_date} AND type=2))
+
+  	</if>
+  	<if test="state==3"><!-- 已下单 -->
+  		AND c.begin_date &gt; #{currentDate}
+  	</if>
+  	<if test="state==1"><!-- 服务中 -->
+  		AND c.begin_date &lt;= #{currentDate} AND c.status in (0,3)
+  	</if>
+  	<if test="state==2"><!-- 已结束 -->
+  		<!-- AND c.end_date &lt; #{currentDate} -->
+  		AND c.status in (1,2)
+  	</if>
+  	) b order by b.create_date desc
+  </select>
+  <!-- 根据用户查询所有记录 -->
+  <select id="findOrderByUserId" resultMap="BaseResultMap"
+  	parameterType="Integer">
+  	select * from cs_order where userId = #{userId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cs_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ctbri.vo.CsOrder" >
+    insert into cs_order (id, type, begin_date, 
+      end_date, serviceId, create_date, 
+      task_date, scan_type, userId, 
+      contactId, remarks, status, 
+      message, websoc)
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{serviceid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{taskDate,jdbcType=TIMESTAMP}, #{scanType,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{contactid,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{message,jdbcType=INTEGER}, #{websoc,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ctbri.vo.CsOrder" >
+    insert into cs_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="beginDate != null" >
+        begin_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="serviceid != null" >
+        serviceId,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="taskDate != null" >
+        task_date,
+      </if>
+      <if test="scanType != null" >
+        scan_type,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="contactid != null" >
+        contactId,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="websoc != null" >
+        websoc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="beginDate != null" >
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceid != null" >
+        #{serviceid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskDate != null" >
+        #{taskDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scanType != null" >
+        #{scanType,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="contactid != null" >
+        #{contactid,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=INTEGER},
+      </if>
+      <if test="websoc != null" >
+        #{websoc,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ctbri.vo.CsOrder" >
+    update cs_order
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="beginDate != null" >
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceid != null" >
+        serviceId = #{serviceid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskDate != null" >
+        task_date = #{taskDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scanType != null" >
+        scan_type = #{scanType,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="contactid != null" >
+        contactId = #{contactid,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=INTEGER},
+      </if>
+      <if test="websoc != null" >
+        websoc = #{websoc,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ctbri.vo.CsOrder" >
+    update cs_order
+    set type = #{type,jdbcType=INTEGER},
+      begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      serviceId = #{serviceid,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      task_date = #{taskDate,jdbcType=TIMESTAMP},
+      scan_type = #{scanType,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER},
+      contactId = #{contactid,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      message = #{message,jdbcType=INTEGER},
+      websoc = #{websoc,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

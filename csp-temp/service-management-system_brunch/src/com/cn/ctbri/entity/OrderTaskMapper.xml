@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderTaskMapper">
+	<sql id="cols">id,type,begin_date,end_date,serviceId,create_date,task_date,scan_type,userId,contactId,remarks,status</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderTask" id="OrderTaskRM">
+		<id property="id" column="id"/>
+		<result property="orderId" column="orderId"/>
+		<result property="type" column="type"/>
+		<result property="begin_date" column="begin_date"/>
+		<result property="end_date" column="end_date"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="create_date" column="create_date"/>
+		<result property="task_date" column="task_date"/>
+		<result property="scan_type" column="scan_type"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="remarks" column="remarks"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	
+    <!-- 插入订单任务 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderTask">
+        insert into cs_order_task
+        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, remarks, status, websoc, url, task_status, orderTaskId) 
+        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status}, #{orderTaskId})
+    </insert>
+    
+    <!-- 根据条件查询订单任务表 -->
+	<select id="findOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
+		select * from cs_order_task ot
+		where ot.task_status = #{task_status}
+		<if test="task_status==1">
+		  and ot.task_date between date_add(now(),interval -1 minute) and now()
+		</if>
+		<!--union 
+		  select * from cs_order_task ot
+		  where ot.warn !=0
+		  and ot.task_date &lt;= date_add(now(),interval -10 minute)
+		 limit #{page} -->
+	</select>
+	
+	<!-- 根据条件查询订单任务表 （异常） -->
+	<select id="findExpOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
+		select * from cs_order_task ot
+		  where ot.warn is NULL
+		  and ot.task_status = 1
+		  and ot.task_date &lt;= date_add(now(),interval -10 minute)
+		  order by ot.task_date desc
+	</select>
+	
+	<!-- 更新任务信息 -->
+	<update id="update"  parameterType="com.cn.ctbri.entity.OrderTask">
+		update cs_order_task
+		<set>
+			<if test="task_status!=null">
+				task_status=#{task_status}, 
+			</if>
+            <if test="websoc!=null">
+                websoc=#{websoc},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="orderTaskId!=null">
+                orderTaskId=#{orderTaskId},
+            </if>
+            <if test="warn!=null">
+                warn=#{warn},
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+    
+    
+    <!-- 根据用户查询所有记录 -->
+    <select id="findByOrderId" resultMap="OrderTaskRM" parameterType="String">
+        select * from cs_order_task ot
+		where ot.orderId = #{orderId}
+    </select>
+    
+    <!-- 删除订单任务 -->
+    <delete id="delete" parameterType="String">
+        delete from cs_order_task where orderId = #{orderId}
+    </delete>
+</mapper>

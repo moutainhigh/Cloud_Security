@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.APIKeyMapper">
+	<sql id="cols">id,apiKey</sql>
+	<resultMap type="com.cn.ctbri.entity.APIKey" id="APIKeyRM">
+		<id property="id" column="id"/>
+		<result property="apiKey" column="apiKey"/>
+	</resultMap>
+	
+	<!-- 查找apiKey -->
+    <select id="findByKey" resultMap="APIKeyRM" parameterType="String">
+        select * from cs_apikey
+        where apiKey = #{apiKey}
+    </select>
+    
+    <!-- 插入apiKey -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.APIKey">
+        insert into cs_apikey
+        (apiKey) 
+        values(#{apiKey})
+    </insert>
+    
+</mapper>

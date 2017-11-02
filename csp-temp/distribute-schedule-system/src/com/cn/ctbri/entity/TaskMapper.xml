@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.TaskMapper">
+<sql id="cols">taskId,order_asset_Id,execute_time,status</sql>
+	<resultMap type="com.cn.ctbri.entity.Task" id="TaskRM">
+		<id property="taskId" column="taskId"/>
+		<result property="order_asset_Id" column="order_asset_Id"/>
+		<result property="execute_time" column="execute_time"/>
+		<result property="status" column="status"/>
+		<result property="group_flag" column="group_flag"/>
+		<result property="service_id" column="service_id"/>
+	</resultMap> 
+	<!-- 根据条件查询任务表 -->
+	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
+		select * from cs_task t
+		where t.status = #{status} 
+		<if test="status==1">
+		  and t.execute_time between date_add(now(),interval -1 minute) and now()
+		</if>
+		<!-- union 
+		  select * from cs_task t
+		  where t.engine in (-1,0)
+		  and t.group_flag &lt;= date_add(now(),interval -10 minute)
+		limit #{page}-->
+	</select>
+	
+	<select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
+		  <!-- select * from cs_task t
+		  where
+		  ((t.engine in (-1,0) and t.status != 3)
+			or (t.status in(0,1) and t.engine is NULL))
+		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc -->
+		  select * from cs_task t
+		  where
+		  (t.exceptMark &lt;= 0 and t.exceptMark&gt;-5)
+		  and status not in (2,3)
+		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc
+		<!--limit #{page}-->
+	</select>
+	
+	<!-- 任务结束进行删除 查找serviceId=3篡改，service=4可用性-->
+    <select id="findDelTask" parameterType="hashmap" resultMap="TaskRM">
+        select * from cs_task t
+        where t.status = #{status} 
+        <if test="status==2">
+          and t.engine not in (-1,0)
+          and t.serviceId = #{serviceId}
+          and t.end_time &lt; now()
+        </if>
+        <!-- and t.end_time between date_add(now(),interval -1 minute) and now() -->
+        <!--limit #{page}-->
+    </select>
+    
+    <!-- 根据条件查询引擎异常任务表 -->
+    <!-- <select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
+        select * from cs_task t
+        where t.status = #{status} 
+        <if test="status==1">
+          and t.engine = -1
+        </if>
+        order by t.execute_time
+        limit #{page}
+    </select> -->
+    
+	<!-- 更新任务信息 -->
+	<update id="update"  parameterType="com.cn.ctbri.entity.Task">
+		update cs_task
+		<set>
+			<if test="status!=null">
+				status=#{status} , 
+			</if>
+			<if test="execute_time!=null">
+				execute_time=#{execute_time},
+			</if>
+			<if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="scanTime!=null">
+                scanTime=#{scanTime},
+            </if>
+            <if test="group_id!=null">
+                group_id=#{group_id},
+            </if>
+            <if test="taskProgress!=null">
+                taskProgress=#{taskProgress},
+            </if>
+            <if test="engine!=null">
+                engine=#{engine},
+            </if>
+            <if test="websoc!=null">
+                websoc=#{websoc},
+            </if>
+            <if test="warn!=null">
+                warn=#{warn},
+            </if>
+            <if test="exceptMark!=null">
+                exceptMark=#{exceptMark},
+            </if>
+            <if test="order_end_time!=null">
+                order_end_time=#{order_end_time}
+            </if>
+		</set>
+		where taskId = #{taskId}
+	</update>
+	
+	<!-- 更新任务信息 -->
+    <update id="updateTask"  parameterType="com.cn.ctbri.entity.Task">
+        update cs_task
+        <set>
+            <if test="begin_time!=null">
+                begin_time=#{begin_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="scanTime!=null">
+                scanTime=#{scanTime},
+            </if>
+            <if test="engineIP!=null">
+                engineIP=#{engineIP},
+            </if>
+            <if test="taskProgress!=null">
+                taskProgress=#{taskProgress},
+            </if>
+            <if test="currentUrl!=null">
+                currentUrl=#{currentUrl},
+            </if>
+            <if test="issueCount!=null">
+                issueCount=#{issueCount},
+            </if>
+            <if test="requestCount!=null">
+                requestCount=#{requestCount},
+            </if>
+            <if test="urlCount!=null">
+                urlCount=#{urlCount},
+            </if>
+            <if test="averResponse!=null">
+                averResponse=#{averResponse},
+            </if>
+            <if test="averSendCount!=null">
+                averSendCount=#{averSendCount},
+            </if>
+            <if test="sendBytes!=null">
+                sendBytes=#{sendBytes},
+            </if>
+            <if test="receiveBytes!=null">
+                receiveBytes=#{receiveBytes}
+            </if>
+            <!-- <if test="dns!=null">
+                dns=#{dns}
+            </if> -->
+        </set>
+        where taskId = #{taskId}
+    </update>
+	
+	<!-- 插入任务信息 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cs_task
+        (execute_time,begin_time,end_time,websoc,serviceId,order_id,orderTaskId,assetAddr,scanMode,scanType,group_flag,status,partner) 
+        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{orderTaskId},#{assetAddr},#{scanMode},#{scanType},#{group_flag},#{status},#{partner})
+    </insert>
+    
+    <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
+        select distinct oa.scan_type,oa.orderId from cs_task t,cs_order_asset oa where t.order_asset_id = oa.id and t.order_asset_id = #{order_asset_Id}
+    </select>
+    
+    <select id="getNextScanTime" parameterType="java.util.HashMap" resultType="java.util.Date">
+        select date_add(#{executeTime},interval #{scantime} minute)   
+    </select>
+    
+    <!-- 插入任务告警信息 -->
+    <insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cs_taskwarn
+        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id,serviceId,districtId) 
+        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id},#{serviceId},#{districtId})
+    </insert>
+    
+    <!-- 获取订单还在执行的任务 -->
+    <select id="getTaskStatus" parameterType="com.cn.ctbri.entity.Order" resultType="com.cn.ctbri.entity.Task">
+        select t.taskId from cs_task t,cs_order_asset oa where t.order_asset_Id=oa.id and oa.orderId = #{id} and t.status in(1,2)
+    </select>
+    
+    <!-- 根据创宇group_id获取任务 -->
+    <select id="findTaskByGroupId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+        select t.taskId from cs_task t where t.group_id = #{group_id} and t.status in(2)
+    </select>
+    
+    <!-- 获取安恒在执行的任务 -->
+    <select id="getArnhemTask" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.status = 2 and (t.websoc = 0 or t.websoc is null)
+    </select>
+    
+    <!-- 获取创宇在执行的任务 -->
+    <select id="getWebsocTask" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.status = 2 and t.websoc = 1
+    </select>
+    
+    <!-- 获取创宇在执行的任务 -->
+    <select id="findDistrictIdByTaskId" parameterType="String" resultType="Integer">
+        select a.districtId from cs_task t,cs_order_asset oa,cs_asset a
+     	where  t.order_asset_Id = oa.id and oa.assetId = a.id and t.taskId = #{taskId}
+    </select>
+    
+    <!-- 根据id查询task -->
+    <select id="findTaskById" parameterType="int" resultType="com.cn.ctbri.entity.Task">
+    	select * from cs_task where taskId=#{taskId}
+    </select>
+    
+    <!-- 二期 -->
+    <!-- 根据订单Id和url查询任务 -->
+    <select id="findTaskByOrderTaskId" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task a,
+	       (
+	       select min(t.taskId) as taskId from cs_task t 
+	    	where t.orderTaskId = #{orderTaskId}
+	    	<if test="status == 3">
+	          and t.status != #{status} 
+	        </if>
+	        <if test="status == 2">
+	          and t.status = #{status} 
+	        </if>
+	        <if test="status == 1">
+	          and t.status != #{status} 
+	        </if>
+	       group by t.group_flag
+	       ) b
+       where a.taskId = b.taskId
+        
+    </select>
+    
+    <select id="findTaskByTaskObj" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
+    	select * from cs_task t 
+    	where 1=1
+    	<if test="orderTaskId!=null">
+    	  and t.orderTaskId = #{orderTaskId}
+    	</if>
+    	<if test="group_flag!=null">
+    	  and t.group_flag = #{group_flag}
+    	</if>
+    	<if test="assetAddr!=null">
+    	  and t.assetAddr = #{assetAddr}
+    	</if>
+    </select>
+    
+    <!-- 根据订单Id查询任务 -->
+    <select id="findTaskByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+    	select * from cs_task t where t.order_id = #{orderId} and t.status != 1
+    </select>
+     <!-- 查询某个引擎上正在运行的任务数 -->
+    <select id="countTaskByEngine" parameterType="Integer" resultType="Integer">
+    	select count(1) from cs_task t where t.status =2 and t.engine=#{engineId} 
+    </select>
+</mapper>

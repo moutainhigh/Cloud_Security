@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.APIMapper">
+	<!-- 列集合 -->
+	<sql id="cols">id,apikey,service_type,api_type,status,create_time,apiId,orderId,taskId</sql>
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.API" id="APIMap">
+		<id property="id" column="id"/>
+		<result property="apikey" column="apikey"/>
+		<result property="service_type" column="service_type"/>
+		<result property="api_type" column="api_type"/>
+		<result property="status" column="status"/>
+		<result property="create_time" column="create_time"/>
+		<result property="apiId" column="apiId"/>
+		<result property="orderId" column="orderId"/>
+		<result property="taskId" column="taskId"/>
+	</resultMap>
+		
+	<!-- 根据订单编号查询调用接口次数 -->
+	<select id="findAPIByParam" resultMap="APIMap" parameterType="hashmap">
+        SELECT * from cs_api api WHERE api.apiId=#{orderId} and api.api_type=1 and api.status=1
+
+    </select>
+		<!-- 根据订单编号查询调用所有接口次数 -->
+	<select id="findAllAPIByParam" resultType="hashmap" parameterType="hashmap">
+         SELECT api.api_type,count(api.api_type) apiCount from cs_api api WHERE api.apiId=#{orderId} group by api.api_type
+
+    </select>	
+	<!-- 根据用户和订单号查询调用接口历史记录 -->
+	<select id="findAPIHistoryInfoByParam" resultType="hashmap" parameterType="hashmap">
+		
+		SELECT *,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time1
+		from cs_api api 
+		LEFT JOIN (select order1.id,order1.type,order1.scan_type,group_concat(task1.url) as url,DATE_FORMAT(order1.begin_date,'%Y-%m-%d %H:%i:%s') begin_date,DATE_FORMAT(order1.end_date,'%Y-%m-%d %H:%i:%s') end_date from cs_order order1,cs_order_task task1 where task1.orderId=order1.id GROUP BY order1.id)b
+		on b.id=api.orderId WHERE api.apiId=#{orderId}
+		<if test="scanUrl!=null and scanUrl!=''">
+			and b.url like CONCAT('%','${scanUrl}','%' ) 
+		</if>
+		<if test="beginDate!=null and beginDate!=''">
+			and api.create_time &gt;= #{beginDate}
+		</if>
+		<if test="endDate!=null and endDate!=''">
+			and api.create_time &lt;= #{endDate} 
+		</if>
+	</select>
+</mapper>

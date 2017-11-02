@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.ApiPriceMapper">
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.Price" id="ApiPriceRM">
+		<id property="id" column="id"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="timesG" column="timesG"/>
+		<result property="timesLE" column="timesLE"/>
+		<result property="price" column="price"/>
+		<result property="delFlag" column="delFlag"/>
+	</resultMap>
+	
+	<!-- 插入价格信息 -->
+	<insert id="insertApiPrice" parameterType="com.cn.ctbri.entity.ApiPrice" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cs_api_price 
+		(serviceId,timesG,timesLE,price,delFlag) 
+		VALUES(#{serviceId},#{timesG},#{timesLE},#{price},#{delFlag})
+	</insert>
+	
+	<delete id="delPrice" parameterType="int">
+		delete from cs_api_price where serviceId=#{serviceId}
+	</delete>
+	
+	<!-- 根据serviceId查询价格列表-->
+	<select id="findApiPriceByServiceId" parameterType="int" resultMap="ApiPriceRM">
+		select * from cs_api_price where serviceId=#{serviceId} and delFlag=0
+	</select>
+	
+	<!-- 根据参数查询价格列表 -->
+	<select id="findApiPriceByParam" parameterType="hashmap" resultMap="ApiPriceRM">
+		select * from cs_api_price where serviceId=#{serviceId} and delFlag=0
+	</select>
+	
+	<update id="updateApiPriceDeleteFlag"  parameterType="int" >
+	 update cs_api_price 
+	 set delFlag = 1
+	 where serviceId=#{serviceId}
+	</update>
+	
+</mapper>

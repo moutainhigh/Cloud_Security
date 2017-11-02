@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+.ui-dialog .ui-dialog-title{ font-size:20px; color:#239dc8;}
+.ui-draggable .ui-dialog-titlebar{ background:#fff; border-bottom:#e0e0e0 solid 1px; padding-bottom:10px;}
+.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text{ background:url(../images/b_exit.jpg) no-repeat; position:relative; top:10px;}
+.popBox .item{ padding-top:28px;}
+.popBox .item div{ height:48px; line-height:48px;}
+.popBox .item div label{float:left; width:116px; text-align:right; color:#888888; font-size:16px; margin-right:10px;}
+.popBox .item div input[type=text]{ width:260px; height:34px; float:left; border:#e0e0e0 solid 1px; position:relative; top:4px;}
+.popBox .item div input[type=submit]{ width:183px; height:42px; font-size:18px; color:#fff; background:url(../images/b_btn_bg2.jpg) no-repeat; border:none; text-align:center; margin-top:20px; cursor:pointer;}
+.popBox .name_l{ width:606px;}
+.popBox .name_l .nameItem{}

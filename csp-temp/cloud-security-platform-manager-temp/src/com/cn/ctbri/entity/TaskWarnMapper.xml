@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.TaskWarnMapper">
+<sql id="cols">id,cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time</sql>
+	<resultMap type="com.cn.ctbri.entity.TaskWarn" id="TaskWarnRM">
+		<id property="id" column="id"/>
+		<result property="cat1" column="cat1"/>
+		<result property="cat2" column="cat2"/>
+		<result property="name" column="name"/>
+		<result property="severity" column="severity"/>
+		<result property="rule" column="rule"/>
+		<result property="ct" column="ct"/>
+		<result property="app_p" column="app_p"/>
+		<result property="tran_p" column="tran_p"/>
+		<result property="url" column="url"/>
+		<result property="msg" column="msg"/>
+		<result property="task_id" column="task_id"/>
+		<result property="warn_time" column="warn_time"/>
+	</resultMap> 
+	<!-- 根据订单id查询告警信息 -->
+	<select id="findTaskWarnByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
+	   <if test="websoc!=1">
+			SELECT tw.* 
+			FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
+			WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=tw.task_id
+	   </if>
+	   <if test="websoc==1">
+	        SELECT tw.* 
+	        FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
+	        WHERE oa.orderId=#{orderId} AND oa.id in(t.order_asset_Id) AND t.group_id=tw.group_id
+       </if>
+	</select>
+		<!-- 根据订单id查询告警次数 -->
+	<select id="findTaskWarnCountByOrderId" parameterType="String" resultMap="TaskWarnRM">
+		SELECT COUNT(*) AS count 
+		FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
+		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=tw.task_id;
+	</select>
+		<!-- 根据订单id查询可用率统计 -->
+	<select id="findUseableByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
+	    <if test="websoc!=1">
+			SELECT tw.*,oa.scan_type
+			FROM cs_order_asset oa,cs_task t,cs_taskwarn tw
+			WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND tw.task_id=t.taskId
+			GROUP BY tw.url
+		</if>
+		<if test="websoc==1">
+            SELECT tw.*,oa.scan_type
+            FROM cs_order_asset oa,cs_task t,cs_taskwarn tw
+            WHERE oa.orderId=#{orderId} AND oa.id in(t.order_asset_Id) AND t.group_id=tw.group_id
+            GROUP BY tw.url
+        </if>
+	</select>
+	
+	<!-- 查找告警的url资产 -->
+    <select id="findWarnUrlByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
+    	SELECT a.url, oa.scan_type AS scan_type
+		FROM cs_taskwarn a ,cs_order_asset oa,cs_task t 
+		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.task_id
+		GROUP BY a.url
+		ORDER BY a.warn_time
+    </select>
+    
+    <select id="findWarnByOrderIdAndUrl" parameterType="hashmap" resultMap="TaskWarnRM">
+		SELECT a.*
+		FROM cs_taskwarn a ,cs_order_asset oa,cs_task t 
+		WHERE a.url=#{url} AND oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.task_id
+		<if test="flag==1">
+	     and to_days(tw.warn_time) = to_days(now()) 
+		</if>
+		<if test="flag==2">
+	     and to_days(now()) - to_days(tw.warn_time) &lt;= 1
+		</if>
+		GROUP BY a.warn_time
+		ORDER BY a.warn_time
+    </select>
+    
+    <!-- 删除可用性告警 -->
+    <delete id="deleteTaskWarnByTaskId" parameterType="hashmap">
+        delete from cs_taskwarn where 
+        <if test="websoc!=1">
+         task_id = #{taskId}
+        </if>
+        <if test="websoc==1">
+         group_id = #{group_id}
+        </if>
+    </delete>
+</mapper>

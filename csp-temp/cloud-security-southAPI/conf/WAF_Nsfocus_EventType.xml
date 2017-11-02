@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="gbk"?>
+<TypeList>
+	<Type name="HTTP_Protocol_Validation">HTTP协议违背</Type>
+	<Type name="Web_Server_Bug">Web服务器漏洞攻击</Type>
+	<Type name="Web_Plugin_Bug">Web插件漏洞攻击</Type>
+	<Type name="Spider_Anti">爬虫事件</Type>
+	<Type name="Scan_Anti">恶意扫描</Type>
+	<Type name="CSRF">跨站请求伪造</Type>
+	<Type name="File_Upload_Limit">文件非法上传</Type>
+	<Type name="Cross_Site_Scripting">跨站脚本攻击</Type>
+	<Type name="SQL_Injection">SQL注入攻击</Type>
+	<Type name="LDAP_Injection">LDAP注入攻击</Type>
+	<Type name="SSI">SSI指令</Type>
+	<Type name="XPATH">XPath注入攻击</Type>
+	<Type name="OS_CMD_Injection">命令注入攻击</Type>
+	<Type name="Path_Traversal">路径穿越攻击</Type>
+	<Type name="RFI">远程文件包含</Type>
+	<Type name="Directory_Index">目录索引</Type>
+	<Type name="Info_Leak">信息泄露</Type>
+	<Type name="Content_filter">内容过滤</Type>
+	<Type name="Download_limit">非法下载</Type>
+	<Type name="Custom">自定义攻击</Type>
+	<Type name="HTTP_ACL">HTTP访问控制事件</Type>
+	<Type name="Virtual_Patch">智能补丁</Type>
+	<Type name="Anti_leech">资源盗链</Type>
+	<Type name="Cookie_sec">Cookie篡改</Type>
+	<Type name="White_list">违背白名单</Type>
+	<Type name="Webshell">WebShell页面访问</Type>
+	<Type name="Sensitive_Info_Filter">敏感信息过滤</Type>
+	<Type name="SSL_LOAD">SSL加载</Type>
+	<Type name="Brute_force">暴力破解攻击</Type>
+	<type name="SYN_FLOOD">SYN_FLOOD攻击</type>
+	<type name="ACK_FLOOD">ACK_FLOOD攻击</type>
+	<type name="HTTP_FLOOD">HTTP_FLOOD攻击</type>
+</TypeList>

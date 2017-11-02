@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.PriceMapper">
+	<!-- 列集合 -->
+	<sql id="cols">serviceId,timesG,timesLE,price,scanType</sql>
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.Price" id="PriceRM">
+		<id property="id" column="id"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="type" column="type"/>
+		<result property="timesG" column="timesG"/>
+		<result property="timesLE" column="timesLE"/>
+		<result property="price" column="price"/>
+		<result property="scanType" column="scan_type"/>
+		<result property="delFlag" column="delFlag"/>
+	</resultMap>
+	
+	<!-- 插入价格信息 -->
+	<insert id="insertPrice" parameterType="com.cn.ctbri.entity.Price" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cs_price 
+		(serviceId,type,timesG,timesLE,price,scan_type,delFlag) 
+		VALUES(#{serviceId},#{type},#{timesG},#{timesLE},#{price},#{scanType},#{delFlag})
+	</insert>
+	<delete id="delPrice" parameterType="int">
+		delete from cs_price where serviceId=#{serviceId}
+	</delete>
+	<!-- 根据serviceId查询价格列表-->
+	<select id="findPriceByServiceId" parameterType="int" resultMap="PriceRM">
+		select * from cs_price 
+		where 
+			serviceId=#{serviceId}
+		and 
+			delFlag = 0
+	</select>
+	<!-- 根据参数查询价格列表 -->
+	<select id="findPriceByParam" parameterType="hashmap" resultMap="PriceRM">
+		select * from cs_price where serviceId=#{serviceId} 
+		and delFlag = 0
+		<if test="type!=null and type!=''">
+			and type=#{type}
+		</if>
+		<!--<if test="parent!=null and parent!=''">
+			and parentC=#{parent}
+		</if>-->
+		order by scan_type, type
+	</select>
+	
+	<select id="findLongPriceByServiceId" parameterType="int" resultMap="PriceRM">
+		select * from cs_price 
+		where 
+			serviceId=#{serviceId} 
+		and 
+			delFlag = 0
+		and 
+			type != 0
+		order by scan_type, type
+	</select>
+	
+	<update id="updatePriceDeleteFlag"  parameterType="int" >
+	 update cs_price 
+	 set delFlag = 1
+	 where serviceId=#{serviceId}
+	</update>
+	
+</mapper>

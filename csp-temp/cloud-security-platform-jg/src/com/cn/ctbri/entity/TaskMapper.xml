@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.TaskMapper">
+<sql id="cols">taskId,order_asset_Id,execute_time,status,remarks,group_flag,alarm_view_flag</sql>
+	<resultMap type="com.cn.ctbri.entity.Task" id="TaskRM">
+		<id property="taskId" column="taskId"/>
+		<result property="order_asset_Id" column="order_asset_Id"/>
+		<result property="execute_time" column="execute_time"/>
+		<result property="status" column="status"/>
+		<result property="remarks" column="remarks"/>
+		<result property="group_flag" column="group_flag"/>
+		<result property="alarm_view_flag" column="alarm_view_flag"/>
+	</resultMap> 
+	<!-- 根据订单资产id查询任务表 -->
+	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
+		 select * from cs_task where order_asset_Id=#{order_asset_Id}
+	</select>
+	
+	
+	<!-- 插入任务信息 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" >	
+        INSERT INTO cs_task
+		(taskId,order_asset_Id,execute_time,status,group_flag,
+		engineIP,taskProgress,currentUrl,begin_time,end_time,scanTime,
+		issueCount,requestCount,urlCount,averResponse,
+		averSendCount,sendBytes,receiveBytes,websoc,exceptMark) 
+		VALUES(#{taskId}, #{order_asset_Id} , #{execute_time},#{status},#{group_flag},
+		#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
+		#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc},#{exceptMark})
+		ON DUPLICATE KEY UPDATE 
+				status=#{status},
+				engineIP=#{engineIP},
+				taskProgress=#{taskProgress},
+                currentUrl=#{currentUrl},
+                execute_time=#{execute_time},
+                group_flag=#{group_flag},
+                begin_time=#{begin_time},
+                end_time=#{end_time},
+                scanTime=#{scanTime},
+                issueCount=#{issueCount},
+                requestCount=#{requestCount},
+                urlCount=#{urlCount},
+                averResponse=#{averResponse},
+                averSendCount=#{averSendCount},
+                sendBytes=#{sendBytes},
+                receiveBytes=#{receiveBytes},
+                exceptMark=#{exceptMark}
+	</insert>
+	<!-- 根据orderId查询扫描次数 -->
+	<select id="findByOrderId" parameterType="int" resultType="Object">
+		SELECT a.id ,COUNT(a.id)	
+		FROM	
+			(SELECT o.id ,t.taskId
+			FROM cs_order o, cs_order_asset oa, cs_task t
+			WHERE o.id={id} AND oa.id=t.order_asset_Id)a
+		GROUP BY a.id HAVING a.id={id}
+	</select>
+	<!-- 根据userId查询扫描次数 -->
+	<select id="findTaskByUserId" parameterType="int" resultType="int">
+		SELECT COUNT(a.t1)
+		 from 
+			(SELECT o.userId o1,t.taskId t1
+			FROM cs_order o, cs_order_asset oa, cs_task t
+			WHERE oa.id=t.order_asset_Id and oa.orderId=o.id AND  o.userId=#{userId})a
+
+	</select>	
+		<!-- 根据orderId查询扫描进度和最近的url--><!-- pass -->
+	<select id="findProgressByOrderId" parameterType="hashmap" resultMap="TaskRM">
+			SELECT a.progress,b.currentUrl
+			FROM
+					(SELECT t.taskProgress/101*100 AS progress,t.group_flag
+					FROM cs_task t ,cs_order_asset oa
+					WHERE t.order_asset_Id =oa.id 
+					and oa.orderId =#{orderId} 
+					and t.order_asset_id = #{orderAssetId}
+					<if test="status!=null and status!=''">
+						and t.status=#{status}
+					</if>
+					<if test="group_flag!=null and group_flag!=''">
+		            	and t.group_flag=#{group_flag}
+		            </if>
+		            <if test="group_flag==null or group_flag==''">
+		             ORDER BY t.execute_time DESC limit 1 <!-- #{count} -->
+		            </if>
+					) a
+			CROSS JOIN
+					(SELECT t.currentUrl
+					FROM cs_task t ,cs_order_asset oa 
+					WHERE t.order_asset_Id=oa.id 
+					and oa.orderId =#{orderId} 
+					and t.order_asset_id = #{orderAssetId}
+					<if test="status!=null and status!=''">
+						and t.status=#{status}
+					</if>
+					<if test="group_flag!=null and group_flag!=''">
+		            	and t.group_flag=#{group_flag}
+		            </if>
+					ORDER BY t.execute_time DESC LIMIT 0,1) b
+	</select>
+	
+	<select id="getNewStatus" parameterType="hashmap" resultMap="TaskRM">
+		SELECT t.status,t.currentUrl
+			FROM cs_task t ,cs_order_asset oa
+			WHERE t.order_asset_Id =oa.id AND oa.orderId = #{orderId}
+			<if test="group_flag!=null and group_flag!=''">
+            	and t.group_flag=#{group_flag}
+            </if>
+            ORDER BY t.execute_time DESC 
+            <if test="type==1 and group_flag==null or group_flag==''">
+                limit 1 <!-- #{count} -->
+            </if>
+	</select>
+	
+	<!-- 根据orderId查询基本信息 -->
+	<select id="findBasicInfoByOrderId" parameterType="map" resultMap="TaskRM">
+		<!-- SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,SUM(t.scanTime) AS scanTime,SUM(t.issueCount) AS issueCount,SUM(t.requestCount) AS requestCount,SUM(t.urlCount) AS urlCount,round(AVG(t.averResponse),2) AS averResponse,round(AVG(t.averSendCount),2) AS averSendCount,SUM(t.sendBytes) AS sendBytes,SUM(t.receiveBytes) AS receiveBytes -->
+		SELECT t.execute_time,t.end_time,t.scanTime,t.issueCount,t.requestCount,t.urlCount,round(t.averResponse,2) AS averResponse,round(t.averSendCount,2) AS averSendCount,t.sendBytes,t.receiveBytes,t.status,t.order_asset_id,t.taskProgress/101*100 AS progress,t.group_flag,t.currentUrl
+		from ( select  t.*	FROM cs_task t,cs_order_asset oa
+					WHERE t.order_asset_Id = oa.id 
+					and oa.orderId=#{orderId} 
+					and t.order_asset_id = #{orderAssetId}
+					and t.status !=1
+					<if test="group_flag!=null and group_flag!=''">
+		            and t.group_flag=#{group_flag}
+		            </if>
+					ORDER BY t.execute_time DESC 
+					<if test="type==1 and group_flag==null or group_flag==''">
+		             limit 1 <!-- #{count} -->
+		            </if>
+			)	t order by t.execute_time desc limit 1
+	</select>
+	
+	
+	<!-- 根据orderId查询基本信息 -->
+    <select id="findTaskList" parameterType="map" resultMap="TaskRM">
+    SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
+		FROM cs_task t,cs_order_asset oa
+					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.group_flag=#{group_flag}
+					ORDER BY t.execute_time DESC 
+    </select>
+	
+	<!-- 根据orderId查询基本信息 -->
+    <select id="findNearlyTask" parameterType="String" resultMap="TaskRM">
+        SELECT *
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
+        ORDER BY t.execute_time DESC limit 1  
+    </select>
+    
+    <!-- 根据orderId查询资产数 -->
+    <select id="getCountByOrderId" parameterType="String" resultType="int">
+        select count(*) FROM cs_order_asset oa	WHERE oa.orderId=#{orderId}
+    </select>
+    
+	<!-- 根据orderId查询历史详情时间 -->
+	<select id="findScanTimeByOrderId" parameterType="String" resultType="hashmap">
+		<!-- SELECT distinct t.group_flag
+		FROM cs_task t,cs_order_asset oa
+		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 3
+		ORDER BY t.execute_time -->
+	    
+	    SELECT t.group_flag,t.alarm_view_flag,sum(t.issueCount) sum_issue_count
+		FROM cs_task t,cs_order_asset oa
+		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 3
+	    GROUP BY t.group_flag,t.alarm_view_flag ORDER BY t.execute_time 
+	</select>	
+	
+	<!-- 删除任务 -->
+    <delete id="deleteTaskByOaId" parameterType="String">
+        delete from cs_task where order_asset_Id = #{order_asset_Id}
+    </delete>
+    <!-- 修改任务 -->
+    <update id="update" parameterType="String">
+		update cs_task set alarm_view_flag=1 where taskId in
+		(SELECT a.id FROM
+		(select t.taskId id
+		from cs_task t,cs_order_asset oa
+		WHERE
+		t.order_asset_Id=oa.id AND oa.orderId=#{orderId}
+		<if test="groupId!=null and groupId!=''">
+        	and t.group_flag=#{groupId}
+        </if>
+		) a)
+    </update>
+    <select id="findAllByOrderId" parameterType="hashmap" resultType="com.cn.ctbri.entity.Task">				
+	select *  from cs_task where taskId in
+		(select t.taskId id
+		from cs_task t,cs_order_asset oa
+		WHERE
+		t.order_asset_Id=oa.id AND oa.orderId=#{orderId}
+		<if test="isAlarm!=null and isAlarm!=''">
+        	and t.isAlarm!=1
+        </if>
+		<!-- <if test="type!=null and type='1'">
+        	and t.status=3
+        </if>
+        <if test="type!=null and type='2'">
+        	and (t.status=3 or t.status=2)
+        </if> -->
+		)
+    </select>
+    
+    <select id="findFinishByOrderId" parameterType="hashmap" resultType="com.cn.ctbri.entity.Task">				
+	select *  from cs_task where taskId in
+		(select t.taskId id
+		from cs_task t,cs_order_asset oa
+		WHERE
+		t.order_asset_Id=oa.id 
+		and oa.orderId=#{orderId}
+        and t.status=3
+        and t.isAlarm=1
+		)
+    </select>
+    
+    <!-- 根据条件查询任务表 -->
+	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
+		select * from cs_task t
+		where t.status ! = 3
+	</select>
+	
+	<!-- 根据订单id条件查询任务表 -->
+	<select id="findTaskByOrderId" parameterType="String" resultMap="TaskRM">
+		SELECT t.*
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} AND t.status = 2
+        ORDER BY t.execute_time
+	</select>
+	
+	<!-- 更新任务信息 -->
+    <update id="updateTask"  parameterType="com.cn.ctbri.entity.Task">
+        update cs_task
+        <set>
+            <if test="begin_time!=null">
+                begin_time=#{begin_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="scanTime!=null">
+                scanTime=#{scanTime},
+            </if>
+            <if test="engineIP!=null">
+                engineIP=#{engineIP},
+            </if>
+            <if test="taskProgress!=null">
+                taskProgress=#{taskProgress},
+            </if>
+            <if test="currentUrl!=null">
+                currentUrl=#{currentUrl},
+            </if>
+            <if test="issueCount!=null">
+                issueCount=#{issueCount},
+            </if>
+            <if test="requestCount!=null">
+                requestCount=#{requestCount},
+            </if>
+            <if test="urlCount!=null">
+                urlCount=#{urlCount},
+            </if>
+            <if test="averResponse!=null">
+                averResponse=#{averResponse},
+            </if>
+            <if test="averSendCount!=null">
+                averSendCount=#{averSendCount},
+            </if>
+            <if test="sendBytes!=null">
+                sendBytes=#{sendBytes},
+            </if>
+            <if test="receiveBytes!=null">
+                receiveBytes=#{receiveBytes},
+            </if>
+            <!-- <if test="dns!=null">
+                dns=#{dns}
+            </if> -->
+            <if test="isAlarm!=null">
+                isAlarm=#{isAlarm}
+            </if>
+        </set>
+        where taskId = #{taskId}
+    </update>
+    
+    <!-- 查询弱点数 -->
+    <select id="findissueCount" parameterType="String" resultType="Integer">
+        SELECT ifnull(sum(t.issueCount),0) count
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId = #{orderId}
+    </select>
+    
+    <!-- 查询任务进度 -->
+    <select id="findProgssByOrderId" parameterType="hashmap" resultMap="TaskRM">
+			SELECT t.order_asset_id,t.taskProgress/101*100 AS progress,t.group_flag,t.currentUrl
+				FROM cs_task t ,cs_order_asset oa
+				WHERE t.order_asset_Id =oa.id 
+				and oa.orderId =#{orderId} 
+				<if test="orderAssetId!=null and orderAssetId!=''">
+					and t.order_asset_id = #{orderAssetId}
+				</if>
+				<if test="group_flag!=null and group_flag!=''">
+	            	and t.group_flag=#{group_flag}
+	            </if>
+	            <if test="group_flag==null or group_flag==''">
+	             ORDER BY t.execute_time DESC limit 1 <!-- #{count} -->
+	            </if>
+	</select>
+	
+	<select id="findFinishAlarmByOrderId" parameterType="hashmap" resultType="com.cn.ctbri.entity.Task">				
+		select DISTINCT a.taskId
+		from cs_task t,cs_order_asset oa,cs_alarm a
+		WHERE
+		t.order_asset_Id=oa.id 
+		and t.taskId = a.taskId
+		and oa.orderId=#{orderId}
+        and t.status=3
+        and t.isAlarm=1
+    </select>
+    
+    <!-- 插入任务信息 -->
+	<insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" >	
+		INSERT INTO cs_taskwarn
+        (id,cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time) 
+        VALUES(#{id}, #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time})
+        ON DUPLICATE KEY UPDATE 
+				cat1=#{cat1},
+				cat2=#{cat2},
+				name=#{name},
+                severity=#{severity},
+                rule=#{rule},
+                ct=#{ct},
+                app_p=#{app_p},
+                tran_p=#{tran_p},
+                url=#{url},
+                msg=#{msg},
+                task_id=#{task_id},
+                warn_time=#{warn_time}
+	</insert>
+</mapper>

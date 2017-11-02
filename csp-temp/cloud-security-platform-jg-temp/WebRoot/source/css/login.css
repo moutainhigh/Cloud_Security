@@ -1,0 +1,254 @@
+@charset "utf-8";
+/*登录*/
+
+.text{
+	outline:medium;
+	line-height: 16px;
+}
+input[type="text"]::-ms-clear{
+    display:none;
+}
+input::-ms-reveal{
+     display:none;
+ }
+
+.login{
+	background-color: #e5e5e5;
+	padding-top: 172px;
+	
+}
+.loginBox{
+	width: 990px;
+	background-color: #fff;
+	margin: 0 auto;
+	padding-bottom: 104px;
+	position: relative;
+}
+.loginBox .logo{
+	position: absolute;
+	top:30px;
+	left: 50px;
+}
+.login .cent .form{
+	width: 372px;
+	margin: 0 auto;
+	padding-top: 130px;
+	text-align: center;
+}
+.login .cent h2{
+	font-size: 30px;
+	color: #393939;
+	margin-bottom: 50px;
+}
+.given .cent ul li{
+	margin-bottom: 20px;
+}
+
+.login .cent ul .list{
+	height: 44px;
+	width: 348px;
+	border: #e5e5e5 solid 1px;
+	padding-left: 20px;
+	position: relative;
+}
+.login .cent ul .list i{
+	width: 18px;
+	height: 18px;
+	position:absolute;
+	top:12px;
+	right:16px;
+	
+}
+/*错误*/
+.login .cent ul .list .error{
+	background:url(../images/error.png) no-repeat;
+}
+/*正确*/
+.login .cent ul .list .right{
+	background:url(../images/right.png) no-repeat;
+}
+
+.login .cent ul .list .text{
+	
+	height: 20px;
+	width: 318px;
+	border: none;
+	color: #343434;
+	font-size: 16px;
+	border-radius: 1px;
+	outline:medium;
+	line-height: 16px;
+	padding:10px 30px 14px 0;
+	
+}
+.login .cent ul .list .test{
+	width: 108px;
+	height: 42px;
+	border-radius: 1px;
+	border: #e5e5e5 solid 1px;
+	position: absolute;
+	top:0px;
+	right: -134px;
+	font-size: 16px;
+}
+.login .cent ul .password{
+	border:none;
+	padding: 0px;
+}
+.login .cent ul .password label{
+	color: #343434;
+	font-size: 16px;
+}
+.login .cent ul .password em{
+	width: 17px;
+	height: 17px;
+	background:url(../images/k.png) no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px;
+	cursor:pointer;
+}
+.login .cent ul .password .right{
+	background:url(../images/d.png) no-repeat;
+}
+.login .cent ul .password a{
+	font-size: 16px;
+	color: #2499fb;
+}
+.subBox{
+	width: 370px;
+	height: 52px;
+}
+.subBox .submit{
+	width: 370px;
+	height: 52px;
+	font-family:"微软雅黑";
+	font-size: 18px;
+	text-align: center;
+	line-height: 52px;
+	color: #fff;
+	border:none;
+	cursor: pointer;
+
+}
+.subBox span{
+	font-size: 14px;
+	color: #929292;
+	
+}
+.subBox span a{
+	font-size: 16px;
+	color: #2499fb;
+	text-decoration:underline;
+	padding-left: 16px;
+}
+.subBox span i{
+	width: 18px;
+	height: 18px;
+	background:url(../images/login.png) no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+.login .cent ul .list{
+	position: relative;
+}
+.login .cent ul .list p{
+	color:#929292;
+	position: absolute;
+	top:12px;
+	font-size: 16px;
+	left: 20px;
+}
+
+.login .cent .prompt{
+	width: 100%;
+	padding: 10px 0px 0px 0px;
+	vertical-align: middle;
+	text-align: left;
+	color: #929292;
+	font-size: 14px;
+	display:none;
+}
+.login .cent .prompt b{
+	width: 18px;
+	height: 18px;
+	background:url(../images/warn.png) no-repeat;
+	display:inline-block;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+/*
+.login .cent ul .list .text::-webkit-input-placeholder {color:#929292; }
+.login .cent ul .list .text::-moz-placeholder {color:#929292; }  
+.login .cent ul .list .text::-ms-input-placeholder { color:#929292; } 
+.login .cent ul .list .text::-moz-placeholder { color:#929292; }
+*/
+
+
+/*注册*/
+.register .cent ul li{
+	margin-bottom: 20px;
+}
+.register .cent .prompt{
+	width: 100%;
+	padding: 10px 0px 0px 0px;
+	vertical-align: middle;
+	text-align: left;
+	color: #929292;
+	font-size: 14px;
+	display:none;
+}
+.register .cent .prompt b{
+	width: 18px;
+	height: 18px;
+	background:url(../images/warn.png) no-repeat;
+	display:inline-block;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+.register .cent .verification{
+	background-color: #e5e5e5;
+	color: #929292;
+	text-align: center;
+	line-height: 44px;
+}
+select::-ms-expand { display: none; }
+.register ul li .scelt{
+    width: 370px;
+  	min-height: 14px;
+   padding:11px 0px 11px 0px;
+    padding-left: 20px;
+    border: #e5e5e5 solid 1px;
+    color: #929292;
+    appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    background: url(../images/scb.png) no-repeat scroll 336px center transparent;
+    font-size: 16px;
+}
+.register ul li .scelt option{
+	padding-left: 20px;
+	
+}
+
+.passwordlist .prompt{
+	width: 100%;
+	padding: 10px 0px 0px 0px;
+	vertical-align: middle;
+	text-align: left;
+	color: #929292;
+	font-size: 14px;
+	display:none;
+	margin-left: 130px;
+}
+.passwordlist .prompt b{
+	width: 18px;
+	height: 18px;
+	background:url(../images/warn.png) no-repeat;
+	display:inline-block;
+	margin-right: 10px;
+	vertical-align: middle;
+}

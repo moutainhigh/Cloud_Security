@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.UserMapper">
+	<sql id="cols">id,createTime,name,password,mobile,email,status,type,remarks,realName,ip,industry,job,company,startIP,endIP,lastLoginTime</sql>
+	
+	<resultMap type="com.cn.ctbri.entity.User" id="UserRM">
+		<id property="id" column="id"/>
+		<result property="createTime" column="createTime"/>
+		<result property="name" column="name"/>
+		<result property="password" column="password"/>
+		<result property="mobile" column="mobile"/>
+		<result property="email" column="email"/>
+		<result property="status" column="status"/>
+		<result property="type" column="type"/>
+		<result property="remarks" column="remarks"/>
+		<result property="realName" column="realName"/>
+		<result property="ip" column="ip"/>
+		<result property="industry" column="industry"/>
+		<result property="job" column="job"/>
+		<result property="company" column="company"/>
+		<result property="startIP" column="startIP"/>
+		<result property="endIP" column="endIP"/>
+		<result property="lastLoginTime" column="lastLoginTime"/>
+	</resultMap>
+	
+	<resultMap type="com.cn.ctbri.entity.MobileInfo" id="MobileInfo">
+	
+		<result property="MobileNumber" column="MobileNumber"/>
+		<result property="Times" column="Times"/>
+		<result property="sendDate" column="sendDate"/>
+		
+	</resultMap>
+	<!-- 修改用户 -->
+	<update id="update" parameterType="com.cn.ctbri.entity.User">
+		update cs_user
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="mobile!=null">
+				mobile=#{mobile},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="realName!=null">
+				realName=#{realName},
+			</if>
+			<if test="type!=null">
+				type=#{type},
+			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
+			<if test="startIP!=null">
+				startIP=#{startIP},
+			</if>
+			<if test="endIP!=null">
+				endIP=#{endIP},
+			</if>
+			<if test="company!=null">
+				company=#{company},
+			</if>
+			<if test="job!=null">
+				job=#{job},
+			</if>
+			<if test="industry!=null">
+				industry=#{industry},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 查询所有记录 -->
+	<select id="list" resultMap="UserRM" parameterType="com.cn.ctbri.entity.User">
+		select * from cs_user
+		where 1=1
+		<if test="name!=null and name!=''">
+			and name like CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+	</select>
+	
+	<!-- 插入用户 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
+		insert into cs_user 
+		(name,password,mobile,email,status,type,remarks,createTime,realName,industry,job,company,startIP,endIP) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{industry},#{job},#{company},#{startIP},#{endIP})
+	</insert>
+	
+	<!-- 按用户名查询用户 -->
+	<select id="findUserByName" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where name=#{name}
+	</select>
+	
+	<!-- 按手机号码查询用户 -->
+	<select id="findUserByMobile" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where mobile=#{mobile}
+	</select>
+	
+	<!-- 按用邮箱查询用户 -->
+	<select id="findUserByEmail" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where email=#{email}
+	</select>
+	
+	<!-- 按用用户名、邮箱、手机号码组合查询用户 -->
+	<select id="findUserByCombine" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		<where>
+			<if test="name!=null">
+			or name=#{name}
+			</if>
+			<if test="mobile!=null">
+			or mobile=#{mobile}
+			</if>
+			<if test="email!=null">
+			or email=#{email}
+			</if>
+		</where>
+	</select>
+	<!-- 根据用户类型查询用户 -->
+	<select id="findUserByUserType" parameterType="com.cn.ctbri.entity.User" resultMap="UserRM">
+		select * from cs_user
+		<where>
+			type=#{type}
+		</where>
+	</select>
+		<!-- 删除用户 -->
+	<delete id="delete">
+		delete from cs_user
+		where id=#{id}
+	</delete>
+	<!-- 按用户名模糊查询用户 
+	<select id="fuzzyQueryByName" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name like CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+	</select>-->
+	<!-- 根据用户类型查询用户 -->
+	<select id="findHaveServSum" resultType="hashmap">
+		SELECT a.name,COUNT(a.name) as count
+		FROM 
+			(SELECT * 
+			FROM   (
+				SELECT  u.name , o.serviceId ,u.type	  
+				FROM cs_order o LEFT JOIN cs_user u 
+				ON o.userId=u.id ) uo 
+			WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
+		GROUP BY a.name ORDER BY COUNT(a.name) DESC;
+	</select>
+	<!-- 分页查询活跃用户数 -->
+		<select id="queryByPage" resultType="hashmap">
+		SELECT a.name,COUNT(a.name) as count
+		FROM 
+			(SELECT * 
+			 FROM   (
+				SELECT  u.name , o.serviceId ,u.type	  
+				FROM cs_order o LEFT JOIN cs_user u 
+				ON o.userId=u.id ) uo 
+			 WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
+		GROUP BY a.name ORDER BY COUNT(a.name) DESC LIMIT #{pageNow},#{pageSize}
+	</select>
+	<!-- 查询用户信息 -->
+	<select id="findUserById" resultMap="UserRM" parameterType="int">
+	select * from cs_user where id=#{id} 
+	</select>
+	
+	<!-- 插入手机信息-->
+	<insert id="addMobile" parameterType="com.cn.ctbri.entity.MobileInfo">
+		insert into cs_mobile
+		(MobileNumber,Times,sendDate) values(#{MobileNumber},#{Times},#{sendDate})
+	</insert>
+	<!-- 修改手机信息 -->
+	<update id="updateMobile" parameterType="int">
+	    update cs_mobile set Times=#{Times}
+	</update>
+	
+	<!-- 根据手机号查询信息 -->
+	<select id="getMobileById" resultMap="MobileInfo" parameterType="String">
+	select * from cs_mobile where MobileNumber=#{MobileNumber} 
+	</select>
+	
+	<!-- 修改用户 -->
+	<update id="updatePass" parameterType="com.cn.ctbri.entity.User">
+		update cs_user set password=#{password}
+		
+		 where  
+		<if test="mobile!=null and mobile!=''">
+				  mobile=#{mobile}
+		</if>
+		<if test="email!=null and email!=''">
+			   email=#{email}
+		</if>
+	</update>
+	
+	<!-- 根据状态查询用户信息 -->
+	<select id="findUserByStatus" resultMap="UserRM" parameterType="int">
+	select * from cs_user where status=#{status} 
+	</select>
+	
+	<!-- 查询所有注册用户的数量 -->
+	<select id="findRegisterCount" resultType="int">
+	SELECT COUNT(*) FROM cs_user WHERE type=2 or type=3
+	</select>
+	
+	
+	<!-- 插入用户api add by tangxr 2016-7-13-->
+	<insert id="insertAPINum" parameterType="com.cn.ctbri.entity.APINum">
+		insert into cs_api 
+		(apikey,service_type,api_type,status,create_time) values(#{apikey},#{service_type},#{api_type},#{status},#{create_time})
+	</insert>
+	
+	<!-- 查询用户的apikey -->
+	<select id="findUserApiKey" resultType="hashmap">
+	SELECT name, apikey from cs_user where 1=1
+		<if test="apikey != null and apikey!=''">
+		and
+		apikey like CONCAT(CONCAT('%', #{apikey}), '%')
+		</if>
+		<if test="name != null and name !=''">
+		and name like CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+	</select>
+	
+	<select id="findUser" resultMap="UserRM" parameterType="hashmap">
+	 select * from cs_user where 1=1
+	 <if test="name != null and name != ''">and name like concat('%',concat(#{name}, '%'))</if>
+	 <if test="email != null and email != ''">and email = #{email}</if>
+	 <if test="mobile != null and mobile != ''">and mobile like concat('%', concat(#{mobile}, '%'))</if>
+	 order by id
+	</select>
+</mapper>
