@@ -1,6 +1,0 @@
-数据同步通过框架中jdbc执行sql语句
-sql语句写在sql.properties中，包含*Select和*Insert语句
-需要同步哪些表就放开哪句，不同步的直接注释掉
-目前设定为自动调度，调度设置在scheduler.xml文件中设置
-quartzLedgerJob的bean中的value值为是否开启同步，true为开启，false为关闭
-ledgerCronTrigger的cronExpression属性为调度时间设置
