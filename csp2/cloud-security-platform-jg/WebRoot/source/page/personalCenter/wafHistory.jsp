@@ -422,7 +422,7 @@ function generate(){
             </c:if>
         </div>
         
-       
+       <!--  
        <div class="data_table">
             <c:if test="${websecNum>0}">
 				<div style="width:100%; height: 380px; padding: 20px;" id="sourceArea"></div>				
@@ -431,7 +431,7 @@ function generate(){
 	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
         </div>         
-
+		-->
        </div>    
 		</div>
 		</form>
