@@ -416,6 +416,7 @@ html, body {
 							<li><img src="${ctx}/source/images/portal/ico15.png" alt=""></li>
 							<li><img src="${ctx}/source/images/portal/ico13.png" alt=""></li>
 							<li><img src="${ctx}/source/images/portal/ico16.png" alt=""></li>
+							<li><img src="${ctx}/source/images/portal/ico19.png" alt=""></li>
 							<!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
