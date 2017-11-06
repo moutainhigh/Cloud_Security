@@ -161,8 +161,8 @@ $(document).ready(function(){
 					<div class="apiL fl" style="width:350px;">
 						<dl class="apitab">
 							<dt>API表格</dt>
-							<dd class="active">获取当天国内活动恶意URL信息</dd>
-							<dd>获取当天全球活动恶意URL信息</dd>
+							<dd class="active">获取前一天国内活动恶意URL信息</dd>
+							<dd>获取前一天全球活动恶意URL信息</dd>
 							<dd>获取指定时间段内国内活动恶意URL信息</dd>
 							<dd>获取指定时间段内全球活动恶意URL信息</dd>
 							<dd>获取国内所有活动恶意URL信息</dd>
@@ -179,7 +179,7 @@ $(document).ready(function(){
 							<ul>
 								<li class="clearfix"><label class="fl">接口描述：</label>
 									<div class="fl centapi">
-										<p>获取当天国内活动恶意URL信息</p>
+										<p>获取前一天国内活动恶意URL信息</p>
 									</div></li>
 								<li class="clearfix"><label class="fl">接口地址：</label>
 									<div class="fl centapi">
@@ -359,7 +359,7 @@ $(document).ready(function(){
 							<ul>
 								<li class="clearfix"><label class="fl">接口描述：</label>
 									<div class="fl centapi">
-										<p>获取当天全球活动恶意URL信息</p>
+										<p>获取前一天全球活动恶意URL信息</p>
 									</div></li>
 								<li class="clearfix"><label class="fl">接口地址：</label>
 									<div class="fl centapi">
