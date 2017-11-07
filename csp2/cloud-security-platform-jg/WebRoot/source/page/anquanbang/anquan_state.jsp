@@ -12,6 +12,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>安全帮-中国电信云安全服务在线商城</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/totalNum_refersh.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet" />	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet" />
@@ -23,7 +24,7 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
-
+<script type="text/javascript" src="${ctx}/source/attacking/js/jquery.dataStatistics.js"></script>
 <style>
 			.img{
 				display: block;
@@ -155,7 +156,25 @@
 			this.style.width=(this.offsetWidth > 500)?”500px”:”auto”}
 		);
 	}
-	
+	.runNum {
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      height: 50px;
+      line-height: 50px;
+      border-top: #CCCCCC solid 1px;
+      border-bottom: #CCCCCC solid 1px;
+      text-align: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .runNum>li {
+      list-style: none;
+      width: 40px;
+      float: left;
+      position: absolute;
+    }
 </style>
 <script>
 	var ctx='${ctx}';
@@ -242,17 +261,21 @@
 			 	<font id="dayTotalFon" color="#c1c7da" size='5'  style="font-weight:bold;">62207</font><br/>
 			 	<font color="#c1c7da" size='3'>今日攻击总数</font>
 			 </div>
-			 <!--  
-			 <c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='anquanbangtest' }">
-			 	<div  id="totalFontDiv" style="margin:10px auto; text-align:center;">
-					<font id="totalFont" color="#f3e925" size='3'  style="font-weight:bold;">攻击总数62207</font>
-				</div>
+		
+			 <c:if test="${sessionScope.globle_user.name =='anquanbang_demo'  }">
+			 	
+			<div class="dataStatistics" style="margin:0px auto; text-align:center;">
+			  	<div class="digit_set"></div>
+				<div class="digit_set"></div>
+			  	<div class="digit_set"></div>
+			  	<div class="digit_set"></div>
+			  	<div class="digit_set"></div>
+			  	<div class="digit_set"></div>
+			  	<div class="digit_set set_last"></div>
+			 </div>
+					
 			</c:if>
-			<c:if test="${sessionScope.globle_user.name !='anquanbang' &&sessionScope.globle_user.name !='anquanbangtest' }">
-			 	<div  id="totalFontDiv" style="margin:0px auto; text-align:center;">
-					<font id="totalFont" color="#f3e925" size='3'  style="font-weight:bold;">攻击总数62207</font>
-				</div>
-			</c:if>-->
+			
                 <div class="word" style="width: 100%; height: 600px;">
                 <!-- 世界地图背景色 -->
 <!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
@@ -332,6 +355,7 @@
 					var todayFontVal='${wafDayTotalNumber}';
 					document.getElementById("totalFon").firstChild.nodeValue=fontValue;
 					document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
+					$('.dataStatistics').dataStatistics({min:wafTotalNumber,max:wafTotalNumber,time:30,len:7,init:true});
 					var error = '${error}';
 					if(error!=''){
 						alert(error);
@@ -492,6 +516,100 @@
 	});
 	
 </script> 
+
+<script type="text/javascript">
+    (function($) {
+      /*jQuery对象添加  runNum  方法*/
+      $.fn.extend({
+        /*
+         *	滚动数字
+         *	@ val 值，	params 参数对象
+         *	params{addMin(随机最小值),addMax(随机最大值),interval(动画间隔),speed(动画滚动速度),width(列宽),height(行高)}
+         */
+        runNum: function(val, params) {
+          /*初始化动画参数*/
+          var valString = val || '70225800'
+          var par = params || {};
+          var runNumJson = {
+            el: $(this),
+            value: valString,
+            valueStr: valString.toString(10),
+            width: par.width || 40,
+            height: par.height || 50,
+            // addMin: par.addMin || 10000,
+            // addMax: par.addMax || 99999,
+            // interval: par.interval || 3000,
+            speed: par.speed || 1000,
+            // width: par.width || 40,
+            length: valString.toString(10).length
+          };
+          $._runNum._list(runNumJson.el, runNumJson);
+          // $._runNum._interval(runNumJson.el.children("li"),runNumJson);
+        },
+        update: function(val, params) {
+          /*更新数字*/
+          var valString = val || '70225800'
+          var par = params || {};
+          var runNumJson = {
+            el: $(this),
+            // value: valString,
+            // valueStr: valString.toString(10),
+            width: par.width || 40,
+            height: par.height || 50,
+            // addMin: par.addMin || 10000,
+            // addMax: par.addMax || 99999,
+            // interval: par.interval || 3000,
+            speed: par.speed || 1000,
+            // width: par.width || 40,
+            length: valString.length
+          };
+          $._runNum._animate(runNumJson.el.children("li"),valString,runNumJson)
+        }
+      });
+      /*jQuery对象添加  _runNum  属性*/
+      $._runNum = {
+        /*初始化数字列表*/
+        _list: function(el, json) {
+          var str = '';
+          for (var i = 0; i < json.length; i++) {
+            var w = json.width * i;
+            var t = json.height * parseInt(json.valueStr[i]);
+            var h = json.height * 10;
+            str += '<li style="width:' + json.width + 'px;left:' + w + 'px;top: ' + -t + 'px;height:' + h + 'px;">';
+            for (var j = 0; j < 10; j++) {
+              str += '<div style="height:' + json.height + 'px;line-height:' + json.height + 'px;">' + j + '</div>';
+            }
+            str += '</li>';
+          }
+          el.html(str);
+        },
+        /*生成随即数*/
+        // _random:function (json) {
+        //     var Range = json.addMax - json.addMin;
+        //     var Rand = Math.random();
+        //     var num=json.addMin + Math.round(Rand * Range);
+        //     return num;
+        // },
+        /*执行动画效果*/
+        _animate: function(el, value, json) {
+          for (var x = 0; x < json.length; x++) {
+            var topPx = value[x] * json.height;
+            el.eq(x).animate({
+              top: -topPx + 'px'
+            }, json.speed);
+          }
+        },
+        /*定期刷新动画列表*/
+        // _interval:function (el,json) {
+        //     var val=json.value;
+        //     setInterval(function () {
+        //         val+=$._runNum._random(json);
+        //         $._runNum._animate(el,val.toString(10),json);
+        //     },json.interval);
+        // }
+      }
+    })(jQuery);
+ </script>
 </body>
 
 
