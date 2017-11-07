@@ -63,7 +63,7 @@ public class N_MalUrlService {
 		public IOrderAPIService orderAPIService;
 		
 
-		//获取当天国内活动恶意URL信息
+		//1、获取当天国内活动恶意URL信息
 		@GET
 	    @Path("/getdatabycntoday/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -102,7 +102,7 @@ public class N_MalUrlService {
 			} 	
 			return json.toString();
 		}
-		//获取当天全球活动恶意URL信息
+		//2、获取当天全球活动恶意URL信息
 		@GET
 	    @Path("/getdatabytoday/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -140,7 +140,7 @@ public class N_MalUrlService {
 			} 	
 			return json.toString();
 		}	
-		//获取指定时间段内国内活动恶意URL信息
+		//3、获取指定时间段内国内活动恶意URL信息
 		@POST
 	    @Path("/getdatabycnperiod/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -188,7 +188,7 @@ public class N_MalUrlService {
 				Common.paramErrCodeAndMessage(json);
 			return json.toString();
 	}	
-		//获取指定时间段内全球活动恶意URL信息
+		//4、获取指定时间段内全球活动恶意URL信息
 		@POST
 	    @Path("/getdatabyperiod/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -236,7 +236,7 @@ public class N_MalUrlService {
 				Common.paramErrCodeAndMessage(json);
 			return json.toString();
 	}	
-		//获取国内所有活动恶意URL信息
+		//5、获取国内所有活动恶意URL信息
 		@GET
 	    @Path("/getdatabycn/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -276,7 +276,7 @@ public class N_MalUrlService {
 			
 			return json.toString();
 	}
-		//获取全球所有活动恶意URL信息
+		//6、获取全球所有活动恶意URL信息
 		@GET
 	    @Path("/getdata/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -317,7 +317,7 @@ public class N_MalUrlService {
 			return json.toString();
 	}	
 		
-		//获取国内所有活动恶意URL针对的目标列表
+		//7、获取国内所有活动恶意URL针对的目标列表
 		@GET
 	    @Path("/gettargetlistbycn/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -357,7 +357,7 @@ public class N_MalUrlService {
 			
 			return json.toString();
 	  }
-		//获取国内针对特定目标所有活动恶意URL信息
+		//8、获取国内针对特定目标所有活动恶意URL信息
 		@POST
 	    @Path("/getdatabycntarget/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -406,7 +406,7 @@ public class N_MalUrlService {
 	  }
 		
 		
-		//获取国内活动恶意URL行业分类列表
+		//9、获取国内活动恶意URL行业分类列表
 		@GET
 	    @Path("/getfieldlistbycn/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -446,7 +446,7 @@ public class N_MalUrlService {
 			
 			return json.toString();
 	  }	
-		//获取国内某行业所有活动恶意URL信息
+		//10、获取国内某行业所有活动恶意URL信息
 		@POST
 	    @Path("/getdatabycnfield/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -493,7 +493,7 @@ public class N_MalUrlService {
 				Common.paramErrCodeAndMessage(json);
 			return json.toString();
 	  }	
-		//查询指定域名或 IP是否存在活动恶意URL信息
+		//11、查询指定域名或 IP是否存在活动恶意URL信息
 		@POST
 	    @Path("/querydatabydomain/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
@@ -540,6 +540,62 @@ public class N_MalUrlService {
 				Common.paramErrCodeAndMessage(json);
 			return json.toString();
 	  }	
+		
+		
+		//12、查看全球有效的恶意URL数
+		
+		
+		//13、分段查看全球有效的恶意URL   2017-11-6 add by liao
+		@POST
+	    @Path("/getdatabysection/{token}")
+		@Produces(MediaType.APPLICATION_JSON) 
+		public String getMalurlDataBySection(@PathParam("token") String token, String dataJson) {
+			JSONObject json = new JSONObject();
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			String offset = jsonObj.getString("offset");
+			String rows = jsonObj.getString("rows");
+			if( isValidIndex(offset,rows)){
+				try {
+					//通过token查询user
+					User user = getUserByToken(token);
+					List<OrderAPI> userableList = getUserableList(user);
+					List<OrderAPI> oAPIList = this.getOAPIList(user);		
+					if(token!=null && token!="" && user!=null){
+						
+						if(havePermission(user, oAPIList)){
+							if(!serviceExpired(user,oAPIList)){
+								if(!usedUp(user, userableList)){
+									
+									String currentMethodName = getMethodName();
+									JSONObject paramJson = new JSONObject();
+									paramJson.put("offset", offset);
+									paramJson.put("rows", rows);
+									String southAPIReturn = getSouthAPIByMethod(currentMethodName,paramJson);
+									southAPIWrapper(southAPIReturn,json);
+									
+									for (int i = 0; i < oAPIList.size(); i++) {
+										countAPI(token, oAPIList.get(i).getId(), null, 8, 2);
+									}
+									
+								}else
+									Common.usedUpCodeCodeAndMessage(json);
+							}else
+								Common.expiredCodeAndMessage(json);
+						}else
+							Common.permissionDeniedCodeAndMessage(json);
+					}else{
+						Common.tokenInvalidCodeAndMessage(json);
+					}
+				}catch (Exception e) {
+						e.printStackTrace();
+						Common.failCodeAndMessage(json);
+				} 	
+			}else
+				Common.paramErrCodeAndMessage(json);
+			return json.toString();
+		}
+		
+		
 	/**
 	 * 方法描述:根据用户，及其订单列表，判断其是否有访问权限
 	 * @author man
@@ -647,7 +703,29 @@ public class N_MalUrlService {
 	        }catch(Exception e){  
 	            return false;  
 	        }  
-	 }     
+	 } 
+	
+	/**
+	 * 用来判断传入的offset和rows是否合法
+	 * @param str
+	 * @return
+	 * add by liao 2017-11-6
+	 */
+	private boolean isValidIndex(String offset,String rows) {  
+	        try{  
+	        	int a = Integer.parseInt(offset);
+	        	int b = Integer.parseInt(rows);
+	        	boolean bol=false;
+	        	if (a>=1 && b>=0) {
+	        		bol = true;
+				}
+	        	return bol;
+	        	
+	        }catch(Exception e){  
+	            return false;  
+	        }  
+	 }  
+	
 	/**
 	 * 方法描述:根据当前方法名，获取南向api的访问url，并进行接口访问
 	 * @author man
