@@ -23,22 +23,22 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/registzezao.js"></script>
 <style type="text/css">
 @media screen and (min-width: 1201px) {
-.login {padding-top: 172px}
+.login {padding-top: 72px}
 }
 /* css 注释说明：设置了浏览器宽度不小于1201px时*/
 
 @media screen and (max-width: 1200px) {
-.login {padding-top: 150px}
+.login {padding-top: 50px}
 }
 /* 设置了浏览器宽度不大于1200px时 */
 
 @media screen and (max-width: 900px) {
-.login {padding-top: 100px}
+.login {padding-top: 40px}
 }
 /* 设置了浏览器宽度不大于900px时*/
 
 @media screen and (max-width: 500px) {
-.login {padding-top: 60px}
+.login {padding-top: 20px}
 }
 /* 设置了浏览器宽度不大于500px时 */ 
 </style>
