@@ -292,7 +292,7 @@ public class shoppingSysController {
 		
 		List assetIdsList = new ArrayList();
 		List<Price> priceList = new ArrayList();
-		System.out.println("12345678900000000");
+		//System.out.println("12345678900000000");
 		try {
 			User globle_user = (User)request.getSession().getAttribute("globle_user");
 			//String assetIds = request.getParameter("assetIds");
@@ -307,7 +307,7 @@ public class shoppingSysController {
 			
 			
 			String duration = request.getParameter("duration");
-			System.out.println("duration是"+duration);
+			//System.out.println("duration是"+duration);
 	        String scanPeriod = request.getParameter("scanType"); // 频率  绿盟64ip(scanType = 15)   128ip(16)   金山10对应 10ip
 	        String serviceId = request.getParameter("serviceId");
 	        String createDate = DateUtils.dateToString(new Date());
@@ -397,7 +397,7 @@ public class shoppingSysController {
 									request.setAttribute("carnum", carnum);
 									request.setAttribute("detailImages", detailImages);
 									request.setAttribute("message", "已有同类订单");
-										System.out.println("已有同类订单，不能重复购买");
+										//System.out.println("已有同类订单，不能重复购买");
 									
 										return "/source/page/details/systemServDetails";
 
@@ -407,7 +407,7 @@ public class shoppingSysController {
 				
 			} catch (Exception e) {
 				
-				System.out.println("购买crush");
+				//System.out.println("购买crush");
 				e.printStackTrace();
 				return "redirect:/index.html";
 			}
