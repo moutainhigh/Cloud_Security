@@ -172,6 +172,7 @@ $(document).ready(function(){
 							<dd>获取国内活动恶意URL行业分类列表</dd>
 							<dd>获取国内某行业所有活动恶意URL信息</dd>
 							<dd>查询指定域名或IP是否存在活动恶意URL信息</dd>
+							<dd>分段获取全球活动恶意URL信息</dd>
 						</dl>
 					</div>
 					<div class="apiR fl" style="width:500px">
@@ -1924,7 +1925,7 @@ $(document).ready(function(){
 							<ul>
 								<li class="clearfix"><label class="fl">接口描述：</label>
 									<div class="fl centapi">
-										<p>获取国内某行业所有活动恶意URL信息</p>
+										<p>查询指定域名或IP是否存在活动恶意URL信息</p>
 									</div></li>
 								<li class="clearfix"><label class="fl">接口地址：</label>
 									<div class="fl centapi">
@@ -2106,7 +2107,198 @@ $(document).ready(function(){
 
 							</ul>
 						</div>
+						
+						<div class="listtab">
+							<ul>
+								<li class="clearfix"><label class="fl">接口描述：</label>
+									<div class="fl centapi">
+										<p>分段获取全球活动恶意URL信息</p>
+									</div></li>
+								<li class="clearfix"><label class="fl">接口地址：</label>
+									<div class="fl centapi">
+										<p>rest/openapi/malurl/ getdatabysection/{token}</p>
+									</div></li>
+								<li class="clearfix"><label class="fl">请求方法：</label>
+									<div class="fl centapi">
+										<p>POST</p>
+									</div></li>
+								<li class="clearfix"><label class="fl">参数说明：</label>
+									<div class="fl centapi">
+										<table class="tableapi" width="718" cellpadding="0"
+											cellspacing="0">
+											<thead>
+												<tr>
+													<th width="170">名称</th>
+													<th width="100">必选</th>
+													<th width="446">描述</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td width="170">offset</td>
+													<td width="100">是</td>
+													<td class="aw" width="446">起始位置，最小为1</td>
+												</tr>
+												<tr>
+													<td width="170">rows</td>
+													<td width="100">是</td>
+													<td class="aw" width="446">获取的条数，不小于0</td>
+												</tr>
+												<tr>
+													<td width="170">token</td>
+													<td width="100">是</td>
+													<td class="aw" width="446">用户登录后获取到的会话token</td>
+												</tr>
 
+											</tbody>
+										</table>
+									</div></li>
+								<li class="clearfix" style="margin-top:28px;"><label
+									class="fl">发送请求：(示例)</label>
+									<div class="fl centapi">
+										<div class="cent-div" style="height:130px;">
+											POST  /rest/openapi/secbasedata/iplatlong/getcndatablock/{token}<br />
+											Content-Type: application/json<br /> Accept:
+											application/json;version=1.0<br /> { <br />
+											"offset":"1",<br /> 
+											"rows":"2700"<br />}<br />
+
+										</div>
+									</div></li>
+								<li class="clearfix" style="margin:22px 0px;"><label
+									class="fl">返回结果：(示例)</label>
+									<div class="fl centapi">
+										<div class="cent-div" style="height:260px;">
+											成功：<br />
+											{"code":200,"webphishList":[{"url":"","field":"","domain":"","ip":"","asn":"","asnName":"","country":"","countryCode":"","subdivision1":"","subdivision2":"","city":"","target":"","verifiedTime":"","isValid":1}]}<br />
+
+											失败：<br /> {"code":404,"message":"失败"}<br />
+											{"code":405,"message":"参数无效"}<br />
+											{"code":422,"message":"token无效"}<br />
+											{"code":423,"message":"用户无权限"}<br />
+											{"code":424,"message":"服务已过期，请重新购买"}<br />
+											{"code":425,"message":"购买的服务次数已用完，请重新购买"}<br />
+
+										</div>
+									</div></li>
+								<li class="clearfix"><label class="fl">返回结果<br>代码表：</label>
+									<div class="fl centapi capi">
+										<table class="tableapi" width="718" cellpadding="0"
+											cellspacing="0">
+											<thead>
+												<tr>
+													<th width="270">成功代码</th>
+													<th width="446">描述</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td width="270">code</td>
+													<td width="446">返回码</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">200：成功</td>
+												</tr>
+												<tr>
+													<td width="270">webphishList</td>
+													<td width="446">恶意URL钓鱼网站列表</td>
+												</tr>
+												<tr>
+													<td width="270">url</td>
+													<td width="446">url</td>
+												</tr>
+												<tr>
+													<td width="270">field</td>
+													<td width="446">所属领域</td>
+												</tr>
+												<tr>
+													<td width="270">domain</td>
+													<td width="446">域名</td>
+												</tr>
+												<tr>
+													<td width="270">ip</td>
+													<td width="446">网站IP</td>
+												</tr>
+												<tr>
+													<td width="270">asn</td>
+													<td width="446">ASN</td>
+												</tr>
+												<tr>
+													<td width="270">asnName</td>
+													<td width="446">ASN名称</td>
+												</tr>
+												<tr>
+													<td width="270">subdivision1</td>
+													<td width="446">所属一级地区</td>
+												</tr>
+												<tr>
+													<td width="270">subdivision2</td>
+													<td width="446">所属二级地区</td>
+												</tr>
+												<tr>
+													<td width="270">city</td>
+													<td width="446">城市名称</td>
+												</tr>
+												<tr>
+													<td width="270">target</td>
+													<td width="446">钓鱼目标</td>
+												</tr>
+												<tr>
+													<td width="270">verifiedTime</td>
+													<td width="446">确认时间</td>
+												</tr>
+												<tr>
+													<td width="270">isValid</td>
+													<td width="446">是否有效（1有效 0无效）</td>
+												</tr>
+
+											</tbody>
+										</table>
+										<table class="tableapi capi" width="718" cellpadding="0"
+											cellspacing="0">
+											<thead>
+												<tr>
+													<th width="270" align="left">错误代码</th>
+													<th width="446" align="left">描述</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td width="270">code</td>
+													<td width="446">返回码</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">404：失败</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">405：参数无效</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">422：token无效</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">423: 用户无权限</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">424: 服务已过期，请重新购买</td>
+												</tr>
+												<tr>
+													<td width="270"></td>
+													<td width="446">425: 购买的服务次数已用完，请重新购买</td>
+												</tr>
+											</tbody>
+										</table>
+									</div></li>
+
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
