@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,28 +15,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
 import com.cn.ctbri.dao.CityMapper;
+import com.cn.ctbri.dao.DstIpMapper;
 import com.cn.ctbri.dao.IpMapper;
 import com.cn.ctbri.dao.WebsecMapper;
 import com.cn.ctbri.model.City;
+import com.cn.ctbri.model.DstIp;
 import com.cn.ctbri.model.Ip;
 import com.cn.ctbri.model.Websec;
+import com.cn.ctbri.model.WebsecSeg;
 import com.cn.ctbri.utils.IPUtility;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;;
        
 public class CircleSelect {
 	private static final Logger logger =  LogManager.getLogger(CircleSelect.class);
 	
 	
 	public static void main(String[] args) {
+		
 		// TODO Auto-generated method stub
 		while(true){
 			ApplicationContext ctx=null;
@@ -46,11 +45,16 @@ public class CircleSelect {
 			   ctx=new ClassPathXmlApplicationContext("conf/applicationContext.xml");
 			   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
 			    Long pre_maxLogId = getPropsLogId();
-				//Long pre_maxLogId = 2850193l ;
+				//Long pre_maxLogId = 1364466l ;
 			    Long maxLogId = websecDao.getMaxLogId();
+			    //Long maxLogId = 1381464l;
+			    //更新所有目标地址
+			    updDst(ctx,pre_maxLogId,maxLogId);
+			    
 			    Map<String,Long> map = new HashMap<String,Long>();
 			    map.put("preLogId", pre_maxLogId);
 			    map.put("maxLogId", maxLogId);
+			   
 			    //本次需要更新的记录数
 			    int toUpdNum = websecDao.selectToUpdNum(map);
 			    //每次查询的记录数
@@ -58,6 +62,7 @@ public class CircleSelect {
 			    //需要更新最大log_id文件的次数
 			    int updTimes = toUpdNum/batchBlockSize ;
 			    List<Websec> seglist = null ;
+			    Long maxlog_id = 0l;
 			    //如果新产生的数据量比batchBlockSize小，只需要更新一次
 			    if( updTimes < 1){
 			    	Long offset =  websecDao.selectOffset(pre_maxLogId);
@@ -65,53 +70,55 @@ public class CircleSelect {
 			    	map_limit.put("offset", (offset-1));
 			    	map_limit.put("seg", new Long(batchBlockSize));
 			    	seglist= websecDao.selectByLimit(map_limit);
-			    	int idx_seg_maxlog_id = seglist.size()-1;
-			   	    Long	maxlog_id = seglist.get(idx_seg_maxlog_id).getLogId();
-				    upd(ctx,seglist,maxlog_id);
+			    	
+			   	    maxlog_id = websecDao.selectMaxLogIdByLimit(map_limit);
+				    updSrc(ctx,seglist,maxlog_id);
 			    	
 			    }
 			    //如果新产生的数据量比batchBlockSize大，需要更新1次或updTimes次
 			    else {
 			    	 Long offset = websecDao.selectOffset(pre_maxLogId);
-			    	 Long maxlog_id = 0l;
+			    	 
 			    	 for(int i = 0 ; i <= updTimes ; i++ ){
 			    		
 			    		
 			 	    	if(i == updTimes){
-			 	    		offset =  maxlog_id ;
+			 	    		offset =  websecDao.selectOffset(maxlog_id) ;
 			 		    	Map<String,Long> map_limit = new HashMap<String,Long>();
-			 		    	map_limit.put("offset", (offset-1));
+			 		    	map_limit.put("offset", offset);
 			 		    	map_limit.put("seg", new Long(batchBlockSize));
 			 		    	seglist= websecDao.selectByLimit(map_limit); 
-			 		    	int idx_seg_maxlog_id = seglist.size()-1;
-			 	   	    	maxlog_id = seglist.get(idx_seg_maxlog_id).getLogId();
-			 		    	upd(ctx,seglist,maxlog_id);
+			 		    	
+			 	   	    	maxlog_id = websecDao.selectMaxLogIdByLimit(map_limit);
+			 		    	updSrc(ctx,seglist,maxlog_id);
 			 	    	}else{
 			 	    		if(i==0 ){
-			 	    			offset =  websecDao.selectOffset(pre_maxLogId);
+			 	    			
 				 	   	    	Map<String,Long> map_limit = new HashMap<String,Long>();
 				 	   	    	map_limit.put("offset", new Long(offset-1));
 				 	   	    	map_limit.put("seg", new Long(batchBlockSize));
 				 	   	    	seglist= websecDao.selectByLimit(map_limit);
-				 	   	        int idx_seg_maxlog_id = seglist.size()-1;
-				 	   	    	maxlog_id = seglist.get(idx_seg_maxlog_id).getLogId();
+
+						   	    maxlog_id = websecDao.selectMaxLogIdByLimit(map_limit);
 				 	   	    	
-				 	   	    	upd(ctx,seglist,maxlog_id);
+				 	   	    	updSrc(ctx,seglist,maxlog_id);
 			 	    		}else {
-			 	    			offset = offset + batchBlockSize;
+			 	    			offset = websecDao.selectOffset(maxlog_id) ;
+			 	    			
 			 	    			Map<String,Long> map_limit = new HashMap<String,Long>();
-				 	   	    	map_limit.put("offset", new Long(offset-1));
+				 	   	    	map_limit.put("offset", offset);
 				 	   	    	map_limit.put("seg", new Long(batchBlockSize));
 				 	   	    	seglist= websecDao.selectByLimit(map_limit);
-				 	   	        int idx_seg_maxlog_id = seglist.size()-1;
-				 	   	    	maxlog_id = seglist.get(idx_seg_maxlog_id).getLogId();
-				 	   	    	upd(ctx,seglist,maxlog_id);
+
+						   	    maxlog_id = websecDao.selectMaxLogIdByLimit(map_limit);
+				 	   	    	updSrc(ctx,seglist,maxlog_id);
 			 	    		}
 			 	    			
 			 	    	}
 			 	    		
 			 	    }
 			    }
+			    
 			 }catch(Exception e){
 				e.printStackTrace();
 			} 
@@ -147,7 +154,49 @@ public class CircleSelect {
 	     }
 	     return logid;
 	 } 
-	private static void  upd(ApplicationContext ctx,List<Websec> _segList,Long seg_maxLogid){
+	private static void updDst(ApplicationContext ctx,Long preLogId,Long maxLogId){
+		List<WebsecSeg> udpList = new ArrayList<WebsecSeg>();
+		WebsecMapper websecDao = (WebsecMapper)ctx.getBean("websecDao");
+		DstIpMapper dstIpDao = (DstIpMapper)ctx.getBean("dstIpDao");
+		 Map<String,Long> hm = new HashMap<String,Long>();
+		    hm.put("preLogId", preLogId);
+		    hm.put("maxLogId", maxLogId);
+		 List<Websec> dstList = websecDao.selectDstByLimit(hm);
+		 List<DstIp> dstIp_defended = dstIpDao.selectAll();
+		 for(Websec websec : dstList){
+			 for(DstIp dstIp: dstIp_defended){
+				 if(websec.getDstIp() != null  && dstIp.getDstIp().equals(websec.getDstIp())){
+					 WebsecSeg _websec = new WebsecSeg();
+					 _websec.setDstCity(dstIp.getDstCity());
+					 _websec.setDstCountry(dstIp.getDstCountry());
+					 _websec.setDstIp(dstIp.getDstIp());
+					 _websec.setDstLatitude(dstIp.getDstLatitude());
+					 
+					 _websec.setDstLongitude(dstIp.getDstLongitude());
+					 _websec.setDstSubdivision1(dstIp.getDstSubdivision1());
+					 _websec.setDstSubdivision2(dstIp.getDstSubdivision2());
+					 _websec.setPreLogId(preLogId);
+					 _websec.setMaxLogId(maxLogId);
+					 udpList.add(_websec);
+					 break ;
+				 }
+			 }
+		}
+		if(udpList.size()>0){
+			//Map<String,List<WebsecSeg>> map = new HashMap<String,List<WebsecSeg>>();
+			
+			System.out.println("======目标地址开始更新所有"+udpList.size()+"个地址============");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		    System.out.println(sdf.format(getStartTime()));  
+		    
+		    for(WebsecSeg websecSeg : udpList)
+		    	websecDao.updDst(websecSeg);
+			System.out.println("======目标地址结束更新所有"+udpList.size()+"个地址============");
+			System.out.println(sdf.format(getEndTime())); 
+		}
+		
+	}
+	private static void  updSrc(ApplicationContext ctx,List<Websec> _segList,Long seg_maxLogid){
 		
 		List<Websec> udpList = new ArrayList<Websec>();
 		 CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
@@ -174,58 +223,37 @@ public class CircleSelect {
 						upd.setSrcSubdivision2(srccity.getSubdivision2Name());
 					}					
 					
-				}else{//通过ip没查到经纬度地址，则设置 标志位为-1，表示无效
-					upd.setIpLatlongValid(-1);
+				}else{//通过ip没查到经纬度地址，则什么也不做
+					
 				}
-				//继续设置攻击目标信息
-				//只有domain不是不为none，才是有效的攻击目标地址，设置目的ip的经纬度和所在国家城市信息
-				if(websec.getDomain() != null && !websec.getDomain().equalsIgnoreCase("None")){
-					if(websec.getDstIp() != null && !websec.getDstIp().equals("")){
-						Ip dstIp = getLocationId(websec.getDstIp(),ipDao);
-						if(dstIp != null){
-							
-							upd.setDstLatitude(dstIp.getLatitude());
-							upd.setDstLongitude(dstIp.getLongitude());
-							City dstcity = cityDao.selectByPrimaryKey(dstIp.getLocationId());
-							if(dstcity != null){
-								upd.setDstCity(dstcity.getCityName());
-								upd.setDstCountry(dstcity.getCountryName());
-								upd.setDstCountryCode(dstcity.getCountryIsoCode());
-								upd.setDstSubdivision1(dstcity.getSubdivision1Name());
-								upd.setDstSubdivision2(dstcity.getSubdivision2Name());
-							}					
-							
-						}
-				   }
-			    }
-				upd.setLogId(websec.getLogId());
+				
+				upd.setSrcIp(websec.getSrcIp());
 				udpList.add(upd)	;
-				System.out.println("======更新结束============Logid： "+upd.getLogId()+"============ipLatlongValid: "+upd.getIpLatlongValid());
+				System.out.println("======更新源地址国家城市名称结束============srcIP： "+upd.getSrcIp()+"============ipLatlongValid: "+upd.getIpLatlongValid());
 				
 			}else{//攻击源地址未查到，就不查被攻击目标端了
-				System.out.println("======源地址"+websec.getSrcIp()+"未查到或无意义，什么也没做============Logid： "+websec.getLogId()+"============ipLatlongValid: "+websec.getIpLatlongValid());
+				System.out.println("======源地址"+websec.getSrcIp()+"未查到或无意义，什么也没做============srcIP： "+websec.getSrcIp()+"============ipLatlongValid: "+websec.getIpLatlongValid());
 				
 			}
-	}
+		}
 		if(udpList.size() > 0){
-			System.out.println("=====需要提交的记录条数：  ==== "+udpList.size());
+			System.out.println("=====需要更新的源地址数：  ==== "+udpList.size());
 			
 			 Map<String,List<Websec>> map = new HashMap<String,List<Websec>>();
 			
-				System.out.println("======开始提交所有"+udpList.size()+"条记录============");
+				System.out.println("======开始更新所有"+udpList.size()+"个源地址============");
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 			    System.out.println(sdf.format(getStartTime()));  
 			    
 			    map.put("list", udpList);
-			     websecDao.batchUpd(map);
-			    System.out.println("======结束提交所有"+udpList.size()+"条记录============");
+			     websecDao.batchUpdSrc(map);
+			    System.out.println("======结束更新所有"+udpList.size()+"个源地址============");
 				System.out.println(sdf.format(getEndTime())); 
 				
 		}
-	
-		updProps(seg_maxLogid);
 		
-		return  ;
+		updProps(seg_maxLogid);
+		System.out.println("======处理完logid： "+seg_maxLogid+"============");
 	}
 	/**
 	 * @param ipv4

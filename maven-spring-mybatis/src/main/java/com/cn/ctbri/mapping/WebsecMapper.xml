@@ -674,9 +674,137 @@
                   
          </foreach>
   </update>  
+   <update id="batchUpdSrc"  parameterType="map">
+   		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+   				update t_waf_log_websec
+    		<set>
+    		  	  <if test="item.ipLatlongValid != null">
+			        ip_latlong_valid = #{item.ipLatlongValid,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.srcCountryCode != null">
+			        src_country_code = #{item.srcCountryCode,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcCountry != null">
+			        src_country = #{item.srcCountry,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcSubdivision1 != null">
+			        src_subdivision_1 = #{item.srcSubdivision1,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcSubdivision2 != null">
+			        src_subdivision_2 = #{item.srcSubdivision2,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcCity != null">
+			        src_city = #{item.srcCity,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcLatitude != null">
+			        src_latitude = #{item.srcLatitude,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcLongitude != null">
+			        src_longitude = #{item.srcLongitude,jdbcType=VARCHAR},
+			      </if>
+			     
+			</set> 
+			<where>
+			      src_ip = #{item.srcIp,jdbcType=VARCHAR} and  ip_latlong_valid = 0
+			</where> 
+                  
+         </foreach>
+  </update>  
+  <update id="batchUpdDst"  parameterType="map">
+   		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+   				update t_waf_log_websec
+    		<set>
+    		  	 
+			      <if test="item.dstCountryCode != null">
+			        dst_country_code = #{item.dstCountryCode,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.dstCountry != null">
+			        dst_country = #{item.dstCountry,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.dstSubdivision1 != null">
+			        dst_subdivision_1 = #{item.dstSubdivision1,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.dstSubdivision2 != null">
+			        dst_subdivision_2 = #{item.dstSubdivision2,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.dstCity != null">
+			        dst_city = #{item.dstCity,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.dstLatitude != null">
+			        dst_latitude = #{item.dstLatitude,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.dstLongitude != null">
+			        dst_longitude = #{item.dstLongitude,jdbcType=VARCHAR}
+			      </if>
+			</set> 
+			<where>
+			      dst_ip = #{item.dstIp,jdbcType=VARCHAR} 
+			      and log_id between  #{preLogId,jdbcType=BIGINT} and #{maxLogId,jdbcType=BIGINT}
+			</where> 
+                  
+         </foreach>
+  </update>  
+  <update id="updDst"  parameterType="com.cn.ctbri.model.WebsecSeg">
+   		
+   				update t_waf_log_websec
+    		<set>
+    		  	 
+			      <if test="dstCountryCode != null">
+			        dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+			      </if>
+			      <if test="dstCountry != null">
+			        dst_country = #{dstCountry,jdbcType=VARCHAR},
+			      </if>
+			      <if test="dstSubdivision1 != null">
+			        dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+			      </if>
+			      <if test="dstSubdivision2 != null">
+			        dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+			      </if>
+			      <if test="dstCity != null">
+			        dst_city = #{dstCity,jdbcType=VARCHAR},
+			      </if>
+			      <if test="dstLatitude != null">
+			        dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+			      </if>
+			      <if test="dstLongitude != null">
+			        dst_longitude = #{dstLongitude,jdbcType=VARCHAR}
+			      </if>
+			</set> 
+			<where>
+			      dst_ip = #{dstIp,jdbcType=VARCHAR} 
+			      and log_id between  #{preLogId,jdbcType=BIGINT} and #{maxLogId,jdbcType=BIGINT}
+			</where> 
+                  
+       
+  </update>  
   <select id="selectMaxDay" resultType="java.util.Date">
   	select max(date_format(stat_time,'%Y-%m-%d')) from t_waf_log_websec
   </select>
-  
-
+  <select id="selectToUpdNum" parameterType="hashmap" resultType="java.lang.Integer">
+  	select count(1) from t_waf_log_websec where log_id between #{preLogId,jdbcType=BIGINT} and #{maxLogId,jdbcType=BIGINT}
+  </select>
+  <select id="selectOffset" parameterType="java.lang.Long" resultType="java.lang.Long">
+  	select count(1) from t_waf_log_websec where log_id between 1 and #{preLogId,jdbcType=BIGINT} 
+  </select>
+   <select id="selectByLimit"  parameterType="hashmap" resultMap="BaseResultMap">
+   			 select 
+        			distinct src_ip from 
+    				(select src_ip from t_waf_log_websec where ip_latlong_valid=0 order by log_id 
+    				limit #{offset,jdbcType=BIGINT},#{seg,jdbcType=BIGINT}   ) a 				
+   		
+   </select>
+   <select id="selectMaxLogIdByLimit"  parameterType="hashmap" resultType="java.lang.Long">
+   			 select max(log_id)  from 
+    		(select log_id from t_waf_log_websec order by log_id 
+    		limit #{offset,jdbcType=BIGINT},#{seg,jdbcType=BIGINT}) a 
+    </select>
+    <select id="selectDstByLimit"  parameterType="hashmap" resultMap="BaseResultMap">
+   			 <![CDATA[
+   			      select 
+        			distinct dst_ip
+    				from t_waf_log_websec  where domain <>'None' and dst_latitude='' 
+    				and log_id between #{preLogId,jdbcType=BIGINT} and #{maxLogId,jdbcType=BIGINT}    				
+   		     ]]>
+   </select>
 </mapper>

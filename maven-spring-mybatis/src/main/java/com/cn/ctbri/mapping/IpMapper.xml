@@ -201,7 +201,7 @@
   </update>
   
   <select id="getLatLongByIp" parameterType="java.lang.Long" resultMap="BaseResultMap">
-  	<![CDATA[ select location_id,latitude,longitude from t_ipv4_latlong where   startip<=#{ip,jdbcType=INTEGER}  and endip>#{ip,jdbcType=INTEGER}  order by netmask asc ]]>
+  	<![CDATA[ select location_id,latitude,longitude from t_ipv4_latlong where   startip<=#{ip,jdbcType=INTEGER}  and endip>#{ip,jdbcType=INTEGER}   ]]>
   </select>
   
 </mapper>

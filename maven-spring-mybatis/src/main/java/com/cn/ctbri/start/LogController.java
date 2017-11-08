@@ -26,10 +26,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.cn.ctbri.dao.CityMapper;
+import com.cn.ctbri.dao.CntByHourMapper;
+import com.cn.ctbri.dao.CntBySrcMapper;
 import com.cn.ctbri.dao.CntByTypeMapper;
 import com.cn.ctbri.dao.IpMapper;
 import com.cn.ctbri.dao.WebsecMapper;
 import com.cn.ctbri.model.City;
+import com.cn.ctbri.model.CntByHour;
+import com.cn.ctbri.model.CntBySrc;
 import com.cn.ctbri.model.CntByType;
 import com.cn.ctbri.model.Ip;
 import com.cn.ctbri.model.Websec;
@@ -37,8 +41,8 @@ import com.cn.ctbri.utils.IPUtility;
 
 public class LogController {
 	public static void main(String[] args) {
-		
-		File directory = new File("");//设定为当前文件夹 
+		System.out.print(301/300);
+		/*//File directory = new File("");//设定为当前文件夹 
 		try{ 
 		    
 		    ApplicationContext ctx=null;
@@ -47,13 +51,61 @@ public class LogController {
 			// System.out.println(path);
 		   
 		     ctx=new ClassPathXmlApplicationContext("conf/applicationContext.xml");
-		     upd(ctx);
-		     cntType(ctx);
+		     //upd(ctx);
+		     //cntType(ctx);
+		    // cntHour(ctx);
+		     cntSrc(ctx);
 		}catch(Exception e){
 			e.printStackTrace();
-		} 
-		 
+		} */
+		 String s = "1234567890123456";
+		 System.out.print(s.substring(0, s.length()));
 	}
+	private static void cntHour(ApplicationContext ctx) {
+		   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
+		   CntByHourMapper cntByHourDao = (CntByHourMapper)ctx.getBean("cntByHourDao");
+		   Date max_websecDate = websecDao.selectMaxDay();
+		   Date max_cntByTypeDate = cntByHourDao.selectMaxDay() ;
+		   Map<String,Date> map = new HashMap<String,Date> ();
+		   if(max_cntByTypeDate!= null && max_websecDate.after(max_cntByTypeDate)){
+			 
+			 map.put("maxDate", max_cntByTypeDate);
+			  
+		   }
+		   List<CntByHour> l = cntByHourDao.selectCntByHour(map);
+		   if(l.size() > 0){
+			   for(CntByHour c:l){
+				   System.out.println(c.getDomain());
+			   }
+			   Map<String,List<CntByHour>> maplist= new HashMap<String,List<CntByHour>> ();
+			   maplist.put("list", l);
+			   cntByHourDao.batchInsert(maplist);
+		   }
+		   
+	   }
+	   private static void cntSrc(ApplicationContext ctx) {
+		   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
+		   CntBySrcMapper cntBySrcDao = (CntBySrcMapper)ctx.getBean("cntBySrcDao");
+		   Date max_websecDate = websecDao.selectMaxDay();
+		   Date max_cntByTypeDate = cntBySrcDao.selectMaxDay() ;
+		   Map<String,Date> map = new HashMap<String,Date> ();
+		   if(max_cntByTypeDate!= null && max_websecDate.after(max_cntByTypeDate)){
+			 
+			 map.put("maxDate", max_cntByTypeDate);
+			  
+		   }
+		   
+		   List<CntBySrc> l = cntBySrcDao.selectCntBySrc(map);
+		   if(l.size() > 0){
+			   for(CntBySrc c:l){
+				   System.out.println(c.getDomain());
+			   }
+			   Map<String,List<CntBySrc>> maplist= new HashMap<String,List<CntBySrc>> ();
+			   maplist.put("list", l);
+			   cntBySrcDao.batchInsert(maplist);
+		   }
+		   
+	   }
 	 private static void cntType(ApplicationContext ctx) {
 		   System.out.println("11111");
 		   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
@@ -83,10 +135,10 @@ public class LogController {
 			IpMapper ipDao=(IpMapper) ctx.getBean("ipDao");
 		    CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
 			
-		    Long pre_maxLogId = getPropsLogId();
-		   // Long pre_maxLogId = 40000l;
-			Long maxLogId = websecDao.getMaxLogId();
-			//Long maxLogId = 50000l;
+		    //Long pre_maxLogId = getPropsLogId();
+		    Long pre_maxLogId = 44003l;
+			//Long maxLogId = websecDao.getMaxLogId();
+			Long maxLogId = 49003l;
 			
 		
 		
@@ -199,7 +251,7 @@ public class LogController {
 					}
 				}
 			}
-			updProps(maxLogId);
+			//updProps(maxLogId);
 			
 	}
 		
@@ -210,21 +262,26 @@ public class LogController {
 		 Properties prop = new Properties();     
 	     try{
 	         //读取属性文件a.properties
-	    	// String path=System.getProperty("user.dir");
-	 	     //InputStream in = new BufferedInputStream (new FileInputStream(path+"/conf/maxLogId.properties"));
-	 	    //InputStream in = new LogController().getClass().getResourceAsStream("classpath:conf/maxLogId.properties");
-	    	 InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/maxLogid.properties");
-	 	     prop.load(in);     ///加载属性列表
-	         Iterator<String> it=prop.stringPropertyNames().iterator();
-	         while(it.hasNext()){
-	             String key=it.next();
-	             System.out.println(key+":"+prop.getProperty(key));
-	             logid = Long.parseLong((String)prop.get(key));
-	         }
-	         in.close();   
-	     }catch(Exception e){
+	    	 //String path=System.getProperty("user.dir");
+	 	     //InputStream in = new BufferedInputStream (new FileInputStream(path+"/conf/maxLogid.properties"));
+	 	  //  InputStream in = new LogController().getClass().getResourceAsStream("/conf/maxLogId.properties");
+	    	// InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/maxLogid.properties");
+	    	 	String str1 = new LogController().getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		     	System.out.println(str1);
+		     	String str2 = new File(str1).getParent() + "/conf/maxLogid.properties";
+		        System.out.println(str2);
+		 		InputStream in = new BufferedInputStream(new FileInputStream(str2));
+		    	 prop.load(in);     ///加载属性列表
+		         Iterator<String> it=prop.stringPropertyNames().iterator();
+		         while(it.hasNext()){
+		             String key=it.next();
+		             System.out.println(key+":"+prop.getProperty(key));
+		             logid = Long.parseLong((String)prop.get(key));
+		         }
+		         in.close();   
+		     }catch(Exception e){
 	    	 
-	         System.out.println("maxLogId.properties文件读取失败： "+e);
+	         System.out.println("maxLogid.properties文件读取失败： "+e);
 	     }
 	     return logid;
 	 } 
@@ -233,10 +290,24 @@ public class LogController {
 		 Properties prop = new Properties();     
 	     try{
 	         //读取属性文件a.properties
-	    	 String path=System.getProperty("user.dir");
+	    	// String path=System.getProperty("user.dir");
 	 		//保存属性到properties文件
-	         FileOutputStream oFile = new FileOutputStream(path+"/maxLogId.properties", true);//true表示追加打开
-	         prop.setProperty("log_id", Long.toString(logid));
+	    	//InputStream o = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/maxLogid.properties").;
+	    	// File f = new File(o);
+	    	/* URL url = LogController.class.getClassLoader().getResource("conf/maxLogid.properties");
+	    	 File file = new File(url.getFile());
+	    	 FileOutputStream oFile = new FileOutputStream(file.getPath(), false);//true表示追加打开,false表示新写入
+	    	 *///System.out.println(o.toString());
+	    	 String str1 = new LogController().getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		     
+		     	System.out.println(str1);
+		     	String str2 = new File(str1).getParent() + "/conf/maxLogid.properties";
+		     	
+		     	System.out.println(str2);
+	    	 FileOutputStream oFile = new FileOutputStream(str2, false);//true表示追加打开,false表示新写入
+	    	 
+	    	 
+	    	 prop.setProperty("log_id", Long.toString(logid));
 	         prop.store(oFile, "The New properties file");
 	         oFile.close();
 	     }

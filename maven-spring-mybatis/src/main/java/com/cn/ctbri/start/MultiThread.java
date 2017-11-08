@@ -1,13 +1,19 @@
 package com.cn.ctbri.start;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.quartz.JobExecutionContext;
@@ -26,6 +32,9 @@ import com.cn.ctbri.utils.IPUtility;
 public class MultiThread implements Runnable {
 	private CopyOnWriteArrayList<Websec> segList ;
 	private ApplicationContext ctx ;
+	private MultiThread(){
+		
+	}
 	private  MultiThread(CopyOnWriteArrayList<Websec> segList,ApplicationContext ctx){
 		this.segList = segList ;
 		this.ctx = ctx ;
@@ -35,7 +44,7 @@ public class MultiThread implements Runnable {
 		// TODO Auto-generated method stub
 		WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
 		System.out.println("=====需要提交的记录条数：  ==== "+segList.size());
-		int cn = 80 ;
+		int cn = 10000 ;
 		int commitCnt = segList.size()/cn ;
 		
 		System.out.println("==================分： "+(commitCnt+1) +"次提交");
@@ -153,11 +162,12 @@ public class MultiThread implements Runnable {
 			}catch(Exception e){
 				e.printStackTrace();
 			} 
-			
+			WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
 		    //Long pre_maxLogId = getPropsLogId();
-		    Long pre_maxLogId = 199003l;
+		    Long pre_maxLogId =  1024637l;
 			//Long maxLogId = websecDao.getMaxLogId();
-			Long maxLogId = 299003l;
+			Long maxLogId =1049637l;//2821756l
+							
 			
 			Map<String,Long> hm = new HashMap<String,Long>();
 			hm.put("preLogId", pre_maxLogId);
@@ -165,20 +175,21 @@ public class MultiThread implements Runnable {
 			
 			//hm.put("maxLogId", 4l);
 			//hm.put("maxLogId", 219974l);
-			WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
+			
 			final CopyOnWriteArrayList<Websec> websecList = (CopyOnWriteArrayList<Websec>) websecDao.selectSeg(hm);
 			int websecListLenth = websecList.size();
 			CopyOnWriteArrayList<Websec> seg_websecList = null ;
-			for(int i=0 ; i< 10 ; i++){
-				if(i!= 10-1){
-					seg_websecList = new CopyOnWriteArrayList<Websec>(websecList.subList(i*websecListLenth/10,(i+1)*websecListLenth/10));
+			int threadNum = 10 ;
+			for(int i=0 ; i< threadNum; i++){
+				if(i!= threadNum-1){
+					seg_websecList = new CopyOnWriteArrayList<Websec>(websecList.subList(i*websecListLenth/threadNum,(i+1)*websecListLenth/threadNum));
 				}else{
-					seg_websecList = new CopyOnWriteArrayList<Websec>(websecList.subList(i*websecListLenth/10,websecListLenth));
+					seg_websecList = new CopyOnWriteArrayList<Websec>(websecList.subList(i*websecListLenth/threadNum,websecListLenth));
 				}
 				MultiThread m = new MultiThread(seg_websecList,ctx);
 				new Thread(m).start();
 			}
-			 
+			//updProps(maxLogId);
 		}
 	/**
 	 * @param ipv4
@@ -189,8 +200,20 @@ public class MultiThread implements Runnable {
 		Ip ip = null;
 		Long ipLong = IPUtility.ip2long(ipv4);
 		List<Ip> list = (ArrayList<Ip>)ipDao.getLatLongByIp(ipLong);
-		if(list.size() > 0 )
+		//若根据ip返回的经纬度记录超过1条，那么返回netmask最大的那条记录
+		if(list.size() > 1 ){
+			int netmask_biggest = 0;
+			for(int i = 0 ; i<list.size() ; i++){
+				if(netmask_biggest < list.get(i).getNetmask()){
+					netmask_biggest = list.get(i).getNetmask() ;
+					ip = list.get(i);
+				}
+					
+			}
+			
+		}else if(list.size() == 1)
 			ip = list.get(0);
+			
 		return ip;
 	}
 	  private static final String APPLICATION_CONTEXT_KEY = "applicationContextKey";  
@@ -211,4 +234,62 @@ public class MultiThread implements Runnable {
 	        Calendar todayEnd = Calendar.getInstance();  
 	        return todayEnd.getTime();  
 	    }  
+	    private static Long getPropsLogId(){
+			Long logid= 0l ;
+			 Properties prop = new Properties();     
+		     try{
+		         //读取属性文件a.properties
+		    	 //String path=System.getProperty("user.dir");
+		 	     //InputStream in = new BufferedInputStream (new FileInputStream(path+"/conf/maxLogid.properties"));
+		 	  //  InputStream in = new LogController().getClass().getResourceAsStream("/conf/maxLogId.properties");
+		    	// InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/maxLogid.properties");
+		    	 	String str1 = new MultiThread().getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+			     	System.out.println(str1);
+			     	String str2 = new File(str1).getParent() + "/conf/maxLogid.properties";
+			        System.out.println(str2);
+			 		InputStream in = new BufferedInputStream(new FileInputStream(str2));
+			    	 prop.load(in);     ///加载属性列表
+			         Iterator<String> it=prop.stringPropertyNames().iterator();
+			         while(it.hasNext()){
+			             String key=it.next();
+			             System.out.println(key+":"+prop.getProperty(key));
+			             logid = Long.parseLong((String)prop.get(key));
+			         }
+			         in.close();   
+			     }catch(Exception e){
+		    	 
+		         System.out.println("maxLogid.properties文件读取失败： "+e);
+		     }
+		     return logid;
+		 } 
+		
+		private static void updProps(Long logid){
+			 Properties prop = new Properties();     
+		     try{
+		         //读取属性文件a.properties
+		    	// String path=System.getProperty("user.dir");
+		 		//保存属性到properties文件
+		    	//InputStream o = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/maxLogid.properties").;
+		    	// File f = new File(o);
+		    	/* URL url = LogController.class.getClassLoader().getResource("conf/maxLogid.properties");
+		    	 File file = new File(url.getFile());
+		    	 FileOutputStream oFile = new FileOutputStream(file.getPath(), false);//true表示追加打开,false表示新写入
+		    	 *///System.out.println(o.toString());
+		    	 String str1 = new MultiThread().getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+			     
+			     	System.out.println(str1);
+			     	String str2 = new File(str1).getParent() + "/conf/maxLogid.properties";
+			     	
+			     	System.out.println(str2);
+		    	 FileOutputStream oFile = new FileOutputStream(str2, false);//true表示追加打开,false表示新写入
+		    	 
+		    	 
+		    	 prop.setProperty("log_id", Long.toString(logid));
+		         prop.store(oFile, "The New properties file");
+		         oFile.close();
+		     }
+		     catch(Exception e){
+		         System.out.println(e);
+		     }
+		}
 }
