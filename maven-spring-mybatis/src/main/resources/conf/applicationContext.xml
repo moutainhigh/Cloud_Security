@@ -81,7 +81,10 @@
      <property name="mapperInterface" value="com.cn.ctbri.dao.CntBySrcMapper"></property>  
      <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
     </bean>
-   
+   <bean id="dstIpDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+     <property name="mapperInterface" value="com.cn.ctbri.dao.DstIpMapper"></property>  
+     <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+    </bean>
     <!-- 
        <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="jobFactory">
