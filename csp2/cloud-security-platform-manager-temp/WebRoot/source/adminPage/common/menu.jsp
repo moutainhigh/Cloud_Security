@@ -28,11 +28,13 @@
 								<!-- <p><a href="${ctx}/adminServUI.html">服务管理</a></p> -->
 								<p><a href="${ctx}/adminNoticeManageUI.html">公告管理</a></p>
 								<p></p>
+								<p></p>
 							</div>
 							<div class="list-inner">
 								<p class="li-inner-title">硬件管理</p>
 								<p><a href="${ctx}/equResourceUI.html">设备资源管理</a></p>
 								<p><a href="${ctx}/adminSystemManageUI.html">系统管理</a></p>
+								<p></p>
 								<p></p>
 							</div>
 							<div class="list-inner">
@@ -40,6 +42,7 @@
 								<p><a href="${ctx}/customerSupportUI.html">客服支持系统</a></p>
 								<p><a href="${ctx}/getServiceList.html">商品详情配置</a></p>
 								<p><a href="${ctx}/adminAdvertisementManageUI.html">广告区配置</a></p>
+								<p><a href="${ctx}/monitor.html">可用性监控</a></p>
 							</div>
 						</div>
 					</li>
