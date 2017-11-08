@@ -231,7 +231,8 @@ url解码后：
 			
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println(e);
+			//System.out.println(e);
+			e.printStackTrace();
 			return "failed";
 		}
 		
