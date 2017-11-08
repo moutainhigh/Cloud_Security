@@ -12,15 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import net.sf.json.JSONObject;
 
 public class MapUtil {
-	public static void main(String[] args) {
-		String position=getPositionByAccountIP("119.81.225.154");
-		System.out.println(position);
-//		String array[]=position.split(",");
-//		getCountryByPosition(array[1],array[0]);
-//		System.out.println(getCountryByPosition("116.322987","39.983424"));
-		
-	}
-
+	
 	/**
 	 * 
 	 * 功能描述： 根据IP获取经纬度坐标
@@ -34,20 +26,20 @@ public class MapUtil {
 			return null;
 		}
 		
-		String key="0af9068ad7b3a0dc01846710a61765d5";
-		String httpUrl="http://apis.baidu.com/rtbasia/ip_location/ip_location?ip=";
+		//String key="0af9068ad7b3a0dc01846710a61765d5";
+		String httpUrl="http://www.ipadjust.net/api/";
 	    BufferedReader reader = null;
 	    String result = null;
 	    StringBuffer sbf = new StringBuffer();
-	    httpUrl = httpUrl +ip+"&v=1.1";
-
+	    httpUrl = httpUrl +ip;
+	    //System.out.println("aaaaaaa+++++++++");
 	    try {
 	        URL url = new URL(httpUrl);
 	        HttpURLConnection connection = (HttpURLConnection) url
 	                .openConnection();
 	        connection.setRequestMethod("GET");
 	        // 填入apikey到HTTP header
-	        connection.setRequestProperty("apikey",key);
+	        //connection.setRequestProperty("apikey",key);
 	        connection.connect();
 	        InputStream is = connection.getInputStream();
 	        reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -58,13 +50,20 @@ public class MapUtil {
 	        }
 	        reader.close();
 	        result = sbf.toString();
+	       // System.out.println("返回json"+result);
 	        JSONObject json=JSONObject.fromObject(result);
 	        int code=json.getInt("code");
-	        JSONObject location=json.getJSONObject("location");
-	        if(code==200&&null!=location){
-	        	String longitude=location.getString("longitude");
-	        	String latitude=location.getString("latitude");
+	        String  location=json.getString("location");
+	        if(code==1&&null!=location&&location.length()>0){
+	        	String longitude=json.getString("lon");
+	        	String latitude=json.getString("lat");
 	        	if(StringUtils.isNotEmpty(longitude)&&StringUtils.isNotEmpty(latitude)){
+	        		try{
+	        			Double.valueOf(longitude);
+	        			Double.valueOf(latitude);
+	        		}catch (Exception e) {
+	        			return null;
+	        		}
 	        		return longitude+","+latitude;
 	        	}
 	        }
@@ -73,6 +72,7 @@ public class MapUtil {
 	    }
 	    return null;
 	}
+	
 	
 	public static String getCountryByPosition(String longitude,String latitude) {
 		if(StringUtils.isEmpty(longitude)|| StringUtils.isEmpty(latitude)){
@@ -99,7 +99,7 @@ public class MapUtil {
 		        }
 		        reader.close();
 		        result = sbf.toString();
-		        System.out.println(result);
+		        //System.out.println(result);
 		        JSONObject json=JSONObject.fromObject(result);
 		        int status=json.getInt("status");
 		        if(status==0){
