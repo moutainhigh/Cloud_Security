@@ -1463,6 +1463,9 @@ public class WarnDetailController {
 					}
 					
 				}
+				else {
+					return "redirect:/index.html";
+				}
 			}
 			
 			else if (serviceId == 7) { // 绿盟极光
