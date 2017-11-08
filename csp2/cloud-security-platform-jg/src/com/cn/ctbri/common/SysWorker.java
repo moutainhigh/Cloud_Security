@@ -217,16 +217,24 @@ url解码后：
 		//创建jersery客户端配置对象
 		String textEntity = postMethod(url, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
-        
-        String status = JSONObject.fromObject(textEntity).getString("status");
-        if (status.equals("success")) {
+        try {
+        	JSONObject jb = JSONObject.fromObject(textEntity);
+            String status = jb.getString("status");
+            if (status.equals("success")) {
+    			
+            	String strtoken = JSONObject.fromObject(textEntity).getString("token");   	
+            	return strtoken;
+    		}
+            else {
+    			return "failed";
+    		}
 			
-        	String strtoken = JSONObject.fromObject(textEntity).getString("token");   	
-        	return strtoken;
-		}
-        else {
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
 			return "failed";
 		}
+		
 
 	}
 	
