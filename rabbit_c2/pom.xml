@@ -2,14 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lin</groupId>
-	<artifactId>rabbit_c2</artifactId>
+	<artifactId>new_dss</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<!-- spring版本号 -->
-		<spring.version>3.2.8.RELEASE</spring.version>
+		<spring.version>4.0.2.RELEASE</spring.version>
 		<!-- log4j日志文件管理包版本 -->
-		<slf4j.version>1.6.6</slf4j.version>
-		<log4j.version>1.2.12</log4j.version>
+		<slf4j.version>1.7.7</slf4j.version>
+		<log4j.version>1.2.16</log4j.version>
 		<!-- junit版本号 -->
 		<junit.version>4.10</junit.version>
 	</properties>
@@ -51,6 +51,8 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -121,6 +123,31 @@
 			<version>2.4</version>
 			 <classifier>jdk15</classifier>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>2.2.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz-jobs</artifactId>
+		    <version>2.2.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>5.1.5</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<resources>
