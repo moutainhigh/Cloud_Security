@@ -710,6 +710,43 @@
                   
          </foreach>
   </update>  
+   <update id="updSrc"  parameterType="com.cn.ctbri.model.Websec">
+   		
+   				update t_waf_log_websec
+    		<set>
+    		  	  <if test="item.ipLatlongValid != null">
+			        ip_latlong_valid = #{item.ipLatlongValid,jdbcType=INTEGER},
+			      </if>
+			      <if test="item.srcCountryCode != null">
+			        src_country_code = #{item.srcCountryCode,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcCountry != null">
+			        src_country = #{item.srcCountry,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcSubdivision1 != null">
+			        src_subdivision_1 = #{item.srcSubdivision1,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcSubdivision2 != null">
+			        src_subdivision_2 = #{item.srcSubdivision2,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcCity != null">
+			        src_city = #{item.srcCity,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcLatitude != null">
+			        src_latitude = #{item.srcLatitude,jdbcType=VARCHAR},
+			      </if>
+			      <if test="item.srcLongitude != null">
+			        src_longitude = #{item.srcLongitude,jdbcType=VARCHAR},
+			      </if>
+			     
+			</set> 
+			<where>
+			      src_ip = #{item.srcIp,jdbcType=VARCHAR} and  (ip_latlong_valid = 0 or ip_latlong_valid = -1)
+			     
+			</where> 
+                  
+        
+  </update>  
   <update id="batchUpdDst"  parameterType="map">
    		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
    				update t_waf_log_websec

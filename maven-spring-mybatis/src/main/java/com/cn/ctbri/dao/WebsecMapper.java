@@ -25,6 +25,7 @@ public interface WebsecMapper {
     Long getMaxLogId();
     List<Websec> selectAll();
     void batchUpd(Map<String,List<Websec>> map);
+    void updSrc(Websec websec);
     void batchUpdSrc(Map<String,List<Websec>> map);
     void batchUpdDst(Map<String,List<WebsecSeg>> map);
     void updDst(WebsecSeg websecSeg);

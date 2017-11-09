@@ -198,7 +198,7 @@ public class CircleSelect {
 	}
 	private static void  updSrc(ApplicationContext ctx,List<Websec> _segList,Long seg_maxLogid){
 		
-		List<Websec> udpList = new ArrayList<Websec>();
+		
 		 CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
 		IpMapper ipDao=(IpMapper) ctx.getBean("ipDao");
 		WebsecMapper websecDao = (WebsecMapper)ctx.getBean("websecDao");
@@ -222,34 +222,22 @@ public class CircleSelect {
 						upd.setSrcSubdivision1(srccity.getSubdivision1Name());
 						upd.setSrcSubdivision2(srccity.getSubdivision2Name());
 					}					
-					
+					upd.setSrcIp(websec.getSrcIp());
+					System.out.println("======开始更新所有"+upd.getSrcIp()+"源地址对应得记录============");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+				    System.out.println(sdf.format(getStartTime()));  
+					websecDao.updSrc(upd);
+					System.out.println("======结束更新所有"+upd.getSrcIp()+"源地址对应得记录=============");
+					System.out.println(sdf.format(getEndTime())); 
 				}else{//通过ip没查到经纬度地址，则什么也不做
 					
 				}
-				
-				upd.setSrcIp(websec.getSrcIp());
-				udpList.add(upd)	;
 				System.out.println("======更新源地址国家城市名称结束============srcIP： "+upd.getSrcIp()+"============ipLatlongValid: "+upd.getIpLatlongValid());
 				
 			}else{//攻击源地址未查到，就不查被攻击目标端了
 				System.out.println("======源地址"+websec.getSrcIp()+"未查到或无意义，什么也没做============srcIP： "+websec.getSrcIp()+"============ipLatlongValid: "+websec.getIpLatlongValid());
 				
 			}
-		}
-		if(udpList.size() > 0){
-			System.out.println("=====需要更新的源地址数：  ==== "+udpList.size());
-			
-			 Map<String,List<Websec>> map = new HashMap<String,List<Websec>>();
-			
-				System.out.println("======开始更新所有"+udpList.size()+"个源地址============");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			    System.out.println(sdf.format(getStartTime()));  
-			    
-			    map.put("list", udpList);
-			     websecDao.batchUpdSrc(map);
-			    System.out.println("======结束更新所有"+udpList.size()+"个源地址============");
-				System.out.println(sdf.format(getEndTime())); 
-				
 		}
 		
 		updProps(seg_maxLogid);
