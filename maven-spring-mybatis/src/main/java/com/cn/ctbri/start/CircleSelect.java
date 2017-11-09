@@ -58,7 +58,7 @@ public class CircleSelect {
 			    //本次需要更新的记录数
 			    int toUpdNum = websecDao.selectToUpdNum(map);
 			    //每次查询的记录数
-			    int batchBlockSize = 200;
+			    int batchBlockSize = 2000;
 			    //需要更新最大log_id文件的次数
 			    int updTimes = toUpdNum/batchBlockSize ;
 			    List<Websec> seglist = null ;

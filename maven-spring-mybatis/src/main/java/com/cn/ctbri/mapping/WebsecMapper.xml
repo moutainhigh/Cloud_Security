@@ -714,34 +714,34 @@
    		
    				update t_waf_log_websec
     		<set>
-    		  	  <if test="item.ipLatlongValid != null">
-			        ip_latlong_valid = #{item.ipLatlongValid,jdbcType=INTEGER},
+    		  	  <if test="ipLatlongValid != null">
+			        ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
 			      </if>
-			      <if test="item.srcCountryCode != null">
-			        src_country_code = #{item.srcCountryCode,jdbcType=VARCHAR},
+			      <if test="srcCountryCode != null">
+			        src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
 			      </if>
-			      <if test="item.srcCountry != null">
-			        src_country = #{item.srcCountry,jdbcType=VARCHAR},
+			      <if test="srcCountry != null">
+			        src_country = #{srcCountry,jdbcType=VARCHAR},
 			      </if>
-			      <if test="item.srcSubdivision1 != null">
-			        src_subdivision_1 = #{item.srcSubdivision1,jdbcType=VARCHAR},
+			      <if test="srcSubdivision1 != null">
+			        src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
 			      </if>
-			      <if test="item.srcSubdivision2 != null">
-			        src_subdivision_2 = #{item.srcSubdivision2,jdbcType=VARCHAR},
+			      <if test="srcSubdivision2 != null">
+			        src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
 			      </if>
-			      <if test="item.srcCity != null">
-			        src_city = #{item.srcCity,jdbcType=VARCHAR},
+			      <if test="srcCity != null">
+			        src_city = #{srcCity,jdbcType=VARCHAR},
 			      </if>
-			      <if test="item.srcLatitude != null">
-			        src_latitude = #{item.srcLatitude,jdbcType=VARCHAR},
+			      <if test="srcLatitude != null">
+			        src_latitude = #{srcLatitude,jdbcType=VARCHAR},
 			      </if>
-			      <if test="item.srcLongitude != null">
-			        src_longitude = #{item.srcLongitude,jdbcType=VARCHAR},
+			      <if test="srcLongitude != null">
+			        src_longitude = #{srcLongitude,jdbcType=VARCHAR},
 			      </if>
 			     
 			</set> 
 			<where>
-			      src_ip = #{item.srcIp,jdbcType=VARCHAR} and  (ip_latlong_valid = 0 or ip_latlong_valid = -1)
+			      src_ip = #{srcIp,jdbcType=VARCHAR} and  (ip_latlong_valid = 0 or ip_latlong_valid = -1)
 			     
 			</where> 
                   
@@ -827,7 +827,7 @@
    <select id="selectByLimit"  parameterType="hashmap" resultMap="BaseResultMap">
    			 select 
         			distinct src_ip from 
-    				(select src_ip from t_waf_log_websec where ip_latlong_valid=0 order by log_id 
+    				(select src_ip from t_waf_log_websec where (ip_latlong_valid=0 or ip_latlong_valid=-1) order by log_id 
     				limit #{offset,jdbcType=BIGINT},#{seg,jdbcType=BIGINT}   ) a 				
    		
    </select>
