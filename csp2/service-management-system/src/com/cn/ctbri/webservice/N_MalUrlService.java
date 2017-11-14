@@ -104,7 +104,7 @@ public class N_MalUrlService {
 		}
 		//2、获取当天全球活动恶意URL信息
 		@GET
-	    @Path("/getdatabytoday/{token}")
+	    @Path("/getdatabyyesterday/{token}")
 		@Produces(MediaType.APPLICATION_JSON) 
 	    public String getMalurlDataByToday(@PathParam("token") String token) {
 			JSONObject json = new JSONObject();
@@ -542,7 +542,48 @@ public class N_MalUrlService {
 	  }	
 		
 		
-		//12、查看全球有效的恶意URL数
+		//12、查看全球有效的恶意URL总数    2017-11-6 add by liao
+		@GET
+	    @Path("/getvaliddatacount/{token}")
+		@Produces(MediaType.APPLICATION_JSON) 
+		public String getValidDataCount(@PathParam("token") String token) {
+			JSONObject json = new JSONObject();
+			try {
+				//通过token查询user
+				System.out.println("===恶意URL=== +  getValidDataCount()");
+				User user = getUserByToken(token);
+				List<OrderAPI> userableList = getUserableList(user);
+				List<OrderAPI> oAPIList = this.getOAPIList(user);		
+				if(token!=null && token!="" && user!=null){
+					if(havePermission(user, oAPIList)){
+						if(!serviceExpired(user,oAPIList)){
+							if(!usedUp(user, userableList)){
+								String currentMethodName = getMethodName();
+								String southAPIReturn = getSouthAPIByMethod(currentMethodName,null);
+								southAPIWrapper(southAPIReturn,json);
+								
+								for (int i = 0; i < oAPIList.size(); i++) {
+									countAPI(token, oAPIList.get(i).getId(), null, 8, 2);
+								}
+								
+							}else
+								Common.usedUpCodeCodeAndMessage(json);
+						}else
+							Common.expiredCodeAndMessage(json);
+					}else
+						Common.permissionDeniedCodeAndMessage(json);
+				}else{
+					Common.tokenInvalidCodeAndMessage(json);
+				}
+			}catch (Exception e) {
+					e.printStackTrace();
+					Common.failCodeAndMessage(json);
+			} 	
+			
+			return json.toString();
+		}
+		
+		
 		
 		
 		//13、分段查看全球有效的恶意URL   2017-11-6 add by liao
