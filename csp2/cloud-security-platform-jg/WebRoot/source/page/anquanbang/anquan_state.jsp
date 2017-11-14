@@ -255,11 +255,11 @@
 			 -->
 			 <div style="width: 200px;height: 70px;background: rgba(3,47,155, 0.39);position:absolute;top:220px;left:7px;text-align:center; line-height:35px;">
 			 	<font id="totalFon" color="#c1c7da" size='5'  style="font-weight:bold;">2684403</font><br/>
-			 	<font color="#c1c7da" size='3'>攻击总数</font>
+			 	<font color="#c1c7da" size='3'>阻断攻击总数</font>
 			 </div>
 			 <div style="width: 200px;height: 70px; background: rgba(3,47,155, 0.39);position:absolute;top:320px;left:7px;text-align:center; line-height:35px;">
 			 	<font id="dayTotalFon" color="#c1c7da" size='5'  style="font-weight:bold;">62207</font><br/>
-			 	<font color="#c1c7da" size='3'>今日攻击总数</font>
+			 	<font color="#c1c7da" size='3'>今日阻断攻击总数</font>
 			 </div>
 		
 			 <c:if test="${sessionScope.globle_user.name =='anquanbang_demo'  }">
