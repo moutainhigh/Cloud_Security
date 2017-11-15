@@ -35,9 +35,9 @@
 .user_table thead tr th:nth-child(5) {padding-right: 30px;}
 .user_table thead tr th:nth-child(6) {padding-right: 30px;}
 .user_table thead tr th:nth-child(7) {padding-right: 30px;}
-.user_table thead tr th:nth-child(8) {padding-right: 70px;padding-left: 20px;}
-.user_table thead tr th:nth-child(9) {padding-right: 100px;padding-left: 10px;}
-.user_table tbody tr td{font-size:14px;}
+.user_table thead tr th:nth-child(8) {padding-right: 60px;padding-left: 20px;}
+.user_table thead tr th:nth-child(9) {padding-right: 60px;padding-left: 10px;}
+.user_table thead tr th:nth-child(10) {padding-right: 30px;}
 .user_table tbody tr td a{padding-left: 2px; width: 40px;}
 .user_table tbody tr td:nth-child(1) {width: 114px;padding-left: 10px;}
 .user_table tbody tr td:nth-child(2) {width: 182px;}
@@ -46,9 +46,11 @@
 .user_table tbody tr td:nth-child(5) {width: 78px;}
 .user_table tbody tr td:nth-child(6) {width: 94px;}
 .user_table tbody tr td:nth-child(7) {width: 94px;}
-.user_table tbody tr td:nth-child(8) {width: 186px;}
-.user_table tbody tr td:nth-child(9) {width: 100px;}
+.user_table tbody tr td:nth-child(8) {width: 164px;}
+.user_table tbody tr td:nth-child(9) {width: 126px;}
+.user_table tbody tr td:nth-child(10) {width: 58px;}
 .user_table tbody tr td span{display:inline-block; line-height:1rem;}
+.user_table {font-size:14px;}
 
 </style>
 <style type="text/css">
@@ -127,42 +129,31 @@ opacity: 0;
                         <th>响应时间</th>
                         <th>当前状态</th>
                         <th>最后检查时间</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                <!--
+                
                 <c:forEach items="${MonList}" var="mon" varStatus="status">
                     <tr>
-                    	<td><span>${mon.name}</span></td>
-                        <td>${mon.addr}</td>                       
-                        <td>${mon.type}</td>
-                        <td>${mon.time}</td>
-                        <td>${mon.rate}</td>
-                        <td>${mon.response}</td>
-                        <td>${mon.state}</td>
-                        <td>${mon.date}</td>                                           
+                    	<td><span>${mon.taskname}</span></td>
+                        <td>${mon.targeturl}</td>                       
+                        <td>${mon.monitor_type}</td>
+                        <td>${mon.frequency}</td>
+                        <td>${mon.availability}</td>
+                        <td>${mon.responsetime}</td>
+                        <td>${mon.laststatus}</td>
+                        <td>${mon.lastdetecttime}</td> 
+                        <td>${mon.createtime}</td>                                          
                         <td>
-                        	<a href="javascript:void(0)" class="delet" style="color:#2499fb;" onclick="deleteMon('${mon.id}')">删除</a>/
+                        	<a href="javascript:void(0)" class="delet" style="color:#2499fb;" onclick="deleteMon('${mon.id}')">删除</a>
+                        	<!--  /
                         	<a href="javascript:void(0)" onclick="AlterMon('${mon.id}')" style="color:#2499fb;" id="${mon.id}" name="${mon.name}" addr="${mon.addr }" type="${mon.type}" time="${mon.time}" rate="${mon.rate}" response="${mon.response}" state="${mon.state}" date="${mon.date}">修改</a>
+                        	-->
                         </td>
                     </tr>
-                </c:forEach>
-                 -->
-                   <tr>
-                        <td><span>安全帮</span></td>
-                        <td><span>www.anquanbang.net</span></td>                       
-                        <td>http服务</td>
-                        <td>15分钟</td>
-                        <td>98%</td>                       
-                        <td>32ms</td>
-                        <td>200ok</td>
-                        <td>2017.12.12 12:22:22</td>   
-                        <td>
-                        	<a href="javascript:void(0)" style="color:#2499fb;" onclick="deleteMon('${mon.id}')">删除</a>/
-                        	<a href="javascript:void(0)" class="zc_edit" style="color:#2499fb;" id="1" name="安全帮" addr="www.anquanbang.net" type="http服务" time="15分钟" rate="98%" response="32ms" state="200ok" date="2017.12.12 12:22:22">修改</a>
-                        </td>
-                    </tr>
+                </c:forEach>            
                 </tbody>
             </table>
         </div>
