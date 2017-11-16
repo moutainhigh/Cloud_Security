@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.MonitorTask">
+	<sql id="cols">id,userId,taskname,targeturl,frequency,monitor_type,port_lists,alarmemail,alarmphone,laststatus,lastdetecttime</sql>
+	<resultMap type="com.cn.ctbri.entity.Order" id="OrderRM">
+		<id property="id" column="id"/>
+		<result property="userId" column="userId"/>
+		<result property="taskname" column="taskname"/>
+		<result property="targeturl" column="targeturl"/>
+		<result property="frequency" column="frequency"/>
+		<result property="monitor_type" column="monitor_type"/>
+		<result property="port_lists" column="port_lists"/>
+		<result property="alarmemail" column="alarmemail"/>
+		<result property="alarmphone" column="alarmphone"/>
+		<result property="laststatus" column="laststatus"/>
+		<result property="lastdetecttime" column="lastdetecttime"/>
+		<result property="createtime" column="createtime"/>
+		<result property="responsetime" column="responsetime"/>
+		<result property="availability" column="availability"/>
+	</resultMap>
+	
+	
+	<!-- 查询所有记录 -->
+	<select id="findAllTask" resultType="hashmap" >
+		select * from cs_monitor_task mt
+	</select>
+	
+	<!-- 根据taskName查询 任务列表-->
+	<select id="findTaskListByTaskName" resultType = "hashmap" parameterType="String">
+		select mt.id,mt.taskname,mt.targeturl,mt.frequency,mt.laststatus,mt.lastdetecttime from cs_monitor_task mt
+		where mt.taskname like CONCAT(CONCAT('%', #{taskname}), '%')
+	</select>
+	
+	<!-- 根据taskName查询 任务列表-->
+	<select id="findTaskListByTaskNameAccurate" resultType = "hashmap" parameterType="String">
+		select mt.id,mt.taskname,mt.targeturl,mt.frequency,mt.laststatus,mt.lastdetecttime from cs_monitor_task mt
+		where mt.taskname = #{taskname}
+	</select>
+	
+	<!--根据TargetUrl查询 任务列表 -->
+	<select id="findTaskListByTargetUrl" resultType = "hashmap" parameterType="String">
+		select mt.id,mt.taskname,mt.targeturl,mt.frequency,mt.laststatus,mt.lastdetecttime from cs_monitor_task mt
+		where mt.targeturl like CONCAT(CONCAT('%', #{targeturl}), '%')
+	</select>
+	
+	<!-- 根据Id查询 任务列表-->
+	<select id="findTaskListById" resultType = "hashmap" parameterType="int">
+		select mt.id,mt.taskname,mt.targeturl,mt.frequency,mt.laststatus,mt.lastdetecttime from cs_monitor_task mt
+		where mt.id = #{id}
+	</select>
+	
+	<!-- 插入任务信息 -->
+	<insert id="insertMonitorTask" parameterType="com.cn.ctbri.entity.MonitorTask" >	
+		INSERT INTO cs_monitor_task
+        (id,taskname,targeturl,frequency,monitor_type,port_lists,alarmemail,alarmphone,laststatus,createtime,availability) 
+        VALUES( #{id},#{taskname} , #{targeturl},#{frequency},#{monitor_type},#{port_lists},#{alarmemail},#{alarmphone},#{laststatus},#{createtime},#{availability})
+        ON DUPLICATE KEY UPDATE 
+				taskname=#{taskname},
+				targeturl=#{targeturl},
+				frequency=#{frequency},
+                monitor_type=#{monitor_type},
+                port_lists=#{port_lists},
+                alarmemail=#{alarmemail},
+                alarmphone=#{alarmphone},
+                laststatus=#{laststatus},
+                createtime=#{createtime},
+                availability=#{availability}
+	</insert>
+
+</mapper>
