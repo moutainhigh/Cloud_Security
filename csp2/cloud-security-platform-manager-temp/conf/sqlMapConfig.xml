@@ -43,6 +43,7 @@
 	    <mapper resource="com/cn/ctbri/entity/AssertAlarmMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/PriceMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/APIMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/MonitorTask.xml"/>
 		
 		<!-- 2016-07-28 update by zhangshaohua -->
 		<mapper resource="com/cn/ctbri/entity/ApiPriceMapper.xml"/>
