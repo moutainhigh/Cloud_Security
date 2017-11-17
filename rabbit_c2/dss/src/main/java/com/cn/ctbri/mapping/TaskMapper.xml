@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.Task">
+    <id column="taskId" jdbcType="BIGINT" property="taskid" />
+    <result column="orderId" jdbcType="VARCHAR" property="orderid" />
+    <result column="assetId" jdbcType="VARCHAR" property="assetid" />
+    <result column="assetUrl" jdbcType="VARCHAR" property="asseturl" />
+    <result column="serviceType" jdbcType="INTEGER" property="servicetype" />
+    <result column="origin" jdbcType="INTEGER" property="origin" />
+    <result column="isCycle" jdbcType="INTEGER" property="iscycle" />
+    <result column="periodic" jdbcType="INTEGER" property="periodic" />
+    <result column="startDate" jdbcType="TIMESTAMP" property="startdate" />
+    <result column="endDate" jdbcType="TIMESTAMP" property="enddate" />
+    <result column="engineId" jdbcType="INTEGER" property="engineid" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="totalTimes" jdbcType="INTEGER" property="totaltimes" />
+    <result column="errorInfo" jdbcType="VARCHAR" property="errorinfo" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    taskId, orderId, assetId, assetUrl, serviceType, origin, isCycle, periodic, startDate, 
+    endDate, engineId, status, totalTimes, errorInfo, updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where taskId = #{taskid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task
+    where taskId = #{taskid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.Task">
+    insert into task (taskId, orderId, assetId, 
+      assetUrl, serviceType, origin, 
+      isCycle, periodic, startDate, 
+      endDate, engineId, status, 
+      totalTimes, errorInfo, updateTime
+      )
+    values (#{taskid,jdbcType=BIGINT}, #{orderid,jdbcType=VARCHAR}, #{assetid,jdbcType=VARCHAR}, 
+      #{asseturl,jdbcType=VARCHAR}, #{servicetype,jdbcType=INTEGER}, #{origin,jdbcType=INTEGER}, 
+      #{iscycle,jdbcType=INTEGER}, #{periodic,jdbcType=INTEGER}, #{startdate,jdbcType=TIMESTAMP}, 
+      #{enddate,jdbcType=TIMESTAMP}, #{engineid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{totaltimes,jdbcType=INTEGER}, #{errorinfo,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.Task">
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskid != null">
+        taskId,
+      </if>
+      <if test="orderid != null">
+        orderId,
+      </if>
+      <if test="assetid != null">
+        assetId,
+      </if>
+      <if test="asseturl != null">
+        assetUrl,
+      </if>
+      <if test="servicetype != null">
+        serviceType,
+      </if>
+      <if test="origin != null">
+        origin,
+      </if>
+      <if test="iscycle != null">
+        isCycle,
+      </if>
+      <if test="periodic != null">
+        periodic,
+      </if>
+      <if test="startdate != null">
+        startDate,
+      </if>
+      <if test="enddate != null">
+        endDate,
+      </if>
+      <if test="engineid != null">
+        engineId,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="totaltimes != null">
+        totalTimes,
+      </if>
+      <if test="errorinfo != null">
+        errorInfo,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskid != null">
+        #{taskid,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null">
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="assetid != null">
+        #{assetid,jdbcType=VARCHAR},
+      </if>
+      <if test="asseturl != null">
+        #{asseturl,jdbcType=VARCHAR},
+      </if>
+      <if test="servicetype != null">
+        #{servicetype,jdbcType=INTEGER},
+      </if>
+      <if test="origin != null">
+        #{origin,jdbcType=INTEGER},
+      </if>
+      <if test="iscycle != null">
+        #{iscycle,jdbcType=INTEGER},
+      </if>
+      <if test="periodic != null">
+        #{periodic,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="engineid != null">
+        #{engineid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totaltimes != null">
+        #{totaltimes,jdbcType=INTEGER},
+      </if>
+      <if test="errorinfo != null">
+        #{errorinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.Task">
+    update task
+    <set>
+      <if test="orderid != null">
+        orderId = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="assetid != null">
+        assetId = #{assetid,jdbcType=VARCHAR},
+      </if>
+      <if test="asseturl != null">
+        assetUrl = #{asseturl,jdbcType=VARCHAR},
+      </if>
+      <if test="servicetype != null">
+        serviceType = #{servicetype,jdbcType=INTEGER},
+      </if>
+      <if test="origin != null">
+        origin = #{origin,jdbcType=INTEGER},
+      </if>
+      <if test="iscycle != null">
+        isCycle = #{iscycle,jdbcType=INTEGER},
+      </if>
+      <if test="periodic != null">
+        periodic = #{periodic,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        startDate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        endDate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="engineid != null">
+        engineId = #{engineid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totaltimes != null">
+        totalTimes = #{totaltimes,jdbcType=INTEGER},
+      </if>
+      <if test="errorinfo != null">
+        errorInfo = #{errorinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where taskId = #{taskid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.Task">
+    update task
+    set orderId = #{orderid,jdbcType=VARCHAR},
+      assetId = #{assetid,jdbcType=VARCHAR},
+      assetUrl = #{asseturl,jdbcType=VARCHAR},
+      serviceType = #{servicetype,jdbcType=INTEGER},
+      origin = #{origin,jdbcType=INTEGER},
+      isCycle = #{iscycle,jdbcType=INTEGER},
+      periodic = #{periodic,jdbcType=INTEGER},
+      startDate = #{startdate,jdbcType=TIMESTAMP},
+      endDate = #{enddate,jdbcType=TIMESTAMP},
+      engineId = #{engineid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      totalTimes = #{totaltimes,jdbcType=INTEGER},
+      errorInfo = #{errorinfo,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where taskId = #{taskid,jdbcType=BIGINT}
+  </update>
+</mapper>

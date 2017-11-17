@@ -21,7 +21,7 @@ import com.lin.producer.MessageProducer;
  */
 public class MessageTest  {
 	
-	private Logger logger = LoggerFactory.getLogger(MessageTest.class);
+	/*private Logger logger = LoggerFactory.getLogger(MessageTest.class);
 	
 	private ApplicationContext context = null;
 	
@@ -32,17 +32,10 @@ public class MessageTest  {
 
 	@Test
 	public void should_send_a_amq_message() throws Exception {
-      /* MessageProducer messageProducer = (MessageProducer) context.getBean("messageProducer");
        int a = Integer.MAX_VALUE;
        while (a > 0) {
-    	   messageProducer.sendMessage("Hello, I am amq sender num :" + a--);
-    	   try {
-    		   //暂停一下，好让消息消费者去取消息打印出来
-               Thread.sleep(1000);
-           } catch (InterruptedException e) {
-               e.printStackTrace(); 
-           }
+    	  
     
-	   }*/
-	}
+	   }
+	}*/
 }
