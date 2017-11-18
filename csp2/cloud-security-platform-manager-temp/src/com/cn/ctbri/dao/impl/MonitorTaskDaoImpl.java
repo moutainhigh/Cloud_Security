@@ -14,7 +14,7 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 
 	private String ns = "com.cn.ctbri.entity.MonitorTask.";
 	
-	@Override
+	
 	public List findAllTask() {
 		// TODO Auto-generated method stub
 		List list = this.getSqlSession().selectList(ns + "findAllTask");
@@ -23,7 +23,7 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 		//return null;
 	}
 
-	@Override
+	
 	public List findTaskListByTaskName(String taskname) {
 		// TODO Auto-generated method stub
 		List list = this.getSqlSession().selectList(ns + "findTaskListByTaskName",taskname);
@@ -31,7 +31,7 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 		return list;
 	}
 
-	@Override
+	
 	public List findTaskListByTaskNameAccurate(String taskName) {
 		// TODO Auto-generated method stub
 		List list = this.getSqlSession().selectList(ns + "findTaskListByTaskNameAccurate",taskName);
@@ -39,7 +39,7 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 		return list;
 	}
 	
-	@Override
+	
 	public List findTaskListByTargetUrl(String targeturl) {
 		// TODO Auto-generated method stub
 		List list = this.getSqlSession().selectList(ns + "findTaskListByTargetUrl",targeturl);
@@ -48,7 +48,7 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 	}
 
 
-	@Override
+	
 	public List findTaskListById(int id) {
 		// TODO Auto-generated method stub
 		List list = this.getSqlSession().selectList(ns + "findTaskListById",id);
@@ -56,7 +56,7 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 		return list;
 	}
 
-	@Override
+	
 	public void insertMonitorTask(MonitorTask task) {
 		// TODO Auto-generated method stub
 		this.getSqlSession().insert(ns + "insertMonitorTask", task);
