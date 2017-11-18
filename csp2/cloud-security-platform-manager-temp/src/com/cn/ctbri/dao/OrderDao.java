@@ -154,4 +154,10 @@ public interface OrderDao {
 	List<Map<String, Object>> getServiceCount();
 	//总订单
 	List<Order> getOrder();
+	
+	List findAssetAndTaskByOrderId(String orderId);
+	
+	List findAPIAssetAndTaskByOrderId(String orderId);
+	
+	List findWafAssetAndTaskByOrderId(String orderId);
 }
