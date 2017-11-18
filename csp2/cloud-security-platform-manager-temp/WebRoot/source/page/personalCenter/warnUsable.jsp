@@ -139,6 +139,15 @@ $(function() {
                  <div class="Ordernumber">
                  	<p><span>订单号：</span>${order.id }</p>
                  </div>
+                 <div class="Basement">
+					<p><span>用户Id:</span>${baseInfo.userId}</p>
+					<p><span>用户名:</span>${baseInfo.name}</p>
+					<p><span>资产编号:</span>${baseInfo.assetId}</p>
+					<p><span>资产名:</span>${baseInfo.assetName}</p>
+					<p><span>任务编号:</span>${baseInfo.taskId}</p>
+					<p><span>任务引擎:</span>${baseInfo.engineIP}</p>
+					<p><span>orderList:</span>${baseInfo.orderListId}</p>
+				</div>
                  <div class="coupontab" style="width:1100px;">
                 	<ol class="navlist centlist assets clearfix">
                 		<c:forEach var="a" items="${assets}" varStatus="status">

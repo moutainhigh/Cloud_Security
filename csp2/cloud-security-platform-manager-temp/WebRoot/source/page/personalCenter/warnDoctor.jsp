@@ -1,36 +1,51 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="java.sql.*,java.io.*,java.util.*,java.text.*"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.sql.*,java.io.*,java.util.*,java.text.*"%>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>告警详情</title>
-<link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
-<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
-<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/prompt.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/adminCss/mian.css" type="text/css"
+	rel="stylesheet" />
+<link href="${ctx}/source/adminCss/backstage.css" type="text/css"
+	rel="stylesheet" />
+<link rel="stylesheet" type="text/css"
+	href="${ctx}/source/manageCss/common.css" />
+<link rel="stylesheet" type="text/css"
+	href="${ctx}/source/manageCss/index.css" />
+<link href="${ctx}/source/css/chinatelecom.css" type="text/css"
+	rel="stylesheet" />
+<link href="${ctx}/source/css/prompt.css" type="text/css"
+	rel="stylesheet" />
 
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet" />	
-<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/popBox.css" type="text/css"
+	rel="stylesheet" />
+<link href="${ctx}/source/css/portalindex.css" type="text/css"
+	rel="stylesheet" />
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <!-- <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT> -->
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/common/user.js"></script>
+<script type="text/javascript"
+	src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+<script type="text/javascript"
+	src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript"
+	src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
 
-<script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/echarts/esl.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/echarts/echarts.js"></script>
 
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
@@ -144,262 +159,343 @@ function clearTable(){
 }
 </script>
 
-<script type="text/javascript" src="${ctx}/source/scripts/order/warning_keyword.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/order/warning_keyword.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/order/warning.js"></script>
 <style type="">
-.detailbox{display:none;}
-.zhangd_table{ width:945px; color:9a9a9a; margin-left:35px;}
-.zhangd_table table{ width:945px; text-align:center;word-break: break-all; word-wrap: break-word; border-collapse:collapse; border:0;}
-.zhangd_table table tr{ height:50px; line-height:50px; font-size:14px; border-bottom:1px solid #e0e0e0;}
-.zhangd_table table tr td span{ color:#49ad53; cursor:pointer;}
+.detailbox {
+	display: none;
+}
+
+.zhangd_table {
+	width: 945px;
+	color: 9a9a9a;
+	margin-left: 35px;
+}
+
+.zhangd_table table {
+	width: 945px;
+	text-align: center;
+	word-break: break-all;
+	word-wrap: break-word;
+	border-collapse: collapse;
+	border: 0;
+}
+
+.zhangd_table table tr {
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.zhangd_table table tr td span {
+	color: #49ad53;
+	cursor: pointer;
+}
 </style>
 </head>
 
 <body>
-		
-<div id="container">
+
+	<div id="container">
 		<!--=============top==============-->
-		
+
 		<!-- menu start -->
 		<c:import url="/menu.html"></c:import>
 		<!-- menu end -->
 		<div class="detaails">
-        	<div class="coreRight user_right coupon" style="width:1154px;">
-            	<div class="gj_top" style="width: 1100px">
-            		<a href="#" class="acur">告警详情</a>
-       			 </div>
-                 <div class="Ordernumber">
-                 	<p><span>订单号：</span>${order.id }</p>
-                 </div>
-                 <div class="coupontab" style="width:1100px;">
-                	<ol class="navlist centlist assets clearfix">
-                		<c:forEach var="a" items="${assets}" varStatus="status">
-			            	<c:if test="${status.first}">
-			            		<li class="active" onclick="getCharsData(${status.index+1 })">${a.name }</li>
-			            	</c:if>
-			            	<c:if test="${!status.first}">
-			            		<li onclick="getCharsData(${status.index+1 })">${a.name }</li>
-			            	</c:if>
-			            </c:forEach>
-                    </ol>
-                    <div class="tabBox">
-                    	<c:forEach var="asset" items="${assets}" varStatus="status">
-			            	<div class="not-used">
-			            	<!-- 告警开始 -->
+			<div class="coreRight user_right coupon" style="width: 1154px;">
+				<div class="gj_top" style="width: 1100px">
+					<a href="#" class="acur">告警详情</a>
+				</div>
+				<div class="Ordernumber">
+					<p>
+						<span>订单号：</span>${order.id }</p>
+				</div>
+				<div class="Basement">
+					<p><span>用户Id:</span>${baseInfo.userId}</p>
+					<p><span>用户名:</span>${baseInfo.name}</p>
+					<p><span>资产编号:</span>${baseInfo.assetId}</p>
+					<p><span>资产名:</span>${baseInfo.assetName}</p>
+					<p><span>任务编号:</span>${baseInfo.taskId}</p>
+					<p><span>任务引擎:</span>${baseInfo.engineIP}</p>
+					<p><span>orderList:</span>${baseInfo.orderListId}</p>
+				</div>
+				<div class="coupontab" style="width: 1100px;">
+					<ol class="navlist centlist assets clearfix">
+						<c:forEach var="a" items="${assets}" varStatus="status">
+							<c:if test="${status.first}">
+								<li class="active" onclick="getCharsData(${status.index+1 })">${a.name }</li>
+							</c:if>
+							<c:if test="${!status.first}">
+								<li onclick="getCharsData(${status.index+1 })">${a.name }</li>
+							</c:if>
+						</c:forEach>
+					</ol>
+					<div class="tabBox">
+						<c:forEach var="asset" items="${assets}" varStatus="status">
+							<div class="not-used">
+								<!-- 告警开始 -->
 								<div class="user_center clear">
-  
-							    <!-- 告警详情-->
-							     <div class="user_right" style="width:1102px;" >
-							    	
-							        <div class="gj_title webgj_title">
-							        	<div class="gj_fl">
-							        	<c:if test="${alist==0}">
-							        	   <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
-							        	   <p>未发现异常</p>
-							        	</c:if>
-							        	<c:if test="${alist!=0}">
-							                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
-							                <p>篡改告警次数</p>
-							                <p class="web_num">${alist}次</p>
-							            </c:if>
-							          </div>
-					       			<div class="gj_fr">
-							            <input type="hidden" value="${order.id }" id="orderId"/>
-							            <input type="hidden" value="${order.type }" id="type"/>
-							            <input type="hidden" value="${group_flag }" id="group_flag"/>
-							            <input type="hidden" value="${order.websoc }" id="websoc"/>
-							            <input type="hidden" value="${asset.orderAssetId }" id="orderAssetId${status.index+1 }" name="orderAssetId"/>
-							            <input type="hidden" value="${status.index+1 }" id="index"/>
-							            <p><span class="bigfont">${order.name }</span>
-							            
-							            </p>  
-							            <div style="overflow:hidden;">
-							            <div style="float:left">资产：</div>
-							            <div style="float:left">
-							            <span class="asset" style="display:block">${asset.addr }</span>
-							            </div></div>
-							            
-							            <!-- add by tangxr 2016-7-18 -->
-							            <div style="margin-top:14px;margin-left:-92px">
-										    <p class="dd_detail"><span class="detail_l fl">订单类型</span><span class="detail_r fl">
-										       <c:if test="${order.type==1}">长期</c:if>
-									           <c:if test="${order.type==2}">单次</c:if> 
-										    </span></p>
-										    <p class="dd_detail"><span class="detail_l fl">订单开始时间</span><span class="detail_r fl"><fmt:formatDate value="${order.begin_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
-										    <c:if test="${order.type==1}">
-										       <p class="dd_detail"><span class="detail_l fl">订单结束时间</span><span class="detail_r fl"><fmt:formatDate value="${order.end_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
-										    </c:if>
-										    
-										    <c:if test="${order.type==1}">
-									           <p class="dd_detail"><span class="detail_l fl">检测周期</span><span class="detail_r fl">
-									                <c:if test="${order.serviceId==1}">
-									                    <c:if test="${order.scan_type==5}">每周</c:if>
-									                    <c:if test="${order.scan_type==6}">每月</c:if>
-									                </c:if>
-									                <c:if test="${order.serviceId==2}">
-									                    <c:if test="${order.scan_type==1}">30分钟</c:if>
-									                    <c:if test="${order.scan_type==2}">1小时</c:if>
-									                    <c:if test="${order.scan_type==3}">2小时</c:if>
-									                    <c:if test="${order.scan_type==4}">1天</c:if>
-									                    <c:if test="${order.scan_type==5}">每周</c:if>
-									                    <c:if test="${order.scan_type==6}">每月</c:if>
-									                </c:if>
-									                <c:if test="${order.serviceId==3}">
-									                    <c:if test="${order.scan_type==2}">30分钟</c:if>
-									                    <c:if test="${order.scan_type==3}">1小时</c:if>
-									                    <c:if test="${order.scan_type==4}">1天</c:if>
-									                </c:if>
-									                <c:if test="${order.serviceId==4}">
-									                    <c:if test="${order.scan_type==2}">30分钟</c:if>
-									                    <c:if test="${order.scan_type==3}">1小时</c:if>
-									                    <c:if test="${order.scan_type==4}">1天</c:if>
-									                </c:if>
-									                <c:if test="${order.serviceId==5}">
-									                    <c:if test="${order.scan_type==1}">10分钟</c:if>
-									                    <c:if test="${order.scan_type==2}">30分钟</c:if>
-									                    <c:if test="${order.scan_type==3}">1小时</c:if>
-									                </c:if>
-									           </span></p>
-									        </c:if>
-							            </div>
-							            <!-- end -->
-							            
-							            <c:if test="${order.type==1 && group_flag==null}">
-					                        <p><span class="bigfont historyde">历史详情</span>
-					                            <select class="historyse" id="execute_Time" name="execute_Time" onchange="historicalDetails()">
-					                                <option>请选择</option>
-					                                <c:forEach var="time" items="${taskTime}" varStatus="status">
-					                                   <c:if test="${timeSize!=0}">
-					                                       <c:if test="${not status.last}">
-					                                       <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
-					                                       </c:if>
-					                                   </c:if>
-					                                   <c:if test="${timeSize==0}">
-					                                       <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
-					                                   </c:if>
-					                                </c:forEach>
-					                            </select>
-					                        </p>
-					                        <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
+
+									<!-- 告警详情-->
+									<div class="user_right" style="width: 1102px;">
+
+										<div class="gj_title webgj_title">
+											<div class="gj_fl">
+												<c:if test="${alist==0}">
+													<img src="${ctx}/source/images/icon_cg-green.jpg"
+														width="85" height="85" />
+													<p>未发现异常</p>
+												</c:if>
+												<c:if test="${alist!=0}">
+													<img src="${ctx}/source/images/icon_cg.jpg" width="85"
+														height="85" />
+													<p>篡改告警次数</p>
+													<p class="web_num">${alist}次</p>
+												</c:if>
+											</div>
+											<div class="gj_fr">
+												<input type="hidden" value="${order.id }" id="orderId" /> <input
+													type="hidden" value="${order.type }" id="type" /> <input
+													type="hidden" value="${group_flag }" id="group_flag" /> <input
+													type="hidden" value="${order.websoc }" id="websoc" /> <input
+													type="hidden" value="${asset.orderAssetId }"
+													id="orderAssetId${status.index+1 }" name="orderAssetId" />
+												<input type="hidden" value="${status.index+1 }" id="index" />
+												<p>
+													<span class="bigfont">${order.name }</span>
+
+												</p>
+												<div style="overflow: hidden;">
+													<div style="float: left">资产：</div>
+													<div style="float: left">
+														<span class="asset" style="display: block">${asset.addr }</span>
+													</div>
+												</div>
+
+												<!-- add by tangxr 2016-7-18 -->
+												<div style="margin-top: 14px; margin-left: -92px">
+													<p class="dd_detail">
+														<span class="detail_l fl">订单类型</span><span
+															class="detail_r fl"> <c:if test="${order.type==1}">长期</c:if>
+															<c:if test="${order.type==2}">单次</c:if>
+														</span>
+													</p>
+													<p class="dd_detail">
+														<span class="detail_l fl">订单开始时间</span><span
+															class="detail_r fl"><fmt:formatDate
+																value="${order.begin_date }"
+																pattern="yyyy-MM-dd HH:mm:ss" /></span>
+													</p>
+													<c:if test="${order.type==1}">
+														<p class="dd_detail">
+															<span class="detail_l fl">订单结束时间</span><span
+																class="detail_r fl"><fmt:formatDate
+																	value="${order.end_date }"
+																	pattern="yyyy-MM-dd HH:mm:ss" /></span>
+														</p>
+													</c:if>
+
+													<c:if test="${order.type==1}">
+														<p class="dd_detail">
+															<span class="detail_l fl">检测周期</span><span
+																class="detail_r fl"> <c:if
+																	test="${order.serviceId==1}">
+																	<c:if test="${order.scan_type==5}">每周</c:if>
+																	<c:if test="${order.scan_type==6}">每月</c:if>
+																</c:if> <c:if test="${order.serviceId==2}">
+																	<c:if test="${order.scan_type==1}">30分钟</c:if>
+																	<c:if test="${order.scan_type==2}">1小时</c:if>
+																	<c:if test="${order.scan_type==3}">2小时</c:if>
+																	<c:if test="${order.scan_type==4}">1天</c:if>
+																	<c:if test="${order.scan_type==5}">每周</c:if>
+																	<c:if test="${order.scan_type==6}">每月</c:if>
+																</c:if> <c:if test="${order.serviceId==3}">
+																	<c:if test="${order.scan_type==2}">30分钟</c:if>
+																	<c:if test="${order.scan_type==3}">1小时</c:if>
+																	<c:if test="${order.scan_type==4}">1天</c:if>
+																</c:if> <c:if test="${order.serviceId==4}">
+																	<c:if test="${order.scan_type==2}">30分钟</c:if>
+																	<c:if test="${order.scan_type==3}">1小时</c:if>
+																	<c:if test="${order.scan_type==4}">1天</c:if>
+																</c:if> <c:if test="${order.serviceId==5}">
+																	<c:if test="${order.scan_type==1}">10分钟</c:if>
+																	<c:if test="${order.scan_type==2}">30分钟</c:if>
+																	<c:if test="${order.scan_type==3}">1小时</c:if>
+																</c:if>
+															</span>
+														</p>
+													</c:if>
+												</div>
+												<!-- end -->
+
+												<c:if test="${order.type==1 && group_flag==null}">
+													<p>
+														<span class="bigfont historyde">历史详情</span> <select
+															class="historyse" id="execute_Time" name="execute_Time"
+															onchange="historicalDetails()">
+															<option>请选择</option>
+															<c:forEach var="time" items="${taskTime}"
+																varStatus="status">
+																<c:if test="${timeSize!=0}">
+																	<c:if test="${not status.last}">
+																		<option><fmt:formatDate
+																				value="${time.group_flag }"
+																				pattern="yyyy-MM-dd HH:mm:ss" /></option>
+																	</c:if>
+																</c:if>
+																<c:if test="${timeSize==0}">
+																	<option><fmt:formatDate
+																			value="${time.group_flag }"
+																			pattern="yyyy-MM-dd HH:mm:ss" /></option>
+																</c:if>
+															</c:forEach>
+														</select>
+													</p>
+													<!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
 					                        -->
-					                    </c:if>        
-							        </div>
-							        </div>
-							        <div class="process">
-							       	  
-							       	  <c:if test="${asset.task.status==3}">
-								       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-								       	  <span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
-								       	  </p>
-								       	  <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">100%</span>
-								            <span class="processingbox">
-								            	<span class="progress">
-								                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
-												</span>
-								            <span class="prourl" id="url">当前URL:${asset.task.currentUrl }</span>
-								            </span></p>
-								            <!-- add by tangxr 2016-7-27 任务异常提示 -->
-								            <c:if test="${(empty asset.task.engineIP && empty asset.send && empty asset.receive) || asset.task.currentUrl eq '[]'}">
-									          <p>
-									          	<br />
-									            <span class="prourl">
-									            	(网站访问被拒绝,可能有以下原因：</span>
-									            <span class="prourl" style="margin-left:-60px">
-													1：该网址不存在；</span>
-												<span class="prourl" style="margin-left:31px">
-													2：网站安装了防护类的产品导致扫描断断续续；</span>
-												<span class="prourl" style="margin-left:65px">
-													3：由于持续扫描等原因，安全帮扫描IP可能被列入黑名单。</span>
-												<span class="prourl" style="margin-left:15px">
-													注：请联系在线客服咨询相关问题)
-									            </span>
-									          </p>
-								           </c:if>
-								           <!-- end -->
-							       	  </c:if>
-							       	  <c:if test="${asset.task.status==2}">
-								       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-								       	  <span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan ">完成</span>
-										  </p>
-										  <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${asset.task.progress }%</span>
-								            <span class="processingbox">
-								            	<span class="progress">
-								                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${asset.task.progress }%" id="bar2">${asset.task.progress }%</span>
-												</span>
-								            <span class="prourl" id="url">当前URL:${asset.task.currentUrl }</span>
-								            </span></p>
-							       	  </c:if>
-							            
-							            <div class="scrg" id="confTable">
-							            	<span class="scrg_sp"><span class="scrg_ti">开始时间</span><span class="scrg_de">${asset.task.executeTime}</span></span>
-							            	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${asset.task.requestCount}次</span></span>
-							                <span class="scrg_sp"><span class="scrg_ti">平均响应时间</span><span class="scrg_de">${asset.task.averResponse}毫秒</span></span>
-							                <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${asset.send}</span></span>
-							                <span class="scrg_sp"><span class="scrg_ti">结束时间</span><span class="scrg_de"><c:if test="${asset.task.endTime==null}">--</c:if><c:if test="${asset.task.endTime!=null}">${asset.task.endTime}</c:if></span></span>
-							                <span class="scrg_sp"><span class="scrg_ti">URL个数</span><span class="scrg_de">${asset.task.urlCount}个</span></span>
-							                <span class="scrg_sp"><span class="scrg_ti">每秒访问个数</span><span class="scrg_de">${asset.task.averSendCount}个</span></span>
-							                <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${asset.receive}</span></span>
-							            </div>
-							        </div>
-							    <div class="zhangd_table" style="border-bottom:1px solid #e0e0e0;width: 1068px;margin-left:0;padding-left: 35px;">
-							    	<div class="web_detail_title">告警信息</div>
-							      <table class="ld_table">
-							        <tbody>                                                                                   
-							          <tr style="background:#e0e0e0; height:30px; line-height:30px;">
-							            <td style="width:8%;">编号</td>
-							            <td  style="width:22%;">告警时间</td>
-							            <td  style="width:10%;">告警级别</td>
-							            <td  style="width:25%;">篡改页面</td>
-							            <td  style="width:35%;">篡改内容</td>
-							          </tr>
-							          <c:forEach var="alarm" items="${alarm}" varStatus="status">
-								          <tr>                                            
-								            <td>${status.index+1}</td>
-								            <td>${alarm.alarmTime}</td>
-								            <td>
-								            	<c:if test="${alarm.level==0}">低</c:if>
-								            	<c:if test="${alarm.level==1}">中</c:if>
-								            	<c:if test="${alarm.level==2}">高</c:if>
-								            </td>
-								            <td>${alarm.url}</td>
-								            <td>${alarm.alarm_content}</td>
-								          </tr>
-							          </c:forEach>
-							          
-							        </tbody>
-							      </table>
-							    </div>
-							    <div class="web_data">
-							    	<div class="web_detail_title">篡改告警统计</div>
-							    <c:forEach var="a" items="${alarm}" varStatus="stus">
-							    <c:if test="${stus.first }">
-							     <input type="hidden" value="${a.url }" id="url"/>
-							       <div class="web_topbox">
-							       	   <div class="web_datal" id="web_datal" style="width: 271px; padding-left: 0px">
-							            	<p>监测URL：<span>${a.url}</span></p>
-							                <p>监测频率：<span>
-							                			<c:if test="${a.scan_type==1}">每天</c:if>
-							                			<c:if test="${a.scan_type==5}">每周</c:if>
-							                			<c:if test="${a.scan_type==6}">每月</c:if>
-							                		  </span>
-							                </p>
-							                <p>得分：<span>${a.score}分</span></p>
-							            </div>
-							            <div class="web_datac">
-							           	  <div class="web_way">
-							                	<input type="button" value="今日" class="scan web_scan" />
-							                    <input type="button" value="昨日" class="scan web_scan web_scancur" />
-							                    <input type="button" value="全部" class="scan web_scan" />
-							                    <span class="webway_span">排列方式：</span>
-							                    <input type="button" value="小时" class="scan web_scan" />
-							                    <input type="button" value="天" class="scan web_scan web_scancur" />
-							                    <input type="button" value="周" class="scan web_scan" />
-							                </div>
-							                <div class="web_box" id="pic">
-							           	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" /> -->
-							                </div>
-							         </div>
-							           <!--  <div class="web_datar">
+												</c:if>
+											</div>
+										</div>
+										<div class="process">
+
+											<c:if test="${asset.task.status==3}">
+												<p style="padding-bottom: 30px;">
+													<span class="scantitle">扫描状态</span> <span class="scan">未开始</span><span
+														class="scan">扫描中</span><span class="scan scancur">完成</span>
+												</p>
+												<p>
+													<span class="scantitle">扫描进度</span><span class="propercent"
+														id="bar1">100%</span> <span class="processingbox">
+														<span class="progress"> <span
+															class="progress-bar progress-bar-striped active"
+															role="progressbar" aria-valuenow="45" aria-valuemin="0"
+															aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+													</span> <span class="prourl" id="url">当前URL:${asset.task.currentUrl }</span>
+													</span>
+												</p>
+												<!-- add by tangxr 2016-7-27 任务异常提示 -->
+												<c:if
+													test="${(empty asset.task.engineIP && empty asset.send && empty asset.receive) || asset.task.currentUrl eq '[]'}">
+													<p>
+														<br /> <span class="prourl"> (网站访问被拒绝,可能有以下原因：</span> <span
+															class="prourl" style="margin-left: -60px">
+															1：该网址不存在；</span> <span class="prourl" style="margin-left: 31px">
+															2：网站安装了防护类的产品导致扫描断断续续；</span> <span class="prourl"
+															style="margin-left: 65px">
+															3：由于持续扫描等原因，安全帮扫描IP可能被列入黑名单。</span> <span class="prourl"
+															style="margin-left: 15px"> 注：请联系在线客服咨询相关问题) </span>
+													</p>
+												</c:if>
+												<!-- end -->
+											</c:if>
+											<c:if test="${asset.task.status==2}">
+												<p style="padding-bottom: 30px;">
+													<span class="scantitle">扫描状态</span> <span class="scan">未开始</span><span
+														class="scan scancur">扫描中</span><span class="scan ">完成</span>
+												</p>
+												<p>
+													<span class="scantitle">扫描进度</span><span class="propercent"
+														id="bar1">${asset.task.progress }%</span> <span
+														class="processingbox"> <span class="progress">
+															<span class="progress-bar progress-bar-striped active"
+															role="progressbar" aria-valuenow="45" aria-valuemin="0"
+															aria-valuemax="100"
+															style="width: ${asset.task.progress }%" id="bar2">${asset.task.progress }%</span>
+													</span> <span class="prourl" id="url">当前URL:${asset.task.currentUrl }</span>
+													</span>
+												</p>
+											</c:if>
+
+											<div class="scrg" id="confTable">
+												<span class="scrg_sp"><span class="scrg_ti">开始时间</span><span
+													class="scrg_de">${asset.task.executeTime}</span></span> <span
+													class="scrg_sp"><span class="scrg_ti">请求次数</span><span
+													class="scrg_de">${asset.task.requestCount}次</span></span> <span
+													class="scrg_sp"><span class="scrg_ti">平均响应时间</span><span
+													class="scrg_de">${asset.task.averResponse}毫秒</span></span> <span
+													class="scrg_sp"><span class="scrg_ti">发送字节</span><span
+													class="scrg_de">${asset.send}</span></span> <span class="scrg_sp"><span
+													class="scrg_ti">结束时间</span><span class="scrg_de"><c:if
+															test="${asset.task.endTime==null}">--</c:if>
+														<c:if test="${asset.task.endTime!=null}">${asset.task.endTime}</c:if></span></span>
+												<span class="scrg_sp"><span class="scrg_ti">URL个数</span><span
+													class="scrg_de">${asset.task.urlCount}个</span></span> <span
+													class="scrg_sp"><span class="scrg_ti">每秒访问个数</span><span
+													class="scrg_de">${asset.task.averSendCount}个</span></span> <span
+													class="scrg_sp"><span class="scrg_ti">接收字节</span><span
+													class="scrg_de">${asset.receive}</span></span>
+											</div>
+										</div>
+										<div class="zhangd_table"
+											style="border-bottom: 1px solid #e0e0e0; width: 1068px; margin-left: 0; padding-left: 35px;">
+											<div class="web_detail_title">告警信息</div>
+											<table class="ld_table">
+												<tbody>
+													<tr
+														style="background: #e0e0e0; height: 30px; line-height: 30px;">
+														<td style="width: 8%;">编号</td>
+														<td style="width: 22%;">告警时间</td>
+														<td style="width: 10%;">告警级别</td>
+														<td style="width: 25%;">篡改页面</td>
+														<td style="width: 35%;">篡改内容</td>
+													</tr>
+													<c:forEach var="alarm" items="${alarm}" varStatus="status">
+														<tr>
+															<td>${status.index+1}</td>
+															<td>${alarm.alarmTime}</td>
+															<td><c:if test="${alarm.level==0}">低</c:if> <c:if
+																	test="${alarm.level==1}">中</c:if> <c:if
+																	test="${alarm.level==2}">高</c:if></td>
+															<td>${alarm.url}</td>
+															<td>${alarm.alarm_content}</td>
+														</tr>
+													</c:forEach>
+
+												</tbody>
+											</table>
+										</div>
+										<div class="web_data">
+											<div class="web_detail_title">篡改告警统计</div>
+											<c:forEach var="a" items="${alarm}" varStatus="stus">
+												<c:if test="${stus.first }">
+													<input type="hidden" value="${a.url }" id="url" />
+													<div class="web_topbox">
+														<div class="web_datal" id="web_datal"
+															style="width: 271px; padding-left: 0px">
+															<p>
+																监测URL：<span>${a.url}</span>
+															</p>
+															<p>
+																监测频率：<span> <c:if test="${a.scan_type==1}">每天</c:if>
+																	<c:if test="${a.scan_type==5}">每周</c:if> <c:if
+																		test="${a.scan_type==6}">每月</c:if>
+																</span>
+															</p>
+															<p>
+																得分：<span>${a.score}分</span>
+															</p>
+														</div>
+														<div class="web_datac">
+															<div class="web_way">
+																<input type="button" value="今日" class="scan web_scan" />
+																<input type="button" value="昨日"
+																	class="scan web_scan web_scancur" /> <input
+																	type="button" value="全部" class="scan web_scan" /> <span
+																	class="webway_span">排列方式：</span> <input type="button"
+																	value="小时" class="scan web_scan" /> <input
+																	type="button" value="天"
+																	class="scan web_scan web_scancur" /> <input
+																	type="button" value="周" class="scan web_scan" />
+															</div>
+															<div class="web_box" id="pic">
+																<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" /> -->
+															</div>
+														</div>
+														<!--  <div class="web_datar">
 							            	<p class="pxtitle">敏感词排行榜</p>
 							                <div class="pxbox">
 							                	<p><span class="pxboxL">111</span>专业删帖服务</p>
@@ -419,31 +515,31 @@ function clearTable(){
 							                    <p><span class="pxboxL">10</span>负面信息删除</p>
 							                </div>
 							            </div> -->
-							        </div>
-							        </c:if>
-							        </c:forEach>
-							    </div>
-							  </div>
-							  
+													</div>
+												</c:if>
+											</c:forEach>
+										</div>
+									</div>
+
+								</div>
+
+
+								<!-- end -->
+
 							</div>
-			            	
-			            	
-			            	<!-- end -->
-			            	
-			            	</div>
-			            </c:forEach>
-                    </div>
-                </div>
-            
-            
-            </div>
-        </div>
-        
-<!--============bottom============-->
-	<!-- footer start -->
-	<c:import url="/footer.html"></c:import>
-	<!-- footer end -->
-</div>
+						</c:forEach>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+
+		<!--============bottom============-->
+		<!-- footer start -->
+		<c:import url="/footer.html"></c:import>
+		<!-- footer end -->
+	</div>
 </body>
 
 

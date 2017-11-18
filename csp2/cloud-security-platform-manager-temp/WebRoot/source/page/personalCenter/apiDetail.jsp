@@ -77,6 +77,13 @@
                  <div class="Ordernumber">
                  	<p><span>订单号：</span>${order.id }</p>
                  </div>
+                 <div class="Basement">
+					<p><span>用户Id:</span>${baseInfo.userId}</p>
+					<p><span>用户名:</span>${baseInfo.name}</p>
+					<p><span>任务编号:</span>${baseInfo.taskId}</p>
+					<p><span>任务引擎:</span>${baseInfo.engineIP}</p>
+					<p><span>orderListId:</span>${baseInfo.orderListId}</p>
+				</div>
                  <div class="coupontab" style="width:1100px;">
 					<div class="user_center clear">
 					<div class="user_right" style="border-bottom:#e5e5e5 solid 1px;min-height:auto">
