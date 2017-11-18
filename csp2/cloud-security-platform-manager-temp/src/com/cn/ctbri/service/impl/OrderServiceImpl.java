@@ -204,5 +204,17 @@ public class OrderServiceImpl implements IOrderService{
 	public List<Order> getOrder() {
 		return orderDao.getOrder();
 	}
+	public List findAssetAndTaskByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return orderDao.findAssetAndTaskByOrderId(orderId);
+	}
+	public List findAPIAssetAndTaskByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return orderDao.findAPIAssetAndTaskByOrderId(orderId);
+	}
+	public List findWafAssetAndTaskByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return orderDao.findWafAssetAndTaskByOrderId(orderId);
+	}
 	
 }
