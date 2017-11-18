@@ -152,4 +152,13 @@ public interface IOrderService {
 	List<Map<String,Object>> findServiceCount();
 	//总订单
 	List<Order> getOrder();
+	
+	//根据orderId查询asset,task等相关信息
+	List findAssetAndTaskByOrderId(String orderId);
+	
+	//根据orderId查询API的asset.task信息
+	List findAPIAssetAndTaskByOrderId(String orderId);
+	
+	//根据orderId查询API的asset信息(waf)
+	List findWafAssetAndTaskByOrderId(String orderId);
 }
