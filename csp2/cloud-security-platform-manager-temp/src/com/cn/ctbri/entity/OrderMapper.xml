@@ -21,6 +21,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status" column="status"/>
 	</resultMap>
 	
+	<!-- 根据订单Id查询Asset和Task以及用户的相关信息 -->
+	<select id = "findAssetAndTaskByOrderId" resultType = "hashmap" parameterType="String">
+		select o.userId,a.assetId,t.taskId,t.engineIP,a.assetName,u.name,o.orderListId
+		from cs_user u,cs_order o,cs_order_asset a,cs_task t
+		where o.id = a.orderId and a.id = t.order_asset_Id and u.id = o.userId and o.id = #{orderId}
+	</select>
+	
+	<!-- 根据订单Id查询Task的相关信息(API/sys) -->
+	<select id = "findAPIAssetAndTaskByOrderId" resultType = "hashmap" parameterType="String">
+		select o.userId,u.name,o.orderListId
+		from cs_user u,cs_order o
+		where u.id = o.userId and o.id = #{orderId}
+	</select>
+	
+	<!-- 根据订单Id查询Task的相关信息(waf) -->
+	<select id = "findWafAssetAndTaskByOrderId" resultType = "hashmap" parameterType="String">
+		select o.userId,a.assetId,a.assetName,u.name,o.orderListId
+		from cs_user u,cs_order o,cs_order_asset a
+		where o.id = a.orderId  and u.id = o.userId and o.id = #{orderId}
+	</select>
+	
+	<!-- 根据订单Id查询API信息 -->
+	<select id="findAPIInfoByOrderId" resultType="hashmap" parameterType="String">
+		select o.id,o.apiId,s.name,o.begin_date,o.end_date,o.create_date
+        from cs_order_api o,cs_service_api s
+        where o.id = #{orderId} and o.apiId = s.id
+	</select>
+	
 	<!-- 根据订单Id查询记录 -->
     <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
         select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
