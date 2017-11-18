@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="scan_date" column="scan_date"/>
 		<result property="assetName" column="assetName"/>
 		<result property="assetAddr" column="assetAddr"/> 
+		
 	</resultMap> 
 	
 	<resultMap type="com.cn.ctbri.entity.Order" id="OrderRM">
@@ -29,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="contactId" column="contactId"/>
 		<result property="remarks" column="remarks"/>
 		<result property="status" column="status"/>
+		
 	</resultMap>
 	
 	<resultMap type="com.cn.ctbri.entity.User" id="UserRM">
@@ -76,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by id
 	</select>
 	
-	<select id="querOrderInfo" parameterType="hashmap" resultMap="OrderRM">
+	<select id="queryOrderInfo" parameterType="hashmap" resultMap="OrderRM">
 		select * from cs_order where 1=1
 		<if test="orderno != null and orderno != ''">and id like concat('%',concat(#{orderno},'%'))</if>
 		<if test="userId != null and userId != 0">and userId = #{userId}</if>
@@ -102,7 +104,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 订单查询tab start-->
 	<select id="getOrderInfo" parameterType="hashmap" resultMap="OrderRM">
 		select <include refid="cols" />, u.name as res1 from cs_order o,cs_user u where o.userId = u.id
-		and o.isAPI = #{isapi}
+		<if test="isapi != null"> and o.isAPI = #{isapi}</if>
+		<if test="orderListId != null and orderListId !=''">
+			and o.orderListId = #{orderListId}
+		</if>
+		<if test="isService != null and isService != '' ">and o.serviceId = #{isService}</if>
 		<if test="orderno != null and orderno != ''">and o.id like concat('%',concat(#{orderno},'%'))</if>
 		<if test="createDateS != null and createDateS != '' ">and o.create_date &gt;= #{createDateS}</if>
 		<if test="createDateE != null and createDateE != ''">and o.create_date &lt;= #{createDateE}</if>
@@ -130,6 +136,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="assetaddr != null and assetaddr != ''">
 			and o.id in (select orderId from cs_order_asset where assetAddr like concat('%', concat(#{assetaddr}, '%')))
 		</if>
+		
 		and payFlag = 1
 		and delFlag !=1
 		order by create_date desc
