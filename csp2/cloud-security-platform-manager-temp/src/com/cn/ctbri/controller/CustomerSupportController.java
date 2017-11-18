@@ -57,6 +57,7 @@ public class CustomerSupportController {
 		String assetname = request.getParameter("assetname");
 		String assetaddr = request.getParameter("assetaddr");
 		
+		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("username", username);
 		paramMap.put("email", email);
@@ -64,6 +65,7 @@ public class CustomerSupportController {
 		paramMap.put("orderno", orderno);
 		paramMap.put("assetname", assetname);
 		paramMap.put("assetaddr", assetaddr);
+		
 		//查询用户信息
 		List<Map<String, Object>> userInfoList = customerSupportService.queryUserInfo(paramMap);
 		Map<String, Object> outputMap = new HashMap<String, Object>();
@@ -100,8 +102,10 @@ public class CustomerSupportController {
 		String servDateE = request.getParameter("servDateE");
 		String orderusername = request.getParameter("orderusername");
 		int isapi = Integer.parseInt(request.getParameter("isapi"));
+		int isService = Integer.parseInt(request.getParameter("isService"));
 		String assetname = request.getParameter("assetname");
 		String assetaddr = request.getParameter("assetaddr");
+		String orderListId = request.getParameter("orderListId");
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("orderno", orderno);
@@ -110,7 +114,17 @@ public class CustomerSupportController {
 		paramMap.put("servDateS", servDateS);
 		paramMap.put("servDateE", servDateE);
 		paramMap.put("orderusername", orderusername);
-		paramMap.put("isapi", isapi);
+		paramMap.put("orderListId", orderListId);
+		if(isapi == -1){
+			paramMap.put("isapi", null);
+		}else{
+			paramMap.put("isapi", isapi);
+		}
+		if(isService == -1){
+			paramMap.put("isService", null);
+		}else{
+			paramMap.put("isService", isService);
+		}
 		paramMap.put("assetname", assetname);
 		paramMap.put("assetaddr", assetaddr);
 		
