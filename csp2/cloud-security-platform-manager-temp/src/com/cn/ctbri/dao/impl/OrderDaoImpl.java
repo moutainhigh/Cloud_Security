@@ -243,4 +243,19 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		return this.getSqlSession().selectList(ns+"getOrder");
 	}
 
+	public List findAssetAndTaskByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"findAssetAndTaskByOrderId",orderId);
+	}
+
+	public List findAPIAssetAndTaskByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"findAPIAssetAndTaskByOrderId",orderId);
+	}
+
+	public List findWafAssetAndTaskByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"findWafAssetAndTaskByOrderId",orderId);
+	}
+
 }
