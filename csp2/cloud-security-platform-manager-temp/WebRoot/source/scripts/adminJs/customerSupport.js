@@ -69,8 +69,6 @@ function activeCustomerSupport(){
                         					html += '<td>单次</td>';
                         					html += '<td>'+format(order.begin_date.time,  'yyyy-MM-dd HH:mm:ss')+'</td>';
                         				}
-                        				
-                        				
                         				if(order.isAPI == 0){
                         					html += '<td>监测服务</td>';
                         				} else if(order.isAPI == 0){
@@ -139,13 +137,14 @@ function activeQueryOrder(){
     var orderno = $.trim($("#orderno2").val());
     var orderusername = $.trim($("#orderusername").val());
     var isapi = $.trim($("#isApiSel").val());
+    var isService = $.trim($("#isServiceSel").val());
     var assetname = $.trim($("#assetname2").val());
     var assetaddr = $.trim($("#assetaddr2").val());
-    
+    var orderListId = $.trim($("#orderListId").val());
     $.ajax({
         type: "POST",
         url: "customerOrder.html",
-        data: {"orderno":orderno,"createDateS":createDateS,"createDateE":createDateE,"servDateS":servDateS,"servDateE":servDateE,"orderusername":orderusername,"isapi":isapi,"assetname":assetname,"assetaddr":assetaddr},
+        data: {"orderno":orderno,"createDateS":createDateS,"createDateE":createDateE,"servDateS":servDateS,"servDateE":servDateE,"orderusername":orderusername,"isapi":isapi,"isService":isService,"assetname":assetname,"assetaddr":assetaddr,"orderListId":orderListId},
         dataType:"json",
         success:function(data){
         	var orderList = data.orderList;
@@ -154,6 +153,12 @@ function activeQueryOrder(){
         		alert("未找到符合条件的结果！");
         		return;
         	}
+       
+        	var arrForWeb = ["无该类服务","WEB漏洞监测服务","网站挂马监测服务","网页篡改监测服务","网页敏感内容监测服务","网站可用性监测服务"];
+        	var arrForApi = ["无该类服务","WEB漏洞监测能力API","网站挂马监测能力API","网页篡改监测能力API","网页敏感内容监测能力API","网站可用性监测API","无该类服务","无该类服务","恶意URL数据API","IP地址与经纬度数据API"];
+        	var arrForWaf = ["云WAF网站安全防护服务"];
+        	var arrForSys = ["上网行为管理服务","云眼APM服务"];
+        
         	for(var i=0; i<orderList.length; i++){
         		var order = orderList[i];
         		var html = '<tr><td>'+getOrderDetail(order.serviceId,order.isAPI,order.id,order.status,order.websoc,order.begin_date,order.type)+'</td>';
@@ -167,58 +172,19 @@ function activeQueryOrder(){
         				html += '<td>'+format(order.begin_date.time, 'yyyy-MM-dd HH:mm:ss')+'</td>';
         			}
         			if(order.isAPI == 0){
-        				switch(order.serviceId)
-        					{
-        					case 1:html += '<td>WEB漏洞监测</td>';
-        					break;
-        					case 2:html += '<td>网站挂马监测</td>';
-        					break;
-        					case 3:html += '<td>网页篡改监测</td>';
-        					break;
-        					case 4:html += '<td>敏感内容监测</td>';
-        					break;
-        					case 5:html += '<td>网站可用性监测</td>';
-        					break;
-        					default: html += '<td>监测服务</td>';break;
-        					}
-        				
+        				html += '<td>'+arrForApi[order.serviceId]+'</td>';
         			} else if(order.isAPI == 1){
-        				
-        				switch(order.serviceId)
-    					{
-    					case 1:html += '<td>WEB漏洞监测API</td>';
-    					break;
-    					case 2:html += '<td>网站挂马监测API</td>';
-    					break;
-    					case 3:html += '<td>网页篡改监测API</td>';
-    					break;
-    					case 4:html += '<td>敏感内容监测API</td>';
-    					break;
-    					case 5:html += '<td>网站可用性监测API</td>';
-    					break;
-    					case 8:html += '<td>恶意URL数据API</td>';
-    					break;
-    					case 9:html += '<td>IP地址与经纬度数据API</td>';
-    					break;
-    					default: html += '<td>API服务</td>';break;
-    					}
+        				html += '<td>'+arrForApi[order.serviceId]+'</td>';
         			} else if(order.isAPI == 2){
-        				html += '<td>WAF防护</td>';
-        			}else if(order.isAPI ==3){
-        				switch(order.serviceId)
-    					{
-    					case 7:html += '<td>极光监测服务</td>';
-    					break;
-    					case 8:html += '<td>上网行为管理服务</td>';
-    					break;
-    					case 9:html += '<td>云眼APM服务</td>';
-    					break;
-    					default: html += '<td>系统服务</td>';break;
-    					}
+        				html += '<td>'+arrForWaf[0]+'</td>';
+        			} else{
+        				html += '<td>'+arrForSys[order.serviceId-7]+'</td>';
         			}
-        			
+        			html += '<td>'+order.orderListId+'</td>';
+        			html += '</tr>';
         			$("#queryOrder").append(html);
         	}
+        document.getElementById("countNum").value = orderList.length;
         }
     });
 }
@@ -226,32 +192,68 @@ function activeQueryOrder(){
 function getOrderDetail(serviceId,isAPI,orderId,status,websoc,begin_date,type){
 	var html = '';
 	var currentTime = new Date().getTime();
-	if(serviceId >= 1 && serviceId <= 5){
-		if(isAPI == 1){
-			html = '<a href="'+getCurrentAddress()+'/apiDetails.html?orderId='+orderId+'" target="_blank" >'+orderId+'</a>';
-		} else if(isAPI != 1 && status == 0){
-			html = '<a href="'+getCurrentAddress()+'/orderDetails.html?orderId='+orderId+'" target="_blank">'+orderId+'</a>';
-		} else if(status == 2){
-			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
-		} else if(isAPI == 0 && status == 1){
-			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
-		} else if(isAPI == 1 && status == 1){
-			html = '<a href="'+getCurrentAddress()+'/selfHelpOrderAPIInit.html?apiId='+serviceId+'&indexPage=2">'+orderId+'</a>';
-		} else if((status == 4 || status == 5) && websoc != 2){
-			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
-		} else if(begin_date.time <= currentTime && status == 3){
-			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
-		} else {
-			html = '<a href="#">'+orderId+'</a>';
-		}
-	} else if(serviceId == 6){
-		if(isAPI == 2 && status == 4){
+//	if(serviceId >= 1 && serviceId <= 5){
+//		if(isAPI == 1){
+//			html = '<a href="'+getCurrentAddress()+'/apiDetails.html?orderId='+orderId+'" target="_blank" >'+orderId+'</a>';
+//		} else if(isAPI != 1 && status == 0){
+//			html = '<a href="'+getCurrentAddress()+'/orderDetails.html?orderId='+orderId+'" target="_blank">'+orderId+'</a>';
+//		} else if(status == 2){
+//			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+//		} else if(isAPI == 0 && status == 1){
+//			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+//		} else if(isAPI == 1 && status == 1){
+//			html = '<a href="'+getCurrentAddress()+'/selfHelpOrderAPIInit.html?apiId='+serviceId+'&indexPage=2">'+orderId+'</a>';
+//		} else if((status == 4 || status == 5) && websoc != 2){
+//			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+//		} else if(begin_date.time <= currentTime && status == 3){
+//			html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+//		} else {
+//			html = '<a href="#" >'+orderId+'</a>';
+//		}
+//	} else if(serviceId == 6){
+//		if(isAPI != 1){
+//			html = '<a href="'+getCurrentAddress()+'/warningWaf.html?orderId='+orderId+'&type='+type+'" target="_blank">'+orderId+'</a>';
+//		} else if(isAPI == 1){
+//			html = '<a href="'+getCurrentAddress()+'/apiDetails.html?orderId='+orderId+'" target="_blank" >'+orderId+'</a>';
+//		}
+//	} else if(serviceId > 6){
+//		if(isAPI == 3){
+//			html = '<a href="#">'+orderId+'</a>';//系统安全帮
+//		} else if(isAPI == 1){
+//			html = '<a href="'+getCurrentAddress()+'/apiDetails.html?orderId='+orderId+'" target="_blank">'+orderId+'</a>';
+//		}
+//	}
+	switch(isAPI){
+		case	 0:
+			if(status == 0){
+				html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+			}else if(status == 1){
+				html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+			}else if(status == 2){
+				html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+			}else if((status == 4 || status == 5) && websoc != 2){
+				html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+			}else if(begin_date.time <= currentTime && status == 3){
+				html = '<a href="'+getCurrentAddress()+'/warningInit.html?orderId='+orderId+'&type='+type+'&websoc='+websoc+'" target="_blank">'+orderId+'</a>';
+			}
+			break;
+		case 1:
+			if(status == 1){
+				html = '<a href="'+getCurrentAddress()+'/selfHelpOrderAPIInit.html?apiId='+serviceId+'&indexPage=2" >'+orderId+'</a>';
+			}
+			else{
+				html = '<a href="'+getCurrentAddress()+'/apiDetails.html?orderId='+orderId+'" target="_blank" >'+orderId+'</a>';
+			}
+			break;
+		case 2:
 			html = '<a href="'+getCurrentAddress()+'/warningWaf.html?orderId='+orderId+'&type='+type+'" target="_blank">'+orderId+'</a>';
-		} else {
-			html = '<a href="#">'+orderId+'</a>';
-		}
-	} else {
-		html = '<a href="#">'+orderId+'</a>';
+			break;
+		case 3:
+			html = '<a href="'+getCurrentAddress()+'/sysWarning.html?orderId='+orderId+'&type='+type+'" target="_blank">'+orderId+'</a>';
+			break;
+		default:
+			html = '<a href="admin.html">'+orderId+'</a>';
+			break;
 	}
 	return html;
 }
