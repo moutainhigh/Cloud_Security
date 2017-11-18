@@ -33,6 +33,58 @@ $(function() {
         $(".mark,.data_tanc").hide();
      });
  });
+ 
+ var ServiceInfoTable = [
+	 ["WEB漏洞监测服务","网站挂马监测服务","网页篡改监测服务","网页敏感内容监测服务","网站可用性监测服务"],
+	 ["WEB漏洞监测能力API","网站挂马监测能力API","网页篡改监测能力API","网页敏感内容监测能力API","网站可用性监测API","恶意URL数据API","IP地址与经纬度数据API"],
+	 ["云WAF网站安全防护服务"],
+	 ["上网行为管理服务","云眼APM服务"]
+ ];
+ 
+ var ServiceInfoIdTable = [
+	 [1,2,3,4,5],
+	 [1,2,3,4,5,6,7],
+	 [6],
+	 [7,8]
+ ];
+ function getServiceInfo(){
+	 var Service = document.getElementById("isApiSel");
+	 var ServiceInfo = document.getElementById("isServiceSel");
+	 var index1 = Service.selectedIndex;
+	 var ServiceInfoForService = ServiceInfoTable[index1 - 1];
+	 var ServiceInfoId = ServiceInfoIdTable[index1 - 1];
+	 ServiceInfo.length = 1;
+	 for(var i = 0;i<ServiceInfoForService.length;i++){
+		 ServiceInfo[i+1] = new Option(ServiceInfoForService[i],ServiceInfoId[i]);
+	 }
+ }
+ 
+ function clearSearch(){
+	 var OrderNo = document.getElementById("orderno2");
+	 var Order_createdate_start = document.getElementById("order_createdate_start");
+	 var Order_createdate_end = document.getElementById("order_createdate_end");
+	 var Service_startdate = document.getElementById("service_startdate");
+	 var Service_enddate = document.getElementById("service_enddate");
+	 var Service = document.getElementById("isApiSel");
+	 var ServiceInfo = document.getElementById("isServiceSel");
+	 var OrderUserName = document.getElementById("orderusername");
+	 var AssetName = document.getElementById("assetname2");
+	 var AssetAddr = document.getElementById("assetaddr2");
+	 var CountNum = document.getElementById("countNum");
+	 var orderListId = document.getElementById("orderListId");
+	 OrderNo.value = "";
+	 Order_createdate_start.value = "";
+	 Order_createdate_end.value = "";
+	 Service_startdate.value = "";
+	 Service_enddate.value = "";
+	 Service.value = "-1";
+	 ServiceInfo.value = "-1";
+	 OrderUserName.value = "";
+	 AssetName.value = "";
+	 AssetAddr.value = "";
+	 CountNum.value = "";
+	 orderListId.value = "";
+ }
 
 </script>
 </head>
@@ -155,7 +207,6 @@ $(function() {
 					</form>
 					<div id="userInfoTab">
 						<div class="tableBox" style="margin-top:10px;">
-
 							<div class="tableUser" style="">
 								<table cellpadding="0" cellspacing="0" border="1" width="954"
 									bordercolor="#e0e0e0">
@@ -202,14 +253,12 @@ $(function() {
 									<tbody id="orderInfo">
 									</tbody>
 								</table>
-
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="item tabItem">
 					<form class="clearfix analysecent user_form">
-
 						<div class="analyse_lable fl">
 							<label>订单编号</label> 
 							<input type="text" class="text" id="orderno2" name="orderno2">
@@ -230,21 +279,31 @@ $(function() {
 							<label>下单用户</label> 
 							<input type="text" class="text" id="orderusername" name="orderusername">
 							<label>服务类型</label> 
-							<select class="text" id="isApiSel">
+							<select class="text" id="isApiSel" onchange="getServiceInfo()">
+								<option value='-1'>请选择服务分类</option>
 								<option value="0">监测服务</option>
 								<option value="1">API服务</option>
 								<option value="2">WAF防护</option>
-							</select>
+								<option value="3">系统安全帮</option>
+							</select >
+							<label>详细服务信息</label>
+							<select class="text" id="isServiceSel" >
+								<option value='-1'>请选择详细服务信息</option>
+							</select >
 							<label>资产名称</label> 
 							<input type="text" class="text" id="assetname2" name="assetname2"> 
 							<label>资产地址</label> 
 							<input type="text" class="text" id="assetaddr2" name="assetaddr2">
+							<label>总数</label>
+							<input type="text" class="text" id="countNum" name="countNum">
+							<label>大订单订单号</label>
+							<input type="text" class="text" id="orderListId" name="orderListId">
+							<input type="button"  value = "清空查询" onclick="clearSearch()">
 						</div>
 						<input type="button" class="sub" value="" style="right:-130px;"
 							onclick="activeQueryOrder()">
 					</form>
 					<div class="tableBox">
-
 						<div class="tableUser" style="height:400px; overflow-y:auto;">
 							<table cellpadding="0" cellspacing="0" border="1" width="954"
 								bordercolor="#e0e0e0">
@@ -256,14 +315,13 @@ $(function() {
 										<th>订单类型</th>
 										<th>订单服务起止时间</th>
 										<th>服务类型</th>
+										<th>大订单编号</th>
 									</tr>
 								</thead>
 								<tbody id="queryOrder">
 								</tbody>
 							</table>
-
 						</div>
-
 					</div>
 				</div>
 				
