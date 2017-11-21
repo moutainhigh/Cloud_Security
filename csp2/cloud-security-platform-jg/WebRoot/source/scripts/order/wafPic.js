@@ -124,85 +124,6 @@ $(function(){
         }
     );
     
-    
- // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    require(
-        [
-            'echarts',
-            'echarts/chart/pie'
-        ],
-        function (ec) {//回调函数执行图表对象初始化
-            //--- 饼图 ---
-            myChartPieEvent = ec.init(document.getElementById('eventPie'));
-            myChartPieEvent.showLoading({
-          	  text: 'loading...',
-          	  effect : 'spin',
-          	  textStyle : {
-          	        fontSize : 20,
-          	        color:'#000'
-          	    },
-          	    effectOption :{
-          	    	  backgroundColor:'#fff'
-          	   }
-
-	        });
-            //后台获取数据
-            $.ajax({
-            	type : "post",
-            	async:false,
-            	url:"getEventPieData.html?orderId="+$('#orderId').val(),
-                dataType:"json",
-                contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                success:function(data){
-                	myChartPieEvent.hideLoading();  
-                    myChartPieEvent.setOption({//图形
-                    	title: {
-                            text: '最近事件类型分布图'
-                        },
-                        tooltip : {
-                            trigger: 'item',
-                            formatter: "{a} <br/>{b} : {c} ({d}%)"
-                        },
-                        legend: {
-                            show:false,
-					        y : 'bottom',
-					        data:data.name
-                        },
-//                        color:colorData,
-                        toolbox: {
-                            show : true,
-                            feature : {
-                                mark : true,
-                                restore : true,
-                                saveAsImage : true
-                            }
-                        },
-                        calculable : false,
-                        series : [
-                            {
-                                name:'事件类型比例',
-                                type:'pie',
-                                radius : '45%',
-                                center: ['50%', '50%'],
-                                data:data.json,
-                                itemStyle:{ 
-		                            normal:{ 
-		                                label:{ 
-		                                   show: true, 
-		                                   formatter: '{d}%' 
-		                                }, 
-		                                labelLine :{show:true}
-		                            } 
-		                        }
-                            }
-                        ]
-                    },true);//图形展示
-                    window.onresize = myChartPieEvent.resize;
-                }//ajax执行后台
-            }); 
-        }
-    );
-    
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
@@ -228,12 +149,13 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type: "post",
-            	async:false,
             	url:"getEventBarData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
 //                contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
                 	myChartBar.hideLoading();  
+                	var eventName = data.name;
+                	var eventJson = data.json;
                     myChartBar.setOption({//图形
                     	title: {
                             text: '最近事件类型统计图'
@@ -306,11 +228,85 @@ $(function(){
 	                    	 }()
 
                     },true);//图形展示
-                    window.onresize = myChartBar.resize;
+                    //window.onresize = myChartBar.resize;
+                    
+                    if(eventName){                	
+                    	myChartPieEvent.hideLoading();  
+                        myChartPieEvent.setOption({//图形
+                        	title: {
+                                text: '最近事件类型分布图'
+                            },
+                            tooltip : {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                show:false,
+    					        y : 'bottom',
+    					        data:eventName
+                            },
+//                            color:colorData,
+                            toolbox: {
+                                show : true,
+                                feature : {
+                                    mark : true,
+                                    restore : true,
+                                    saveAsImage : true
+                                }
+                            },
+                            calculable : false,
+                            series : [
+                                {
+                                    name:'事件类型比例',
+                                    type:'pie',
+                                    radius : '45%',
+                                    center: ['50%', '50%'],
+                                    data:eventJson,
+                                    itemStyle:{ 
+    		                            normal:{ 
+    		                                label:{ 
+    		                                   show: true, 
+    		                                   formatter: '{d}%' 
+    		                                }, 
+    		                                labelLine :{show:true}
+    		                            } 
+    		                        }
+                                }
+                            ]
+                        },true);//图形展示
+                        //window.onresize = myChartPieEvent.resize;
+                    }
                 }//ajax执行后台
             }); 
         }
     );
+    
+    
+ // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+    require(
+        [
+            'echarts',
+            'echarts/chart/pie'
+        ],
+        function (ec) {//回调函数执行图表对象初始化
+            //--- 饼图 ---
+            myChartPieEvent = ec.init(document.getElementById('eventPie'));
+            myChartPieEvent.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        });
+        }
+    );
+    
+
     function testX(){
     	return label;
     }
