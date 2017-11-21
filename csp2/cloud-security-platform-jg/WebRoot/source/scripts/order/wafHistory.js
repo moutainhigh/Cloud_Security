@@ -5,6 +5,9 @@ var ontimeLine = null;
 var sourceIp = null;
 var sourceArea = null;
 
+var eventName = null;
+var eventJson = null;
+
     require.config({
         paths:{ 
             echarts:'../echarts/echarts',
@@ -157,7 +160,7 @@ var sourceArea = null;
 	            //后台获取数据
 	            $.ajax({
 	            	type : "post",
-	            	async:false,
+	            	//async:false,
 	            	url:"getEventPieData.html",
 	            	data : {
 	            		"orderId":$('#orderId').val(),
@@ -168,6 +171,8 @@ var sourceArea = null;
 	            	dataType:"json",
 	                contentType: "application/x-www-form-urlencoded; charset=utf-8",
 	                success:function(data){
+	                	eventName = data.name;
+	                	eventJson = data.json;
 	                	myChartPieEvent.hideLoading();  
 	                    myChartPieEvent.setOption({//图形
 	                    	title: {
@@ -211,52 +216,10 @@ var sourceArea = null;
 	                            }
 	                        ]
 	                    },true);//图形展示
-	                    window.onresize = myChartPieEvent.resize;
-	                }//ajax执行后台
-	            }); 
-	        }
-	    );
-    }
-    
-    
-    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    function barEvent(startDate,timeUnit){ 
-    	require(
-	        [
-	            'echarts',
-	            'echarts/chart/bar',
-	            'echarts/chart/line'
-	        ],
-	        function (ec) {//回调函数
-	            //--- 柱形图 ---
-	        	myChartBar = ec.init(document.getElementById('eventBar'));
-	        	myChartBar.showLoading({
-	          	  text: 'loading...',
-	          	  effect : 'spin',
-	          	  textStyle : {
-	          	        fontSize : 20,
-	          	        color:'#000'
-	          	    },
-	          	    effectOption :{
-	          	    	  backgroundColor:'#fff'
-	          	   }
-	
-		        });
-	          //后台获取数据
-	            $.ajax({
-	            	type: "post",
-	            	async:false,
-	            	url:"getEventBarData.html",
-	            	data : {
-	            		"orderId":$('#orderId').val(),
-	            		"isHis":$('#isHis').val(),
-	            		"startDate":startDate,
-	            		"timeUnit":timeUnit
-	            	},
-	            	dataType:"json",
-	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
-	                success:function(data){
-	                	myChartBar.hideLoading();  
+	                    //window.onresize = myChartPieEvent.resize;
+		                
+	                    
+	                    myChartBar.hideLoading();  
 	                    myChartBar.setOption({//图形
 	                    	title: {
 	                            text: '事件类型统计图'
@@ -269,7 +232,7 @@ var sourceArea = null;
 	                        },
 	                        legend: {
 	                            y : 'bottom',
-	                            data:data.name
+	                            data:eventName
 	                        },
 	                        toolbox: {
 	                            show : true,
@@ -304,11 +267,11 @@ var sourceArea = null;
 	                        	function(){
 		                       	 var serie=[];
 		                       	 
-		                    	 for( var i=0;i < data.json.length;i++){
+		                    	 for( var i=0;i < eventJson.length;i++){
 		                    		 var num=[];
-		                    		 num[0]=data.json[i].value;
+		                    		 num[0]=eventJson[i].value;
 		                        	 var item={
-			                        	 name:data.json[i].name,
+			                        	 name:eventJson[i].name,
 			                        	 type:'bar',
 	//		                        	 barWidth : 25,
 			                        	 itemStyle: {
@@ -329,9 +292,36 @@ var sourceArea = null;
 		                    	 }()
 	
 	                    },true);//图形展示
-	                    window.onresize = myChartBar.resize;
 	                }//ajax执行后台
 	            }); 
+	        }
+	    );
+    }
+    
+    
+    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+    function barEvent(startDate,timeUnit){ 
+    	require(
+	        [
+	            'echarts',
+	            'echarts/chart/bar',
+	            'echarts/chart/line'
+	        ],
+	        function (ec) {//回调函数
+	            //--- 柱形图 ---
+	        	myChartBar = ec.init(document.getElementById('eventBar'));
+	        	myChartBar.showLoading({
+	          	  text: 'loading...',
+	          	  effect : 'spin',
+	          	  textStyle : {
+	          	        fontSize : 20,
+	          	        color:'#000'
+	          	    },
+	          	    effectOption :{
+	          	    	  backgroundColor:'#fff'
+	          	   }
+	
+		        });        	
 	        }
 	    );
     }
