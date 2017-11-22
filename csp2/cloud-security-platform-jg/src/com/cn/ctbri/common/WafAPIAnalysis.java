@@ -23,6 +23,7 @@ import javax.ws.rs.core.NewCookie;
 import org.apache.commons.codec.binary.Base64;
 
 import se.akerfeldt.com.google.gson.JsonObject;
+import sun.net.www.content.image.jpeg;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -197,24 +198,44 @@ public class WafAPIAnalysis {
 		JSONArray json = new JSONArray();
     	try {
     		JSONArray obj = new JSONArray().fromObject(eventStr);
-    		for (Object aObj : obj) {
-    			JSONObject e = (JSONObject) aObj;
-    			int count = e.getInt("count");
-    			if(count!=0){
-    				JSONObject jo = new JSONObject();
-    				byte[] base64Bytes = e.getString("eventType").toString().getBytes();	
-    				String eventType = new String(base64Bytes,"UTF-8");
-    				arr.add(eventType);
-    				arra.add(count);
-    				jo.put("value", count);
-    				jo.put("name", eventType);
-    				json.add(jo);
-    			}
-    			
-    		}	
+    		int otherTypeNum =0;
+    		int total =0;
+    		for (int i=0 ;i<obj.size();i++) {
+        			//JSONObject e = (JSONObject) aObj;
+        			JSONObject e = obj.getJSONObject(i);
+        			int count = e.getInt("count");
+        			
+        			if(count!=0&&i<=4){
+        				JSONObject jo = new JSONObject();
+        				byte[] base64Bytes = e.getString("eventType").toString().getBytes();	
+        				String eventType = new String(base64Bytes,"UTF-8");
+        				arr.add(eventType);
+        				arra.add(count);
+        				jo.put("value", count);
+        				jo.put("name", eventType);
+        				json.add(jo);
+        			}
+        			else if (count!=0&&i>4) {
+						otherTypeNum =otherTypeNum+count;
+					}
+        			total= total+count;
+        		}	
+    		if (otherTypeNum>0) {
+    			JSONObject jo = new JSONObject();
+				String eventType ="其他";
+				arr.add(eventType);
+				arra.add(otherTypeNum);
+				jo.put("value", otherTypeNum);
+				jo.put("name", eventType);
+				json.add(jo);
+			}
+    		
+    		
+    		
 			reMap.put("name", arr);
 			reMap.put("value", arra);
 			reMap.put("json", json);
+			reMap.put("total", total);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -293,10 +314,13 @@ public class WafAPIAnalysis {
     		JSONObject ob = JSONObject.fromObject(eventStr);
     		JSONArray obj = ob.getJSONArray("list");
     		int total = 0;
-    		for (Object aObj : obj) {
-    			JSONObject e = (JSONObject) aObj;
+    		int otherTypeNum = 0;
+    		//for (Object aObj : obj) {
+    		for(int i=0;i<obj.size();i++){
+    			//JSONObject e = (JSONObject) aObj;
+    			JSONObject e = obj.getJSONObject(i);
     			int count = Integer.parseInt(e.getString("count"));
-    			if(count!=0){
+    			if(count!=0&&i<=4){
     				JSONObject jo = new JSONObject();
     				String eventType = e.getString("eventType");
     				arr.add(eventType);
@@ -305,9 +329,22 @@ public class WafAPIAnalysis {
     				jo.put("name", eventType);
     				json.add(jo);
     			}
+    			else if (count!=0&&i>4) {
+    				otherTypeNum = otherTypeNum+count;
+				}
     			total = total+count;
     			
     		}	
+    		
+    		if (otherTypeNum>0) {
+				JSONObject jo = new JSONObject();
+				String eventType = "其他";
+				arr.add(eventType);
+				arra.add(otherTypeNum);
+				jo.put("value",otherTypeNum);
+				jo.put("name", eventType);
+				json.add(jo);
+			}
 			reMap.put("name", arr);
 			reMap.put("value", arra);
 			reMap.put("json", json);
