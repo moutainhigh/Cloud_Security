@@ -161,7 +161,7 @@ var eventJson = null;
 	            $.ajax({
 	            	type : "post",
 	            	//async:false,
-	            	url:"getEventPieData.html",
+	            	url:"getEventBarData.html",
 	            	data : {
 	            		"orderId":$('#orderId').val(),
 	            		"isHis":$('#isHis').val(),
