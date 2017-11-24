@@ -41,7 +41,7 @@ import com.cn.ctbri.utils.IPUtility;
 
 public class LogController {
 	public static void main(String[] args) {
-		System.out.print(301/300);
+		//System.out.print(301/300);
 		/*//File directory = new File("");//设定为当前文件夹 
 		try{ 
 		    
@@ -58,8 +58,11 @@ public class LogController {
 		}catch(Exception e){
 			e.printStackTrace();
 		} */
-		 String s = "1234567890123456";
-		 System.out.print(s.substring(0, s.length()));
+		// String s = "1234567890123456";
+		// System.out.print(s.substring(0, s.length()));
+		String a = "﻿124.126.15.105";
+		String b ="﻿124.126.15.105";
+		System.out.println(a.equals(b));
 	}
 	private static void cntHour(ApplicationContext ctx) {
 		   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");

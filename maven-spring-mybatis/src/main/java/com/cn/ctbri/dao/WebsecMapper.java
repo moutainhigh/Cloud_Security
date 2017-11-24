@@ -36,4 +36,5 @@ public interface WebsecMapper {
     List<Websec>  selectByLimit(Map<String,Long> hm);
     Long selectMaxLogIdByLimit(Map<String,Long> hm);
     List<Websec>  selectDstByLimit(Map<String,Long> hm);
+    List<Websec>  selectSrcIPbySeg(Map<String,Long> hm);
 }

@@ -618,6 +618,13 @@
     				and src_ip<>'192.168.0.1'
    		]]>
    </select>
+   <select id="selectSrcIPbySeg"  parameterType="hashmap" resultMap="BaseResultMap">
+   		<![CDATA[ 	 select 
+        			distinct src_ip
+    				from t_waf_log_websec where log_id >= #{preLogId,jdbcType=BIGINT} and log_id <#{maxLogId,jdbcType=BIGINT} 
+    				and src_ip<>'192.168.0.1' and src_latitude=''
+   		]]>
+   </select>
    <update id="batchUpd"  parameterType="map">
    		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
    				update t_waf_log_websec

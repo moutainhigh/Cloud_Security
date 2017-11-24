@@ -45,9 +45,9 @@ public class CircleSelect {
 			   ctx=new ClassPathXmlApplicationContext("conf/applicationContext.xml");
 			   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
 			    Long pre_maxLogId = getPropsLogId();
-				//Long pre_maxLogId = 1364466l ;
+				//Long pre_maxLogId = 4917139l ;
 			    Long maxLogId = websecDao.getMaxLogId();
-			    //Long maxLogId = 1381464l;
+			    //Long maxLogId = 4917140l;
 			    //更新所有目标地址
 			    updDst(ctx,pre_maxLogId,maxLogId);
 			    
@@ -65,13 +65,13 @@ public class CircleSelect {
 			    Long maxlog_id = 0l;
 			    //如果新产生的数据量比batchBlockSize小，只需要更新一次
 			    if( updTimes < 1){
-			    	Long offset =  websecDao.selectOffset(pre_maxLogId);
-			    	Map<String,Long> map_limit = new HashMap<String,Long>();
-			    	map_limit.put("offset", (offset-1));
-			    	map_limit.put("seg", new Long(batchBlockSize));
-			    	seglist= websecDao.selectByLimit(map_limit);
 			    	
-			   	    maxlog_id = websecDao.selectMaxLogIdByLimit(map_limit);
+			    	Map<String,Long> map_limit = new HashMap<String,Long>();
+			    	map_limit.put("preLogId", pre_maxLogId);
+			    	map_limit.put("maxLogId", maxLogId);
+			    	seglist= websecDao.selectSrcIPbySeg(map_limit);
+			    	
+			   	    maxlog_id = maxLogId;
 				    updSrc(ctx,seglist,maxlog_id);
 			    	
 			    }
@@ -85,11 +85,11 @@ public class CircleSelect {
 			 	    	if(i == updTimes){
 			 	    		offset =  websecDao.selectOffset(maxlog_id) ;
 			 		    	Map<String,Long> map_limit = new HashMap<String,Long>();
-			 		    	map_limit.put("offset", offset);
-			 		    	map_limit.put("seg", new Long(batchBlockSize));
-			 		    	seglist= websecDao.selectByLimit(map_limit); 
+			 		    	map_limit.put("preLogId", maxlog_id);
+			 		    	map_limit.put("maxLogId", maxLogId);
+			 		    	seglist= websecDao.selectSrcIPbySeg(map_limit); 
 			 		    	
-			 	   	    	maxlog_id = websecDao.selectMaxLogIdByLimit(map_limit);
+			 	   	    	maxlog_id = maxLogId;
 			 		    	updSrc(ctx,seglist,maxlog_id);
 			 	    	}else{
 			 	    		if(i==0 ){
@@ -165,7 +165,8 @@ public class CircleSelect {
 		 List<DstIp> dstIp_defended = dstIpDao.selectAll();
 		 for(Websec websec : dstList){
 			 for(DstIp dstIp: dstIp_defended){
-				 if(websec.getDstIp() != null  && dstIp.getDstIp().equals(websec.getDstIp())){
+				 if(websec.getDstIp() != null  && 
+						 compareStrArray(dstIp.getDstIp().split("."),websec.getDstIp().split("."))){
 					 WebsecSeg _websec = new WebsecSeg();
 					 _websec.setDstCity(dstIp.getDstCity());
 					 _websec.setDstCountry(dstIp.getDstCountry());
@@ -309,6 +310,21 @@ public class CircleSelect {
 		     }
 			 
 		}
-		
+		private static boolean compareStrArray(String [] str1,String [] str2){
+			 boolean r = false ;
+			 if(str1.length != str2.length)
+				 ;
+			 else{
+				 int num = 0 ; 
+				 for(int i = 0 ; i< str1.length ; i++){
+					 if(str1[i] == str2[i]) num++;
+					 
+				 }
+				 if(num == str1.length)
+					 r= true ;
+			 }
+				 
+			 return r ;
+		}
 		
 }
