@@ -1,5 +1,7 @@
 package com.cn.ctbri.daoImp;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -51,6 +53,12 @@ public class TaskMapperImp implements TaskMapper {
 	public int updateByPrimaryKey(Task record) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<Task> selectByTask(Task record) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("selectByTask", record);
 	}
 
 }

@@ -28,6 +28,62 @@
     from task
     where taskId = #{taskid,jdbcType=BIGINT}
   </select>
+  <select id="selectByTask" parameterType="com.cn.ctbri.model.Task" resultMap="BaseResultMap">
+  	select 
+  	 <include refid="Base_Column_List" />
+    from task
+    <where>
+      <include refid="commonWhereIf"/>
+    </where>
+    
+  </select>
+  <sql id="commonWhereIf">
+  	  <if test="taskid != null">
+        taskId = #{taskid,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null">
+        and orderId=#{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="assetid != null">
+        and assetId=#{assetid,jdbcType=VARCHAR},
+      </if>
+      <if test="asseturl != null">
+        and assetUrl=#{asseturl,jdbcType=VARCHAR},
+      </if>
+      <if test="servicetype != null">
+        and serviceType=#{servicetype,jdbcType=INTEGER},
+      </if>
+      <if test="origin != null">
+        and origin=#{origin,jdbcType=INTEGER},
+      </if>
+      <if test="iscycle != null">
+        and isCycle=#{iscycle,jdbcType=INTEGER},
+      </if>
+      <if test="periodic != null">
+        and periodic=#{periodic,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        and startDate=#{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        and endDate=#{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="engineid != null">
+        and engineId=#{engineid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        and status=#{status,jdbcType=INTEGER},
+      </if>
+      <if test="totaltimes != null">
+        and totalTimes=#{totaltimes,jdbcType=INTEGER},
+      </if>
+      <if test="errorinfo != null">
+        and errorInfo=#{errorinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        and updateTime=#{updatetime,jdbcType=TIMESTAMP}
+      </if>
+  </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from task
     where taskId = #{taskid,jdbcType=BIGINT}
