@@ -2377,7 +2377,7 @@ public class shoppingController {
     				        	int id = 0;
     				        	String addr = "";
     				        	String addrName = "";
-    				        	String wafIp = "219.141.189.183";
+    				        	String wafIp = "1.1.1.1";
     				        	String wafPort = "";
         						JSONArray ser = new JSONArray();
         						if(assets != null && assets.size() > 0){
