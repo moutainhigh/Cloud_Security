@@ -123,6 +123,7 @@ public class WafDetailController {
             String websecStr = "";
             if(isHis!=null && isHis.equals("1")){
             	//level等级判断
+            	/*
             	String levelStr = WafAPIWorker.getWafAlertLevelCountDomainInTime(reportStartDate,"",timeUnit,domainList);
             	Map map = WafAPIAnalysis.getWafAlertLevelCount(levelStr);
             	Integer totallevel = (Integer) map.get("total");
@@ -134,7 +135,7 @@ public class WafDetailController {
             	request.setAttribute("level", totallevel);    //设置告警级别统计数  高中低
             	request.setAttribute("levelhigh", levelhigh);
             	request.setAttribute("levelmid", levelmid);
-            	request.setAttribute("levellow", levellow);
+            	request.setAttribute("levellow", levellow);*/
             	
             	//告警类型判断
             	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(reportStartDate,"",timeUnit,domainList);
