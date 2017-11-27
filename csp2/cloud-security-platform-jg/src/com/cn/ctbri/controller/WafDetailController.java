@@ -140,17 +140,7 @@ public class WafDetailController {
             	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(reportStartDate,"",timeUnit,domainList);
         		Map map1 = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
         		Integer totaltype = (Integer) map1.get("total");
-            	/*request.setAttribute("levelType", totaltype);
-            	List listEventType = WafAPIAnalysis.analysisEventTypeCountList(eventStr);
-            	int totalEventTypeCount = 0;
-            	for (int i = 0; i < listEventType.size(); i++) {
-					Map typeMap = (Map) listEventType.get(i);
-					String count = String.valueOf(typeMap.get("count"));
-					totalEventTypeCount = totalEventTypeCount + Integer.parseInt(count);
-				}*/
             	request.setAttribute("eventTypeTotal", String.valueOf(totaltype));    //设置告警级别总数
-            	//String strEventTypeBase64 = new String(eventStr.getBytes("UTF-8"),"UTF-8");
-            	//strEventTypeBase64 = new sun.misc.BASE64Encoder().encode(strEventTypeBase64.toString().getBytes());
             	String strlistEventTypeHex = toHexString(eventStr);
             	request.setAttribute("strlistEventType",strlistEventTypeHex);   // 设置告警类型list
             	
@@ -163,6 +153,7 @@ public class WafDetailController {
         		}else if (timeUnit.equals("week")) {
 					unit = "week";
 				}
+        		/*
         		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(reportStartDate+"-01","",unit,domainList);
         		List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(eventStr1);
         		int totalTimeCount = 0;
@@ -171,37 +162,29 @@ public class WafDetailController {
     	 	        String count = String.valueOf(alarm.get("count"));
     	 	       totalTimeCount = totalTimeCount + Integer.parseInt(count);
     	 	    }
-    	    //	Map lastrow = new HashMap();
-    		//	lastrow.put("time","总计");
-    		//	lastrow.put("count",String.valueOf(total));
-    		//	listTime.add(lastrow);
         		request.setAttribute("timeCountTotal", String.valueOf(totalTimeCount));  //设置告警时段总数
      	        request.setAttribute("resultList", listTime);        //设置告警时段list
-     	     
-     	        //String strtimeBase64 = new sun.misc.BASE64Encoder().encode(eventStr1.toString().getBytes());
+				
      	        String resultListTimeHex = toHexString(eventStr1);
      	        request.setAttribute("resultListTime",resultListTimeHex);  // 设置告警time   list
-     	
+     	*/
             	//攻击源
-            	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(reportStartDate,"",timeUnit,domainList,10);
+            //	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(reportStartDate,"",timeUnit,domainList,10);
             	request.setAttribute("beginDate", reportStartDate);
             	request.setAttribute("type", timeUnit);
-            	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
-            	//String strattackip = new String(websecList.toString().getBytes("UTF-8"),"UTF-8");
-            	//String strattackipBase64 = new sun.misc.BASE64Encoder().encode(websecStr.getBytes());
-            	String websecListIpHex = toHexString(websecStr);
-            	
-            	request.setAttribute("websecList", websecList);       
-            	request.setAttribute("websecListIp", websecListIpHex);   // 设置攻击源ip list
-            	request.setAttribute("websecNum", websecList.size());    // 设置攻击源ip 总数
+           // 	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
+          //  	String websecListIpHex = toHexString(websecStr);
+          //  	request.setAttribute("websecList", websecList);       
+          //  	request.setAttribute("websecListIp", websecListIpHex);   // 设置攻击源ip list
+          //  	request.setAttribute("websecNum", websecList.size());    // 设置攻击源ip 总数
+            	/*
             	int totalAttackIP = 0;
         		for (int i = 0; i < listTime.size(); i++) {
         			Map alarm  = (Map) listTime.get(i);
     	 	        String count = String.valueOf(alarm.get("count"));
     	 	       totalAttackIP = totalAttackIP + Integer.parseInt(count);
     	 	    }
-            	request.setAttribute("totalAttackIP", String.valueOf(totalAttackIP));
-        		
+            	request.setAttribute("totalAttackIP", String.valueOf(totalAttackIP));*/
             	reurl = "/source/page/personalCenter/wafHistory";
             }else{
             	websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
@@ -278,6 +261,18 @@ public class WafDetailController {
         CommonUtil.writeToJsp(response, JSON);
     }
     
+    
+    @RequestMapping(value="getAttackSourceData.html")
+    public void getAttackSourceData(HttpServletRequest request,HttpServletResponse response)throws Exception {
+		// TODO Auto-generated method stub
+    	String startDate = request.getParameter("startDate");
+    	String timeUnit = request.getParameter("timeUnit");
+    	String orderId = request.getParameter("orderId");
+    	
+    	List assets = orderAssetService.findAssetsByOrderId(orderId);
+    	List<String> dstIPList = new ArrayList();
+    	
+	}
     
     /**
      * 功能描述： 获取level饼图数据
