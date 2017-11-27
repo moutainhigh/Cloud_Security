@@ -5,6 +5,8 @@
 
 (function(window){
 // 攻击类型。
+var attackArrayState=[];
+var attackIndex=true;
 var typestate = d3.map();
 
 var typearray = eval("("+ typejson +")");
@@ -691,18 +693,18 @@ var statsManager = {
                 state.push(incoming);
                 while (state.length > settings.tableRows) {
                     state.shift();
-                }
+                }             
                 return state;
             },
 
             redraw: function() {
                 var that = this;
                 var rows = d3.select("#events tbody").selectAll("tr.row")
-                    .data(this.state, function(d) { 
+                    .data(this.state, function(d) {
                     	return d.id;
                     });
                 
-                rows.enter().append("tr")
+                rows.enter().insert("tr",".row")
                     .attr("class", "row");
                 rows.exit().remove();
 
@@ -786,51 +788,63 @@ function start(loc, psk) {
         if (!evt) {
             return;
         }
+        var data = eval("(" + evt.data + ")");
+        if(attackIndex){
+        	//alert(2);
+        	attackIndex=false;
+        	var totalNumberBox=document.getElementById("totalNumberBox");
+        	var detailAttack=document.getElementById("detailAttack");
+        	totalNumberBox.style.display="block";
+        	detailAttack.style.display="block";s
+        }else{
+        	var datum = data.attack;
+    	    
+    	    // 如果经度和纬度都为0，则设置经度为-5，纬度为-10.
+    	    if (datum.srcLongitude == 0 && datum.srcLatitude == 0) {
+    	        datum.srcLongitude = -5;
+    	        datum.srcLatitude = -50;
+    	    }
+    	    var smallNum=wafTotalNumber;
+    	    wafTotalNumber++;
+    	    todayFontVal++;
+    	    //alert(fontVal);
+    		document.getElementById("totalFon").firstChild.nodeValue=wafTotalNumber;
+    		document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
+    		//$("#testNum").runNum(wafTotalNumber);
+    		$('.dataStatistics').dataStatistics({min:smallNum,max:wafTotalNumber,time:30,len:7,init:false});
+    	    // 攻击源坐标
+    	    var startLoc = projection([datum.srcLongitude, datum.srcLatitude]);
+    	    // 攻击目的坐标
+    	    var endLoc = projection([datum.desLongitude, datum.desLatitude]);
+    	
+    	    // 如果数据解析出现错误
+    	    if (datum.error) {
+    	        console.log("ERROR: " + datum.error.msg);
+    	    }
+    	
+    	    for (var prop in datum) {
+    	        if (settings.numberProps.indexOf(prop) !== -1) {
+    	            datum[prop] = Number(datum[prop]);
+    	        }
+    	    }
+    	
+    		datum.service = datum.type ? datum.type : "未知类型";
+    	  	datum.cx = startLoc[0];
+    	  	datum.cy = startLoc[1];
+    		datum.x = startLoc[0];
+    		datum.y = startLoc[1];
+    		datum.targetX = endLoc[0];
+    		datum.targetY = endLoc[1];
+    		datum.id = getID();
+    		datum.datetime = datum.startTime;
+    		datum.dport = datum.port;
+    	
+    	    pauser.push(datum);
+        }
+        
         // 把得到的json数据转换成对象
-	  	var data = eval("(" + evt.data + ")");
-	  	var datum = data.attack;
-	    
-	    // 如果经度和纬度都为0，则设置经度为-5，纬度为-10.
-	    if (datum.srcLongitude == 0 && datum.srcLatitude == 0) {
-	        datum.srcLongitude = -5;
-	        datum.srcLatitude = -50;
-	    }
-	    var smallNum=wafTotalNumber;
-	    wafTotalNumber++;
-	    todayFontVal++;
-	    //alert(fontVal);
-		document.getElementById("totalFon").firstChild.nodeValue=wafTotalNumber;
-		document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
-		//$("#testNum").runNum(wafTotalNumber);
-		$('.dataStatistics').dataStatistics({min:smallNum,max:wafTotalNumber,time:30,len:7,init:false});
-	    // 攻击源坐标
-	    var startLoc = projection([datum.srcLongitude, datum.srcLatitude]);
-	    // 攻击目的坐标
-	    var endLoc = projection([datum.desLongitude, datum.desLatitude]);
-	
-	    // 如果数据解析出现错误
-	    if (datum.error) {
-	        console.log("ERROR: " + datum.error.msg);
-	    }
-	
-	    for (var prop in datum) {
-	        if (settings.numberProps.indexOf(prop) !== -1) {
-	            datum[prop] = Number(datum[prop]);
-	        }
-	    }
-	
-		datum.service = datum.type ? datum.type : "未知类型";
-	  	datum.cx = startLoc[0];
-	  	datum.cy = startLoc[1];
-		datum.x = startLoc[0];
-		datum.y = startLoc[1];
-		datum.targetX = endLoc[0];
-		datum.targetY = endLoc[1];
-		datum.id = getID();
-		datum.datetime = datum.startTime;
-		datum.dport = datum.port;
-	
-	    pauser.push(datum);
+	  	
+	  	
     };
 
     webSocket.onclose = function() {

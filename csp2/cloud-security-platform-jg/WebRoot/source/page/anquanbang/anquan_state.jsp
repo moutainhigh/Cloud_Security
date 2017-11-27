@@ -280,7 +280,7 @@
                 <!-- 世界地图背景色 -->
 <!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
 					<div class="content">
-						<div class="data attack-type box gray-bg">
+						<div class="data attack-type box gray-bg" style="display:none;" id="totalNumberBox">
 							<div id="attack-type-table-container">
 								<table id="attack-type">
 									<colgroup>
@@ -301,7 +301,7 @@
 							</div>
 						</div>
 						
-						<div class="console box gray-bg">
+						<div class="console box gray-bg" id="detailAttack"   style="display:none;">
 							<div id="console">
 								<table id="events">
 									<colgroup class="second-level">

@@ -402,11 +402,13 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		}
 		JSONObject jsonObject = new JSONObject();
 		ArrayList<AttackCount> attackCountList = null;
+		int index =0;
 		for (Entry<Date, HashMap<Integer, LinkedList<Attack>>> entry : attackSortMap
 				.entrySet()) {
 			/**
 			 * 存储同一时间内各个攻击类型的数量
 			 */
+			index++;
 			attackCountList = new ArrayList<AttackCount>();
 			HashMap<Integer, LinkedList<Attack>> attackMap = entry.getValue();
 			for (Entry<Integer, LinkedList<Attack>> attackEntry : attackMap
@@ -456,7 +458,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							e.printStackTrace();
 							return false;
 						}
-						Thread.currentThread().sleep(350);
+						if(index>8){
+							Thread.currentThread().sleep(350);
+						}						
 					}
 					i++;
 
@@ -488,7 +492,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							e.printStackTrace();
 							return false;
 						}
-						Thread.currentThread().sleep(350);
+						if(index>8){
+							Thread.currentThread().sleep(350);
+						}
 						if (i == 3) {
 							return true;
 						}
