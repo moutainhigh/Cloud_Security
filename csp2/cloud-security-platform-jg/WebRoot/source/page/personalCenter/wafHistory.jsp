@@ -97,58 +97,25 @@ $(document).ready(function(){
    		}
      });
      
-     /*
-     function getMonday(){
-		  //var today=new Date();
-		  var today=new Date($("#beginDate").val().replace(/-/g,   "/"));
-		  var weekday=today.getDay();    
-		  var monday=new Date(1000*60*60*24*(1-weekday) + today.getTime());
-		  var sunday=new Date(1000*60*60*24*(7-weekday) + today.getTime());      
-		  $("#beginDate").val(getDateStr(monday)+" "+getDateStr(sunday));
-	 }
-	 function getDateStr(dd){
-	     var y = dd.getFullYear();
-	 
-	     var m = dd.getMonth()+1;//获取当前月份的日期
-	     m=parseInt(m,10);
-	     if(m<10){
-	         m="0"+m;
-	     }
-	 
-	     var d = dd.getDate();
-	     d=parseInt(d,10);
-	     if(d<10){
-	         d="0"+d;
-	     }
-	     return y+"-"+m+"-"+d;
-	 }
-	 
-	 function getSunday(){
-	    //var today=new Date();
-	    var today=new Date($("#beginDate").val().replace(/-/g,   "/"));
-	    var weekday=today.getDay();    
-	    var sunday=new Date(1000*60*60*24*(7-weekday) + today.getTime());    
-	    $("#beginDate").val(getDateStr(sunday));
-	 }
-	 */
 	 //图表
-	 //var startDate = $('#beginDate').val();
+	 var startDate;
 	var type=$('input:radio[name="radioType"]:checked').val();
 	if(type == 'year'){
-		var startDate=$("#beginDate_y").val();
+		startDate=$("#beginDate_y").val();
 	}else if(type == 'month'){	
-		var startDate=$("#beginDate_m").val();
+		startDate=$("#beginDate_m").val();
 	}else if(type == 'week'){
-		var startDate=$("#beginDate_w").val();
+		startDate=$("#beginDate_w").val();
 		
 	}
    	 var timeUnit = $('input:radio[name="radioType"]:checked').val();
- 	 pielevel(startDate,timeUnit);  	 
- 	 pieEvent(startDate,timeUnit);
- 	 barEvent(startDate,timeUnit);
- 	 lineEvent(startDate,timeUnit);
-	 sourceIpEvent(startDate,timeUnit); 	 	 
- 	 //sourceAreaEvent(startDate,timeUnit);
+   	 if($('#level').val()>0){
+   		pielevel(startDate,timeUnit);  	 
+    	event(startDate,timeUnit);
+    	lineEvent(startDate,timeUnit);
+   	 	sourceIpEvent(startDate,timeUnit); 
+   	 }
+ 	 	 	 
 
      
 }); 
@@ -176,13 +143,13 @@ function GetQueryString(name) {
 
 function generate(){
 	var type=$('input:radio[name="radioType"]:checked').val();
-	//var beginDate=$("#beginDate").val();
+	var beginDate;
 	if(type == 'year'){
-		var beginDate=$("#beginDate_y").val();
+		beginDate=$("#beginDate_y").val();
 	}else if(type == 'month'){	
-		var beginDate=$("#beginDate_m").val();
+		beginDate=$("#beginDate_m").val();
 	}else if(type == 'week'){
-		var beginDate=$("#beginDate_w").val();
+		beginDate=$("#beginDate_w").val();
 	   	var s = beginDate.replace(/-/g,"/");
 		var date = new Date(s);
 		var curTime = date.getTime() ; 
@@ -257,25 +224,27 @@ function generate(){
          
        <div class="data_box">
         <div class="data_nav">
+         
           <input type="hidden" value="${ipurl}" id="ipurl" name="ipurl" />
           <input type="hidden" value="${defenselength}" id="defenselength" name="defenselength" />
           <input type="hidden" value="${reporttype}" id="reporttype" name="reporttype" />
           <input type="hidden" value="${reportlength}" id="reportlength" name="reportlength" />
-          <input type="hidden" value="${eventTypeTotal}" id="eventTypeTotal" name="eventTypeTotal" />
-          <input type="hidden" value="${strlistEventType}" id="strlistEventType" name="strlistEventType" />
-          <input type="hidden" value="${resultListTime}" id="resultListTime" name="resultListTime"/>
-          <input type="hidden" value="${timeCountTotal}" id="timeCountTotal" name="timeCountTotal"/>
-          <input type="hidden" value="${websecListIp}" id="websecListIp" name="websecListIp"/>
-          <input type="hidden" value="${totalAttackIP}" id="totalAttackIP" name="totalAttackIP" />
-          <input type="hidden" value="${websecNum}" id="websecNum" />
-          <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
-          <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
-          <input type="hidden" value="1" id="isHis" name="isHis"/>
+          <input type="hidden" value="${level }" id="eventTypeTotal" name="eventTypeTotal" />
+          <input type="hidden" value="" id="strlistEventType" name="strlistEventType" />
+          <input type="hidden" value="" id="resultListTime" name="resultListTime"/>
+          <input type="hidden" value="${level }" id="timeCountTotal" name="timeCountTotal"/>
+          <input type="hidden" value="" id="websecListIp" name="websecListIp"/>
+          <input type="hidden" value="${level }" id="totalAttackIP" name="totalAttackIP" />
+          <input type="hidden" value="${level }" id="websecNum" />		
           <input type="hidden" value="${level }" id="level" name="level"/>
           <input type="hidden" value="${levelhigh }" id="levelhigh" name="levelhigh"/>
           <input type="hidden" value="${levelmid }" id="levelmid" name="levelmid"/>
           <input type="hidden" value="${levellow }" id="levellow" name="levellow"/>
-          <input type="hidden" value="${levelType}" id="levelType" name="levelType" />
+
+          <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
+          <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
+          <input type="hidden" value="1" id="isHis" name="isHis"/>
+          
 			
      
 
@@ -287,7 +256,6 @@ function generate(){
 		  <input type="hidden" name="imgBar" id="imgBar" />
 		  <input type="hidden" name="imgOntimeLine" id="imgOntimeLine"/>
 		  <input type="hidden"  name="imgSourceIp" id="imgSourceIp"/>
-		  <input type="hidden" name="imgSourceArea" id="imgSourceArea"/>
 
           
           <ul  class="navlist centlist clearfix">
@@ -326,42 +294,32 @@ function generate(){
           </div>
         </div>
 			
-        <div class="data_min">
-           	 <div class="data_1" id="levelPie"></div>
-             <div class="data_1" id="eventBar"></div>
-             <div class="data_1" style="margin-right:0px;" id="eventPie"></div>
-
-        	<!--<c:if test="${level!=0}">
-             <div class="data_1" id="levelPie"></div>
+        <div class="data_min">			<c:if test="${level>0}">
+           		<div class="data_1" id="levelPie"></div>
+            	<div class="data_1" id="eventBar"></div>
+            	<div class="data_1" style="margin-right:0px;" id="eventPie"></div>
             </c:if>
-            <c:if test="${level==0}">
-             <div class="data_1"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+            <c:if test="${level==0 || level==null}">
+             	<div class="data_1"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+             	<div class="data_1"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+             	<div class="data_1" style="margin-right:0px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
             </c:if>
-            <c:if test="${levelType!=0}">
-             <div class="data_1" id="eventBar"></div>
-             <div class="data_1" style="margin-right:0px;" id="eventPie"></div>
-            </c:if>
-            <c:if test="${levelType==0}">
-             <div class="data_1"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
-             <div class="data_1" style="margin-right:0px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
-            </c:if>-->
         </div>
        
         <!-- 按时间段统计 -->
         <div class="data_table">
-            <c:if test="${websecNum>0}">
-				<div style="width:100%; height: 380px; padding: 20px;" id="ontimeLine"></div>				
-            </c:if>
-            <c:if test="${websecNum==0}">
-	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
-            </c:if>
+        	<c:if test="${level>0 }">
+				<div style="width:100%; height: 380px; padding: 20px;" id="ontimeLine"></div>	
+			</c:if>
+			<c:if test="${level==0 || level==null }">	
+				<div style="width:100%; height: 380px; padding: 20px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+			</c:if>		
         </div>
         
-        告警时段统计数据
-        <!-- 告警时段统计数据 -->
+        <!-- 告警时段统计数据--> 
         <div class="data_table">
-        	<c:if test="${websecNum>0}">
-				<table class="data_table_tab" width="100%">
+			<c:if test="${level>0 }">
+				<table class="data_table_tab timeTable" width="100%">
 	              <tbody>
 	                 <tr>
 	                     <th width="30%">时段</th>
@@ -369,34 +327,34 @@ function generate(){
 	                 </tr>
 	              </tbody>
 	             </table>
-	             <div style="overflow:auto;height:312px;width:1138px">
-	             <table class="data_table_tab" width="100%">
-	              <tbody>
-	                 <c:forEach var="list" items="${resultList}" varStatus="sta">
-		                 <tr>
-		                     <td width="30%">${list.time }</td>
-		                     <td width="30%">${list.count }</td>                     
-		                 </tr>
-	                 </c:forEach>
+	             <div style="overflow:auto;height:312px;width:1138px" class="timeTable">
+	             <table class="data_table_tab timeTable" width="100%">
+	              <tbody id="timeList">
 	              </tbody>
 	            </table>
 	            </div>
-	         </c:if>
+				<div class="nodata_time" style="display:none"><img src="${ctx}/source/images/waf_nodata1.png"/></div>
+			</c:if>
+			<c:if test="${level==0 || level==null }">
+				<div style="width:100%; height: 380px; padding: 20px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>			
+			</c:if>
 	    </div>
-	    
+
+	        
          <!-- 按攻击源ip统计 -->
         <div class="data_table">
-            <c:if test="${websecNum>0}">
-				<div style="width:100%; height: 380px; padding: 20px;" id="sourceIP"></div>				
-            </c:if>
-            <c:if test="${websecNum==0}">
-	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
-            </c:if>
+        	<c:if test="${level>0 }">
+				<div style="width:100%; height: 380px; padding: 20px;" id="sourceIP"></div>	
+			</c:if>		
+			<c:if test="${level==0 || level==null }">
+				<div style="width:100%; height: 380px; padding: 20px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+			</c:if>	
         </div>
-        
+ 
+         
         <div class="data_table">
-            <c:if test="${websecNum!=0}">
-	            <table class="data_table_tab" width="100%">
+        	<c:if test="${level>0 }">
+	            <table class="data_table_tab websecTable" width="100%">
 	              <tbody>
 	                 <tr>
 	                     <th width="30%">攻击源IP</th>
@@ -404,34 +362,20 @@ function generate(){
 	                 </tr>
 	              </tbody>
 	             </table>
-	             <div style="overflow:auto;height:312px;width:1138px">
-	             <table class="data_table_tab" width="100%">
-	              <tbody>
-	                 <c:forEach var="list" items="${websecList}" varStatus="sta">
-		                 <tr>
-		                     <td width="30%">${list.srcIp }</td>
-		                     <td width="30%">${list.count }</td>                     
-		                 </tr>
-	                 </c:forEach>
+	             <div style="overflow:auto;height:312px;width:1138px" class="websecTable">
+	             <table class="data_table_tab websecTable" width="100%">
+	              <tbody id="websecItem">
 	              </tbody>
 	            </table>
 	            </div>
-            </c:if>
-            <c:if test="${websecNum==0}">
-	            	<div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
-            </c:if>
+	            <div class="nodata_ip" style="display:none"><img src="${ctx}/source/images/waf_nodata1.png"/></div>
+	        </c:if>
+	        <c:if test="${level==0 || level==null }">
+					<div style="width:100%; height: 380px; padding: 20px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+			</c:if>	
         </div>
+       
         
-       <!--  
-       <div class="data_table">
-            <c:if test="${websecNum>0}">
-				<div style="width:100%; height: 380px; padding: 20px;" id="sourceArea"></div>				
-            </c:if>
-            <c:if test="${websecNum==0}">
-	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
-            </c:if>
-        </div>         
-		-->
        </div>    
 		</div>
 		</form>
