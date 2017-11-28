@@ -135,15 +135,20 @@ public class WafDetailController {
             	request.setAttribute("level", totallevel);    //设置告警级别统计数  高中低
             	request.setAttribute("levelhigh", levelhigh);
             	request.setAttribute("levelmid", levelmid);
-            	request.setAttribute("levellow", levellow);*/
+            	request.setAttribute("levellow", levellow);
             	
+            	*/
             	//告警类型判断
+            	
+            	/*
             	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(reportStartDate,"",timeUnit,domainList);
         		Map map1 = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
         		Integer totaltype = (Integer) map1.get("total");
             	request.setAttribute("eventTypeTotal", String.valueOf(totaltype));    //设置告警级别总数
             	String strlistEventTypeHex = toHexString(eventStr);
             	request.setAttribute("strlistEventType",strlistEventTypeHex);   // 设置告警类型list
+            	
+            	*/
             	
         		//告警时段
         		String unit="";
@@ -154,6 +159,7 @@ public class WafDetailController {
         		}else if (timeUnit.equals("week")) {
 					unit = "week";
 				}
+        		
         		/*
         		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(reportStartDate+"-01","",unit,domainList);
         		List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(eventStr1);
@@ -168,16 +174,18 @@ public class WafDetailController {
 				
      	        String resultListTimeHex = toHexString(eventStr1);
      	        request.setAttribute("resultListTime",resultListTimeHex);  // 设置告警time   list
-     	*/
+     	        */
+     	        
             	//攻击源
-            //	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(reportStartDate,"",timeUnit,domainList,10);
+            	//websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(reportStartDate,"",timeUnit,domainList,10);
             	request.setAttribute("beginDate", reportStartDate);
             	request.setAttribute("type", timeUnit);
-           // 	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
-          //  	String websecListIpHex = toHexString(websecStr);
-          //  	request.setAttribute("websecList", websecList);       
-          //  	request.setAttribute("websecListIp", websecListIpHex);   // 设置攻击源ip list
-          //  	request.setAttribute("websecNum", websecList.size());    // 设置攻击源ip 总数
+            	//websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
+            	//String websecListIpHex = toHexString(websecStr);
+            	//request.setAttribute("websecList", websecList);       
+            	//request.setAttribute("websecListIp", websecListIpHex);   // 设置攻击源ip list
+            	//request.setAttribute("websecNum", websecList.size());    // 设置攻击源ip 总数
+            	
             	/*
             	int totalAttackIP = 0;
         		for (int i = 0; i < listTime.size(); i++) {
@@ -186,6 +194,7 @@ public class WafDetailController {
     	 	       totalAttackIP = totalAttackIP + Integer.parseInt(count);
     	 	    }
             	request.setAttribute("totalAttackIP", String.valueOf(totalAttackIP));*/
+            	
             	reurl = "/source/page/personalCenter/wafHistory";
             }else{
             	websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
@@ -468,9 +477,14 @@ public class WafDetailController {
         
     	String eventStr = "";
     	Map map = new HashMap();
+    	Integer totaltype = 0;
+    	String strlistEventTypeHex = "";
     	if(null!=isHis&&isHis.equals("1")){//查询历史
     		eventStr = WafAPIWorker.getEventTypeCountDomainInTime(startDate,"",timeUnit,domainList);
     		map = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
+    		totaltype = (Integer) map.get("total");
+    		strlistEventTypeHex = toHexString(eventStr); 
+    							
     	}else{
     		eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
     		map = WafAPIAnalysis.getWafEventTypeCount(eventStr);
@@ -490,6 +504,8 @@ public class WafDetailController {
         jo.put("name", name);
         jo.put("count", value);
         jo.put("json", jsondata);
+        jo.put("totalcount", totaltype);
+        jo.put("strlistEventType", strlistEventTypeHex);
         
         PrintWriter out;
         try {
@@ -537,6 +553,7 @@ public class WafDetailController {
         }
         
     	String eventStr = "";
+    	String resultListTimeHex = "";
     	if(isHis.equals("1")){//历史查询
     		String unit = "";
     		if(timeUnit.equals("year")){
@@ -547,6 +564,7 @@ public class WafDetailController {
 				unit = "week";
 			}
     		eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
+    		resultListTimeHex = toHexString(eventStr);
     		System.out.println("eventStr="+eventStr);
     	}
     	Map map = WafAPIAnalysis.analysisWafLogWebSecTimeCount(eventStr);
@@ -562,6 +580,7 @@ public class WafDetailController {
         JSONObject jo = new JSONObject();
         jo.put("name", name);
         jo.put("count", value);
+        jo.put("resultListTime", resultListTimeHex);
         
         PrintWriter out;
         try {
@@ -606,6 +625,7 @@ public class WafDetailController {
         }
         
     	String eventStr = "";
+    	String websecListIpHex = "";
     	if(isHis.equals("1")){//历史查询
     		String unit = "";
     		if(timeUnit.equals("year")){
@@ -617,6 +637,7 @@ public class WafDetailController {
 			}
     		//eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
     		eventStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
+    		websecListIpHex = toHexString(eventStr);
     		System.out.println("eventStr="+eventStr);
     	}
     	Map map = WafAPIAnalysis.analysisWafLogWebSecSrcIp(eventStr);
@@ -632,6 +653,7 @@ public class WafDetailController {
         JSONObject jo = new JSONObject();
         jo.put("name", name);
         jo.put("count", value);
+        jo.put("websecListIp", websecListIpHex);
         
         PrintWriter out;
         try {
