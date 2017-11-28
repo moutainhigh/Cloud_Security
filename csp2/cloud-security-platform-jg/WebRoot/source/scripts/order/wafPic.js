@@ -1,8 +1,7 @@
 var myChartPieLevel = null;
 var myChartPieEvent = null;
 var myChartBar = null;
-
-$(function(){	
+	
 	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
     require.config({
@@ -27,6 +26,7 @@ $(function(){
     
     
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+function pielevel(){
     require(
         [
             'echarts',
@@ -50,7 +50,10 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getLevelPieData.html?orderId="+$('#orderId').val(),
+            	data:{
+            		"orderId":$('#orderId').val()
+            	},
+            	url:"getLevelPieData.html",
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
@@ -123,13 +126,16 @@ $(function(){
             }); 
         }
     );
+}
     
+function event(){
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
             'echarts',
             'echarts/chart/bar',
-            'echarts/chart/line'
+            'echarts/chart/line',
+            'echarts/chart/pie'
         ],
         function (ec) {//回调函数
             //--- 柱形图 ---
@@ -146,16 +152,32 @@ $(function(){
           	   }
 
 	        });
+        	//---饼图---
+            myChartPieEvent = ec.init(document.getElementById('eventPie'));
+            myChartPieEvent.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        });
+            
           //后台获取数据
             $.ajax({
             	type: "post",
-            	url:"getEventBarData.html?orderId="+$('#orderId').val(),
+            	data:{
+            		"orderId":$('#orderId').val()
+            	},
+            	url:"getEventBarData.html",
                 dataType:"json",
-//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
                 	myChartBar.hideLoading();  
-                	var eventName = data.name;
-                	var eventJson = data.json;
                     myChartBar.setOption({//图形
                     	title: {
                             text: '最近事件类型统计图'
@@ -228,9 +250,9 @@ $(function(){
 	                    	 }()
 
                     },true);//图形展示
-                    //window.onresize = myChartBar.resize;
+                    window.onresize = myChartBar.resize;
                     
-                    if(eventName){                	
+               	
                     	myChartPieEvent.hideLoading();  
                         myChartPieEvent.setOption({//图形
                         	title: {
@@ -243,7 +265,7 @@ $(function(){
                             legend: {
                                 show:false,
     					        y : 'bottom',
-    					        data:eventName
+    					        data:data.name
                             },
 //                            color:colorData,
                             toolbox: {
@@ -261,7 +283,7 @@ $(function(){
                                     type:'pie',
                                     radius : '45%',
                                     center: ['50%', '50%'],
-                                    data:eventJson,
+                                    data:data.json,
                                     itemStyle:{ 
     		                            normal:{ 
     		                                label:{ 
@@ -274,37 +296,15 @@ $(function(){
                                 }
                             ]
                         },true);//图形展示
-                        //window.onresize = myChartPieEvent.resize;
-                    }
+                        window.onresize = myChartPieEvent.resize;
+
                 }//ajax执行后台
             }); 
         }
     );
+}
     
     
- // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    require(
-        [
-            'echarts',
-            'echarts/chart/pie'
-        ],
-        function (ec) {//回调函数执行图表对象初始化
-            //--- 饼图 ---
-            myChartPieEvent = ec.init(document.getElementById('eventPie'));
-            myChartPieEvent.showLoading({
-          	  text: 'loading...',
-          	  effect : 'spin',
-          	  textStyle : {
-          	        fontSize : 20,
-          	        color:'#000'
-          	    },
-          	    effectOption :{
-          	    	  backgroundColor:'#fff'
-          	   }
-
-	        });
-        }
-    );
     
 
     function testX(){
@@ -339,30 +339,5 @@ $(function(){
     	return lineData3;
     }
     
-    
-});
-
-function strToHexCharCode(str) {
-	if(str === "")
-		return "";
-	var hexCharCode = [];
-	hexCharCode.push("0x"); 
-	for(var i = 0; i < str.length; i++) {
-		hexCharCode.push((str.charCodeAt(i)).toString(16));
-	}
-	return hexCharCode.join("");
-}
-
-function exportImgWAF(){
-    var dataPieLevel = myChartPieLevel.getDataURL("png"); 
-    var dataPieEvent = myChartPieEvent.getDataURL("png");
-    var dataBar = myChartBar.getDataURL("png");
-   
-    $("#imgPieLevel").val(strToHexCharCode(dataPieLevel));
-    $("#imgPieEvent").val(strToHexCharCode(dataPieEvent));
-    $("#imgBar").val(strToHexCharCode(dataBar));
-    
-	$("#exportForm").submit();
-}
 
 
