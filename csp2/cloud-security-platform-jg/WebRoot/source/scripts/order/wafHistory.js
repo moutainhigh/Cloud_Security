@@ -51,6 +51,7 @@ var eventJson = null;
 	
 		        });
 	            //后台获取数据
+	            /*
 	            $.ajax({
 	            	type : "post",
 	            	data : {
@@ -127,20 +128,97 @@ var eventJson = null;
 	                            }
 	                        ]
 	                    },true);//图形展示
-	                    window.onresize = myChartPieLevel.resize;
+	                    window.onresize = myChartPieLevel.resize;	                   
 	                }//ajax执行后台
+	                
 	            }); 
+	            */
+	            var highLevel = $('#levelhigh').val();
+	            var midLevel = $('#levelmid').val();
+	            var lowLevel = $('#levellow').val();
+	            
+	            value = [];
+            	label = [];
+               	colorData = [];
+               	var i = 0;
+               	if(lowLevel>0){
+               		label[i] = "低";
+               		value[i]={'name':label[i],'value':lowLevel};
+               		colorData[i]="#1e91ff";
+               		i++;
+               	}
+               	if(midLevel>0){
+               		label[i] = "中";
+               		value[i]={'name':label[i],'value':midLevel};
+               		colorData[i]="#ffa500";
+               		i++;
+               	}
+               	if(highLevel>0){
+               		label[i] = "高";
+               		value[i]={'name':label[i],'value':highLevel};
+               		colorData[i]="#ff7e50";
+               	}               	
+	            
+	            myChartPieLevel.hideLoading();  
+                myChartPieLevel.setOption({//图形
+                	title: {
+                        text: '事件风险分布图'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        show:false,
+//					    	orient: 'vertical',
+				        x: 'left',
+//					        y:'top',
+				        y: '35',
+				        data:testX()
+                    },
+                    color:colorData,
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            mark : true,
+                            restore : true,
+                            saveAsImage : true
+                        }
+                    },
+                    calculable : false,
+                    series : [
+                        {
+                            name:'事件风险比例',
+                            type:'pie',
+                            radius : '45%',
+                            center: ['50%', '60%'],
+                            data:testY(),
+                            itemStyle:{ 
+	                            normal:{ 
+	                                label:{ 
+	                                   show: true, 
+	                                   formatter: '{b} : {d}%' 
+	                                }, 
+	                                labelLine :{show:true}
+	                            } 
+	                        }
+                        }
+                    ]
+                },true);//图形展示
+                window.onresize = myChartPieLevel.resize;	 
 	        }
 	    );
     }
     
     
  // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    function pieEvent(startDate,timeUnit){
+    function event(startDate,timeUnit){
 	    require(
 	        [
 	            'echarts',
-	            'echarts/chart/pie'
+	            'echarts/chart/pie',
+	            'echarts/chart/bar',
+	            'echarts/chart/line'
 	        ],
 	        function (ec) {//回调函数
 	            //--- 饼图 ---
@@ -157,6 +235,21 @@ var eventJson = null;
 	          	   }
 	
 		        });
+	            //---柱形图---
+	            myChartBar = ec.init(document.getElementById('eventBar'));
+	        	myChartBar.showLoading({
+	          	  text: 'loading...',
+	          	  effect : 'spin',
+	          	  textStyle : {
+	          	        fontSize : 20,
+	          	        color:'#000'
+	          	    },
+	          	    effectOption :{
+	          	    	  backgroundColor:'#fff'
+	          	   }
+	
+		        });        	
+	            
 	            //后台获取数据
 	            $.ajax({
 	            	type : "post",
@@ -171,8 +264,6 @@ var eventJson = null;
 	            	dataType:"json",
 	                contentType: "application/x-www-form-urlencoded; charset=utf-8",
 	                success:function(data){
-	                	eventName = data.name;
-	                	eventJson = data.json;
 	                	myChartPieEvent.hideLoading();  
 	                    myChartPieEvent.setOption({//图形
 	                    	title: {
@@ -216,7 +307,7 @@ var eventJson = null;
 	                            }
 	                        ]
 	                    },true);//图形展示
-	                    //window.onresize = myChartPieEvent.resize;
+	                    window.onresize = myChartPieEvent.resize;
 		                
 	                    
 	                    myChartBar.hideLoading();  
@@ -232,7 +323,7 @@ var eventJson = null;
 	                        },
 	                        legend: {
 	                            y : 'bottom',
-	                            data:eventName
+	                            data:data.name
 	                        },
 	                        toolbox: {
 	                            show : true,
@@ -267,11 +358,11 @@ var eventJson = null;
 	                        	function(){
 		                       	 var serie=[];
 		                       	 
-		                    	 for( var i=0;i < eventJson.length;i++){
+		                    	 for( var i=0;i < data.json.length;i++){
 		                    		 var num=[];
-		                    		 num[0]=eventJson[i].value;
+		                    		 num[0]=data.json[i].value;
 		                        	 var item={
-			                        	 name:eventJson[i].name,
+			                        	 name:data.json[i].name,
 			                        	 type:'bar',
 	//		                        	 barWidth : 25,
 			                        	 itemStyle: {
@@ -292,6 +383,10 @@ var eventJson = null;
 		                    	 }()
 	
 	                    },true);//图形展示
+	                    window.onresize = myChartPieEvent.resize;
+	                    
+	                    $("#strlistEventType").val(data.strlistEventType);
+	 
 	                }//ajax执行后台
 	            }); 
 	        }
@@ -299,32 +394,6 @@ var eventJson = null;
     }
     
     
-    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    function barEvent(startDate,timeUnit){ 
-    	require(
-	        [
-	            'echarts',
-	            'echarts/chart/bar',
-	            'echarts/chart/line'
-	        ],
-	        function (ec) {//回调函数
-	            //--- 柱形图 ---
-	        	myChartBar = ec.init(document.getElementById('eventBar'));
-	        	myChartBar.showLoading({
-	          	  text: 'loading...',
-	          	  effect : 'spin',
-	          	  textStyle : {
-	          	        fontSize : 20,
-	          	        color:'#000'
-	          	    },
-	          	    effectOption :{
-	          	    	  backgroundColor:'#fff'
-	          	   }
-	
-		        });        	
-	        }
-	    );
-    }
     
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     function lineEvent(startDate,timeUnit){ 
@@ -350,7 +419,9 @@ var eventJson = null;
 	
 	  	        });
 	        	
-	        	
+	        	$(".nodata_time").show();
+        		$(".timeTable").hide();
+        		
 	        	//后台获取数据
 	            $.ajax({
 	            	type: "post",
@@ -364,7 +435,16 @@ var eventJson = null;
 	            	},
 	            	dataType:"json",
 	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
-	                success:function(data){
+	                success:function(data){	                
+	                	$(".nodata_time").hide();
+                		$(".timeTable").show();
+	                	var htmlStr = "";
+	                	for(var i=0;i<data.name.length;i++){
+	                		htmlStr += '<tr><td width="30%">'+data.name[i]+'</td>'+
+	                		'<td width="30%">'+data.count[i]+'</td></tr>';
+	                	}
+	                	$("#timeList").append(htmlStr);
+	                	
 	                	ontimeLine.hideLoading();  
 	                	ontimeLine.setOption({
 			      		  legend: {
@@ -419,6 +499,8 @@ var eventJson = null;
 			      		    ]
 			        	},true);//图形展示
 	                    window.onresize = ontimeLine.resize;
+	                    	                  
+	                    $("#resultListTime").val(data.resultListTime);
 	                }//ajax执行后台
 	            }); 
 	        }
@@ -448,6 +530,8 @@ var eventJson = null;
 	
 	  	        });
 	        	
+	        	$(".nodata_ip").show();
+        		$(".websecTable").hide();	        	
 	        	
 	        	//后台获取数据
 	            $.ajax({
@@ -463,6 +547,16 @@ var eventJson = null;
 	            	dataType:"json",
 	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
 	                success:function(data){
+	                	$(".nodata_ip").hide();
+                		$(".websecTable").show();
+	                	
+	                	var htmlStr = "";
+	                	for(var i=0;i<data.name.length;i++){
+	                		htmlStr += '<tr><td width="30%">'+data.name[i]+'</td>'+
+	                		'<td width="30%">'+data.count[i]+'</td></tr>';		                		
+	                	}
+	                	$("#websecItem").append(htmlStr);
+	                	
 	                	sourceIp.hideLoading();  
 	                	sourceIp.setOption({
 	                		title: {
@@ -531,7 +625,9 @@ var eventJson = null;
 			                    	 return serie;
 		                    	}()	 
 			        	},true);//图形展示
-	                    window.onresize = sourceIp.resize;
+	                    window.onresize = sourceIp.resize;	 
+	                    
+	                    $("#websecListIp").val(data.websecListIp);
 	                }//ajax执行后台
 	            }); 
 	        }
@@ -705,19 +801,28 @@ var eventJson = null;
 
     
 function exportImgWAF(){
-    var dataPieLevel = myChartPieLevel.getDataURL("png");  
-    var dataPieEvent = myChartPieEvent.getDataURL("png");
-	var dataBar = myChartBar.getDataURL("png"); 
-    var ontime = ontimeLine.getDataURL("png");  
-    var mySourceIp = sourceIp.getDataURL("png");    
-    //var mySourceArea = sourceArea.getDataURL("png");
+	if(myChartPieLevel){
+		var dataPieLevel = myChartPieLevel.getDataURL("png");
+		$("#imgPieLevel").val(strToHexCharCode(dataPieLevel));
+	}
+	if(myChartPieEvent){
+		var dataPieEvent = myChartPieEvent.getDataURL("png");
+		$("#imgPieEvent").val(strToHexCharCode(dataPieEvent));
+		
+	}
+	if(myChartBar){
+		var dataBar = myChartBar.getDataURL("png"); 
+		$("#imgBar").val(strToHexCharCode(dataBar));
+	}
+	if(ontimeLine){
+		var ontime = ontimeLine.getDataURL("png");
+		$("#imgOntimeLine").val(strToHexCharCode(ontime));
+	}
+	if(sourceIp){
+		var mySourceIp = sourceIp.getDataURL("png"); 
+		$("#imgSourceIp").val(strToHexCharCode(mySourceIp));
+	}
 	
-	$("#imgPieLevel").val(strToHexCharCode(dataPieLevel));
-    $("#imgPieEvent").val(strToHexCharCode(dataPieEvent));
-    $("#imgBar").val(strToHexCharCode(dataBar));
-	$("#imgOntimeLine").val(strToHexCharCode(ontime));
-	$("#imgSourceIp").val(strToHexCharCode(mySourceIp));
-	//$("#imgSourceArea").val(strToHexCharCode(mySourceArea));
 	$("#exportWafForm").submit();
 }
 
