@@ -62,6 +62,11 @@ function websecDetail(logId){
       	}
      });
 }
+
+$(function(){
+	 pielevel();  	 
+ 	 event();
+});
 </script>
 </head>
 
@@ -162,7 +167,6 @@ function websecDetail(logId){
 			</div>
 		</div>
 		<div class="dataCent seetlentBox order" style="width: 1156px;">
-		<form id="exportForm" action="${ctx}/exportWAF.html" method="post">
       <div>
           <p><span>资产名称：</span>${domainName }</p>
       </div>
@@ -176,17 +180,7 @@ function websecDetail(logId){
             <li class="active"><a href="${ctx}/warningWaf.html?orderId=${order.id }" title="">实时数据</a></li>
             <li><a href="${ctx}/warningWaf.html?orderId=${order.id }&isHis=1&type=month&beginDate=<%=str_date %>" title="">历史数据</a></li>
           </ul>
-          <!--  
-          <p align='right'><span>下载Word报表&nbsp;</span>
-            <span><a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
-            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          </p>
-          -->
         </div> 
-
-        <input type="hidden" name="imgPieLevel" id="imgPieLevel" />
-        <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
-        <input type="hidden" name="imgBar" id="imgBar" />
 
         <div class="data_min">
         	<c:if test="${websecNum>0}">
@@ -237,7 +231,7 @@ function websecDetail(logId){
             </c:if>
         </div>
        </div>  
-       </form>      
+     
 		</div>
         
 		<div class="safe04">
