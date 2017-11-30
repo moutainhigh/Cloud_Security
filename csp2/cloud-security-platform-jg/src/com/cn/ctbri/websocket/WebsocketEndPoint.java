@@ -96,8 +96,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				// 目的端的经纬度
 				LinkedList<String> desPositionList = new LinkedList<String>();
 				boolean flag = true;
-				//加一个初始条件判断是不是第一次进入循环，主要原因是之前的代码断开连接靠异常处理，如果没有数据会陷入死循环，浪费连接
-				boolean flag2=true;
+				boolean flag2=true;//加一个初始条件判断是不是第一次进入循环，主要原因是之前的代码断开连接靠异常处理，如果没有数据会陷入死循环，浪费连接
+				boolean initFlag=true;//第一次需要初始化8条数据需要用
 				String dataText = null;
 				while (flag) {
 					//System.out.println("startId:"+startId);
@@ -138,7 +138,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							continue;
 						}
 						flag = perSendData(session, message, array,
-								srcPositionList, desPositionList);
+								srcPositionList, desPositionList,initFlag);
+						initFlag=false;
 						// System.out.println(message.toString());
 						// System.out.println(array);
 					} catch (Exception ex) {
@@ -171,7 +172,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 
 	public boolean perSendData(WebSocketSession session, TextMessage message,
 			JSONArray array, LinkedList srcPositionList,
-			LinkedList desPositionList) throws IOException,
+			LinkedList desPositionList,boolean initFlag) throws IOException,
 			InterruptedException {
 		if (array == null) {
 			return true;
@@ -458,7 +459,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							e.printStackTrace();
 							return false;
 						}
-						if(index>8){
+						if((!initFlag)||index>8){
 							Thread.currentThread().sleep(350);
 						}						
 					}
@@ -492,7 +493,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							e.printStackTrace();
 							return false;
 						}
-						if(index>8){
+						if((!initFlag)||index>8){
 							Thread.currentThread().sleep(350);
 						}
 						if (i == 3) {
