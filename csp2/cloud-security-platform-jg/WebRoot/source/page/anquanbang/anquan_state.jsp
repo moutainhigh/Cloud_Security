@@ -262,24 +262,26 @@
 			 	<font color="#c1c7da" size='3'>今日阻断攻击总数</font>
 			 </div>
 		
-			 <c:if test="${sessionScope.globle_user.name =='anquanbang_demo'  }">
-			 	
-			<div class="dataStatistics" style="margin:0px auto; text-align:center;">
-			  	<div class="digit_set"></div>
-				<div class="digit_set"></div>
-			  	<div class="digit_set"></div>
-			  	<div class="digit_set"></div>
-			  	<div class="digit_set"></div>
-			  	<div class="digit_set"></div>
-			  	<div class="digit_set set_last"></div>
-			 </div>
-					
-			</c:if>
+			
 			
                 <div class="word" style="width: 100%; height: 600px;">
                 <!-- 世界地图背景色 -->
 <!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
 					<div class="content">
+					
+					 <c:if test="${sessionScope.globle_user.name =='anquanbang_demo'  }">
+						<div class="dataStatistics" style="margin:0px auto; text-align:center;">
+						  	<div class="digit_set"></div>
+						  	<div class="digit_set"></div>
+							<div class="digit_set"></div>
+						  	<div class="digit_set"></div>
+						  	<div class="digit_set"></div>
+						  	<div class="digit_set"></div>
+						  	<div class="digit_set"></div>
+						  	<div class="digit_set set_last"></div>
+						 </div>		
+					 </c:if>
+					
 						<div class="data attack-type box gray-bg" style="display:none;" id="totalNumberBox">
 							<div id="attack-type-table-container">
 								<table id="attack-type">
@@ -355,7 +357,7 @@
 					var todayFontVal='${wafDayTotalNumber}';
 					document.getElementById("totalFon").firstChild.nodeValue=fontValue;
 					document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
-					$('.dataStatistics').dataStatistics({min:wafTotalNumber,max:wafTotalNumber,time:30,len:7,init:true});
+					$('.dataStatistics').dataStatistics({min:wafTotalNumber,max:wafTotalNumber,time:30,len:8,init:true});
 					var error = '${error}';
 					if(error!=''){
 						alert(error);
