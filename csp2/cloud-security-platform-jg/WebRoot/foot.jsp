@@ -6,6 +6,6 @@
 	<p>
 		<span id='cnzz_stat_icon_1259574975'></span>
 		<script src=' http://s95.cnzz.com/z_stat.php?id=1259574975&show=pic1' type='text/javascript'></script>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版权所有Copyright © 2015 中国电信股份有限公司北京研究院 京ICP备12019458号-10 | 京ICP备17060657号-1
 	</p>
 </div>
