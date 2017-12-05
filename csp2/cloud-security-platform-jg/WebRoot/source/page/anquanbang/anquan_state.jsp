@@ -268,10 +268,10 @@
                 <!-- 世界地图背景色 -->
 <!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
 					<div class="content">
-					
+				
 					 <c:if test="${sessionScope.globle_user.name =='anquanbang_demo'  }">
 						<div class="dataStatistics" style="margin:0px auto; text-align:center;">
-						  	<div class="digit_set"></div>
+						 	<!--  	<div class="digit_set"></div> -->
 						  	<div class="digit_set"></div>
 							<div class="digit_set"></div>
 						  	<div class="digit_set"></div>
@@ -357,7 +357,7 @@
 					var todayFontVal='${wafDayTotalNumber}';
 					document.getElementById("totalFon").firstChild.nodeValue=fontValue;
 					document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
-					$('.dataStatistics').dataStatistics({min:wafTotalNumber,max:wafTotalNumber,time:30,len:8,init:true});
+					$('.dataStatistics').dataStatistics({min:wafTotalNumber,max:wafTotalNumber,time:30,len:7,init:true});
 					var error = '${error}';
 					if(error!=''){
 						alert(error);

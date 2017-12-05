@@ -811,7 +811,7 @@ function start(loc, psk) {
     		document.getElementById("totalFon").firstChild.nodeValue=wafTotalNumber;
     		document.getElementById("dayTotalFon").firstChild.nodeValue=todayFontVal;
     		//$("#testNum").runNum(wafTotalNumber);
-    		$('.dataStatistics').dataStatistics({min:smallNum,max:wafTotalNumber,time:30,len:8,init:false});
+    		$('.dataStatistics').dataStatistics({min:smallNum,max:wafTotalNumber,time:30,len:7,init:false});
     	    // 攻击源坐标
     	    var startLoc = projection([datum.srcLongitude, datum.srcLatitude]);
     	    // 攻击目的坐标
