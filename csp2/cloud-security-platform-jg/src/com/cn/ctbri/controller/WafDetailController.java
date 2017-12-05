@@ -197,11 +197,11 @@ public class WafDetailController {
             	
             	reurl = "/source/page/personalCenter/wafHistory";
             }else{
-            	websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
+            	//websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
             	reurl = "/source/page/personalCenter/wafDetail";
-            	websecList = this.getWaflogWebsecByIp(websecStr);
-            	request.setAttribute("websecList", websecList);
-            	request.setAttribute("websecNum", websecList.size());
+            	//websecList = this.getWaflogWebsecByIp(websecStr);
+            	//request.setAttribute("websecList", websecList);
+            	//request.setAttribute("websecNum", websecList.size());
             }
 
 
@@ -270,7 +270,46 @@ public class WafDetailController {
 	    // 把数据返回到页面
         CommonUtil.writeToJsp(response, JSON);
     }
-    
+    @RequestMapping(value="getWebsec.html")
+    public void getWebsec(HttpServletRequest request,HttpServletResponse response)throws Exception {
+		// TODO Auto-generated method stub
+    	String orderId = request.getParameter("orderId");
+  
+        //获取订单信息
+        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+        List assets = orderAssetService.findAssetsByOrderId(orderId);
+        List websecList = null;
+        List<String> domainList = new ArrayList<String>();
+    	if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String[] ips = null;   
+            ips = ipArray.split(",");
+           	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+            }
+            domainList.add(domain);
+            String websecStr = "";
+            websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
+            websecList = this.getWaflogWebsecByIp(websecStr);
+            Map<String, Object> m = new HashMap<String, Object>();
+            m.put("websecStr", websecStr);
+            m.put("websecList", websecList);
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	
+    	}
+    	
+	}
     
     @RequestMapping(value="getAttackSourceData.html")
     public void getAttackSourceData(HttpServletRequest request,HttpServletResponse response)throws Exception {
