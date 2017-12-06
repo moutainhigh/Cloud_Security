@@ -10,10 +10,9 @@
                 <property name="url" value="jdbc:mysql://localhost:3306/southapi" />
                	<property name="username" value="root" />
                 <property name="password" value="7172756" />-->
-
-                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi" />
-                <property name="username" value="root" />
-                <property name="password" value="mssp@ctbri&amp;" />
+                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi"/>
+                <property name="username" value="root"/>
+                <property name="password" value="mssp@ctbri&amp;"/>
             </dataSource>
         </environment>
         <environment id="openphish">
@@ -21,15 +20,16 @@
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver" />
                 <!-- 部署 数据库：本地库 -->
-                <property name="url" value="jdbc:mysql://219.141.189.186:63306/openphish" />
+                <property name="url" value="jdbc:mysql://123.57.184.186:3306/openphish" />
                 <!-- 
                 <property name="url" value="jdbc:mysql:///southapi" /> 
-                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi" /> -->
+                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi" /> 
+                -->
                 <property name="username" value="root" />
                 <!-- 
                 <property name="password" value="mssp@ctbri&amp;" />
                  -->
-                <property name="password" value="mssp@ctbri&amp;" />
+                <property name="password" value="16c32b405b6fa3b6@," />
             </dataSource>
         </environment>
         <environment id="portscan">
@@ -46,16 +46,16 @@
         <transactionManager type="JDBC" />
             <dataSource type="POOLED">
        		    <property name="driver" value="com.mysql.jdbc.Driver" />
-                <!-- 部署 数据库：本地库 
-                <property name="url" value="jdbc:mysql://localhost:3306/southapi" />
+                <!-- 部署 数据库：本地库
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/waflogdata" />
                	<property name="username" value="root" />
                 <property name="password" value="7172756" />-->
                 <!-- 部署 waf数据中心-->
                 <property name="url" value="jdbc:mysql://219.141.189.186:30117/waflogdata" />
                 <!-- 部署测试环境 
                 <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi"/> -->
-                <property name="username" value="root" />
-                <property name="password" value="mssp@ctbri&amp;" />
+                <property name="username" value="root"/>
+                <property name="password" value="mssp@ctbri&amp;"/>
              </dataSource>
        	</environment>
     </environments>

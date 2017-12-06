@@ -1,9 +1,15 @@
 package com.cn.ctbri.southapi.adapter.batis.model;
 
-public class TWafLogWebsecCount {
-    private Long count;
-    private String eventType;
+import java.io.Serializable;
 
+public class TWafLogWebsecCount implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long count;
+    private String eventType;
+    private String alertLevel;
     private String statTime;
 
     public Long getCount() {
@@ -21,8 +27,18 @@ public class TWafLogWebsecCount {
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
+    
+    
 
-    public String getStatTime() {
+    public String getAlertLevel() {
+		return alertLevel;
+	}
+
+	public void setAlertLevel(String alertLevel) {
+		this.alertLevel = alertLevel;
+	}
+
+	public String getStatTime() {
         return statTime;
     }
 

@@ -1,7 +1,7 @@
 package com.cn.ctbri.southapi.adapter.batis.model;
 
 public class TWafNsfocusTargetinfo extends TWafNsfocusTargetinfoKey {
-    private String name;
+	private String name;
 
     private String siteid;
 

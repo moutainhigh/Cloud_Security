@@ -15,9 +15,10 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.session.RowBounds;
 
 public interface TWafLogDefaceMapper {
-    @SelectProvider(type=TWafLogDefaceSqlProvider.class, method="countByExample")
+	@SelectProvider(type=TWafLogDefaceSqlProvider.class, method="countByExample")
     int countByExample(TWafLogDefaceExample example);
 
     @SelectProvider(type=TWafLogDefaceSqlProvider.class, method="selectByExample")

@@ -4,6 +4,8 @@ import com.cn.ctbri.southapi.adapter.batis.model.TWebPhish;
 import com.cn.ctbri.southapi.adapter.batis.model.TWebPhishExample;
 import com.cn.ctbri.southapi.adapter.batis.model.TWebPhishKey;
 import java.util.List;
+
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -18,6 +20,10 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 
+@CacheNamespace(
+		readWrite = false,
+		flushInterval = 600000
+)
 public interface TWebPhishMapper {
     @SelectProvider(type=TWebPhishSqlProvider.class, method="countByExample")
     int countByExample(TWebPhishExample example);
@@ -65,57 +71,29 @@ public interface TWebPhishMapper {
 
     @SelectProvider(type=TWebPhishSqlProvider.class, method="selectByExample")
     @Results({
-        @Result(column="webphish_id", property="webphishId", jdbcType=JdbcType.BIGINT, id=true),
-        @Result(column="urlsign", property="urlsign", jdbcType=JdbcType.VARCHAR, id=true),
-        @Result(column="webphish_url", property="webphishUrl", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_field", property="webphishField", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_domain", property="webphishDomain", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_ip", property="webphishIp", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_asn", property="webphishAsn", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_asnname", property="webphishAsnname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_country", property="webphishCountry", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_countrycode", property="webphishCountrycode", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_subdivision1", property="webphishSubdivision1", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_subdivision2", property="webphishSubdivision2", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_city", property="webphishCity", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_target", property="webphishTarget", jdbcType=JdbcType.VARCHAR),
-        @Result(column="verified_time", property="verifiedTime", jdbcType=JdbcType.CHAR),
-        @Result(column="from_source", property="fromSource", jdbcType=JdbcType.VARCHAR),
-        @Result(column="from_source_id", property="fromSourceId", jdbcType=JdbcType.BIGINT),
-        @Result(column="from_source_detail", property="fromSourceDetail", jdbcType=JdbcType.VARCHAR),
-        @Result(column="from_source_reserve", property="fromSourceReserve", jdbcType=JdbcType.VARCHAR),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="isvalid", property="isvalid", jdbcType=JdbcType.INTEGER),
-        @Result(column="reserve", property="reserve", jdbcType=JdbcType.VARCHAR)
-    })
-    List<TWebPhish> selectByExampleWithRowbounds(TWebPhishExample example, RowBounds rowBounds);
-
-    @SelectProvider(type=TWebPhishSqlProvider.class, method="selectByExample")
-    @Results({
-        @Result(column="webphish_id", property="webphishId", jdbcType=JdbcType.BIGINT, id=true),
-        @Result(column="urlsign", property="urlsign", jdbcType=JdbcType.VARCHAR, id=true),
-        @Result(column="webphish_url", property="webphishUrl", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_field", property="webphishField", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_domain", property="webphishDomain", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_ip", property="webphishIp", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_asn", property="webphishAsn", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_asnname", property="webphishAsnname", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_country", property="webphishCountry", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_countrycode", property="webphishCountrycode", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_subdivision1", property="webphishSubdivision1", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_subdivision2", property="webphishSubdivision2", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_city", property="webphishCity", jdbcType=JdbcType.VARCHAR),
-        @Result(column="webphish_target", property="webphishTarget", jdbcType=JdbcType.VARCHAR),
-        @Result(column="verified_time", property="verifiedTime", jdbcType=JdbcType.CHAR),
-        @Result(column="from_source", property="fromSource", jdbcType=JdbcType.VARCHAR),
-        @Result(column="from_source_id", property="fromSourceId", jdbcType=JdbcType.BIGINT),
-        @Result(column="from_source_detail", property="fromSourceDetail", jdbcType=JdbcType.VARCHAR),
-        @Result(column="from_source_reserve", property="fromSourceReserve", jdbcType=JdbcType.VARCHAR),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="isvalid", property="isvalid", jdbcType=JdbcType.INTEGER),
-        @Result(column="reserve", property="reserve", jdbcType=JdbcType.VARCHAR)
+        @Result(column="webphish_id", property="webphishId"),
+        @Result(column="urlsign", property="urlsign"),
+        @Result(column="webphish_url", property="webphishUrl"),
+        @Result(column="webphish_field", property="webphishField"),
+        @Result(column="webphish_domain", property="webphishDomain"),
+        @Result(column="webphish_ip", property="webphishIp"),
+        @Result(column="webphish_asn", property="webphishAsn"),
+        @Result(column="webphish_asnname", property="webphishAsnname"),
+        @Result(column="webphish_country", property="webphishCountry"),
+        @Result(column="webphish_countrycode", property="webphishCountrycode"),
+        @Result(column="webphish_subdivision1", property="webphishSubdivision1"),
+        @Result(column="webphish_subdivision2", property="webphishSubdivision2"),
+        @Result(column="webphish_city", property="webphishCity"),
+        @Result(column="webphish_target", property="webphishTarget"),
+        @Result(column="verified_time", property="verifiedTime"),
+        @Result(column="from_source", property="fromSource"),
+        @Result(column="from_source_id", property="fromSourceId"),
+        @Result(column="from_source_detail", property="fromSourceDetail"),
+        @Result(column="from_source_reserve", property="fromSourceReserve"),
+        @Result(column="update_time", property="updateTime"),
+        @Result(column="expire_time", property="expireTime"),
+        @Result(column="isvalid", property="isvalid"),
+        @Result(column="reserve", property="reserve")
     })
     List<TWebPhish> selectByExample(TWebPhishExample example);
 

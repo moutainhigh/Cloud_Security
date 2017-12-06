@@ -2,55 +2,6 @@
 <!-- WAF Config -->
 <WAF_CONFIG>
 	<WAFDeviceManage>
-		<WAFDeviceGroup>
-			<ResourceID>10001</ResourceID>
-			<ResourceURI>/WAF/DEVICE/CTBRI/Group001</ResourceURI>
-			<!-- <DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode> -->
-			<DeployMode>HA</DeployMode>
-			<WAFDeviceList>
-				<WAFDevice>
-					<WAFDevID>30001</WAFDevID>
-					<WAFFactory>nsfocus</WAFFactory>
-					<WAFFactoryName>绿盟</WAFFactoryName>
-					<WAFDevPhyIP>172.16.100.209</WAFDevPhyIP>
-					<WAFPublicIPList>219.141.189.183</WAFPublicIPList>
-					<WAFDevAPI>
-						<!-- 部署186，内网地址
-						<APIAddr>https://172.16.100.209:8443</APIAddr>
-						-->
-						<!-- 部署外网 -->
-						<APIAddr>https://219.141.189.189:58442</APIAddr>
-						<APIKey>vmwaf</APIKey>
-						<APIValue>E34A-44A6-E12B-E1C9</APIValue>
-						<APIUserName>admin</APIUserName>
-						<APIPwd>nsfocus</APIPwd>
-					</WAFDevAPI>
-					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
-						<WAFDevTag></WAFDevTag>
-					</WAFDevSyslog>
-				</WAFDevice>
-				<!-- <WAFDevice>
-					<WAFDevID>30002</WAFDevID>
-					<WAFFactory>nsfocus</WAFFactory>
-					<WAFFactoryName>绿盟</WAFFactoryName>
-					<WAFDevPhyIP>172.16.100.210</WAFDevPhyIP>
-					<WAFPublicIPList>219.141.189.183</WAFPublicIPList>
-					<WAFDevAPI>
-						部署186，内网地址
-						<APIAddr>https://172.16.100.210:8443</APIAddr>
-						部署外网
-						<APIAddr>https://219.141.189.189:58443</APIAddr>
-						<APIKey>vmwaf</APIKey>
-						<APIValue>9E7B-960F-0DA7-4BC0</APIValue>
-						<APIUserName>admin</APIUserName>
-						<APIPwd>nsfocus</APIPwd>
-					</WAFDevAPI>
-					<WAFDevSyslog identifyType="Tag" syslogVer="6.0.5.0" syslogCode="BASE64">
-						<WAFDevTag>waf_g2</WAFDevTag>
-					</WAFDevSyslog>
-				</WAFDevice>-->
-			</WAFDeviceList>
-		</WAFDeviceGroup>
 		<!-- <WAFDeviceGroup>
 			<ResourceID>10002</ResourceID>
 			<ResourceURI>/WAF/DEVICE/CTBRI/Group002</ResourceURI>
@@ -108,12 +59,12 @@
 		</WAFDeviceGroup>
 		-->
 		<WAFDeviceGroup>
-			<ResourceID>20001</ResourceID>
+			<ResourceID>10001</ResourceID>
 			<ResourceURI>/WAF/DEVICE/CTBRI/Group003</ResourceURI>
 			<DeployMode>HA</DeployMode>
 			<WAFDeviceList>
-				<WAFDevice>
-					<WAFDevID>230001</WAFDevID>
+				<!--<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>192.168.0.133</WAFDevPhyIP>
@@ -121,16 +72,16 @@
 					<WAFDevAPI>
 						<APIAddr>https://183.78.180.10:8443</APIAddr>
 						<APIKey>vmwaf</APIKey>
-						<APIValue>9E0F-DD7A-F3E4-062A</APIValue>
+						<APIValue>C23F-90E4-726C-D707</APIValue>
 						<APIUserName>admin</APIUserName>
 						<APIPwd>nsfocus</APIPwd>
 					</WAFDevAPI>
 					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
 						<WAFDevTag></WAFDevTag>
 					</WAFDevSyslog>
-				</WAFDevice>
+				</WAFDevice>-->
 				<WAFDevice>
-					<WAFDevID>230002</WAFDevID>
+					<WAFDevID>30002</WAFDevID>
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>192.168.0.133</WAFDevPhyIP>
@@ -138,40 +89,15 @@
 					<WAFDevAPI>
 						<APIAddr>https://183.78.182.254:8443</APIAddr>
 						<APIKey>vmwaf</APIKey>
-						<APIValue>577B-423B-4D31-3FD4</APIValue>
+						<APIValue>C381-A4E1-EF7A-27FD</APIValue>
 						<APIUserName>admin</APIUserName>
 						<APIPwd>nsfocus</APIPwd>
 					</WAFDevAPI>
 					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
 						<WAFDevTag></WAFDevTag>
 					</WAFDevSyslog>				
-				</WAFDevice>			
-			</WAFDeviceList>
-			
-		</WAFDeviceGroup>
-		<WAFDeviceGroup>
-			<ResourceID>10004</ResourceID>
-			<ResourceURI>/WAF/DEVICE/CTBRI/Group003</ResourceURI>
-			<DeployMode>HA</DeployMode>
-			<WAFDeviceList>
-				<WAFDevice>
-					<WAFDevID>30001</WAFDevID>
-					<WAFFactory>nsfocus</WAFFactory>
-					<WAFFactoryName>绿盟</WAFFactoryName>
-					<WAFDevPhyIP>183.78.182.254</WAFDevPhyIP>
-					<WAFPublicIPList></WAFPublicIPList>
-					<WAFDevAPI>
-						<APIAddr>https://183.78.182.254:8443</APIAddr>
-						<APIKey>vmwaf</APIKey>
-						<APIValue>EDB1-8043-EEB3-2541</APIValue>
-						<APIUserName>admin</APIUserName>
-						<APIPwd>nsfocus</APIPwd>
-					</WAFDevAPI>
-					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
-						<WAFDevTag></WAFDevTag>
-					</WAFDevSyslog>
 				</WAFDevice>
-			</WAFDeviceList>
+			</WAFDeviceList>	
 		</WAFDeviceGroup>
 	</WAFDeviceManage>
 	<SyslogGroup type="waf" >
@@ -243,6 +169,6 @@
 		<Relay relayServerIP="127.0.0.1" relayPort="514" relayProtocol="udp" relayMode="Raw" />
 	</SyslogServer>
 	<AlertConfig>
-		<statistic>100</statistic>
+		<statistic>1000</statistic>
 	</AlertConfig>
 </WAF_CONFIG>

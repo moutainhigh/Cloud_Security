@@ -33,7 +33,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	private String arnhemServerWebrootUrl = "";
 	private String username = "";
 	private String password = "";
-	private String connectSessionId = "";
+	private static String connectSessionId = "";
 	public ArnhemDeviceOperation() {
 	}
 	
@@ -121,7 +121,9 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 			Document document = reader.read(IOUtils.toInputStream(response));
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
-			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
+			System.out.println("value="+value);
+			if ("AuthErr".equalsIgnoreCase(value)&&createSessionId(username, password, arnhemServerWebrootUrl)) {
+				System.out.println("redirectSession="+connectSessionId);
 				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
 				return redirectResponse;
 			} else {
@@ -147,7 +149,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	 * @param sessionId
 	 * @return String响应结果
 	 */
-	private   String postMethod(String url) {
+	private String postMethod(String url) {
 		//创建配置
 		ClientConfig config = new DefaultClientConfig();
 		//绑定配置
@@ -159,13 +161,16 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
         //service.type("application/x-download");
         //连接服务器，返回结果
         //String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
+        System.out.println("connectSessionId="+connectSessionId);
         String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
 		try {
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(IOUtils.toInputStream(response));
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
-			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
+			System.out.println("value="+value);
+			if ("AuthErr".equalsIgnoreCase(value)&&createSessionId(username, password, arnhemServerWebrootUrl)) {	
+				System.out.println("redirectSession="+connectSessionId);
 				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
 				return redirectResponse;
 			} else {
@@ -578,5 +583,13 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
     public   String downloadFile(String reportZipFileName) {
     	String url = arnhemServerWebrootUrl +"/rest/report/DownloadReportFile/" + reportZipFileName;
     	return postMethod(url);
-    }   
+    }
+    /*
+    public static void main(String[] args) {
+		ArnhemDeviceOperation operation = new ArnhemDeviceOperation();
+		operation.createSessionId("admin", "1qazcde3!@#", "https://219.141.189.187:62443");
+		ScannerTaskUniParam uniParam = new ScannerTaskUniParam();
+		uniParam.setTaskId("189164_17110910253184060");
+		System.out.println(operation.getStatusByTaskId(uniParam));
+	}*/
 }

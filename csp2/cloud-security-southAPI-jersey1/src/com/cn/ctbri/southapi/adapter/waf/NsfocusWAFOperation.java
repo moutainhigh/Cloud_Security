@@ -172,7 +172,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String md5String = getMd5(signature);
 		String authString = "?timestamp="+timestamp+
 							"&apikey="+apiKey+
-							"&method=get&sign="+md5String;
+							"&method="+method+"&sign="+md5String;
 		return authString;
 	}
 	
@@ -185,7 +185,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String md5String = getMd5(signature);
 		String authString = "&timestamp="+timestamp+
 							"&apikey="+apiKey+
-							"&method=get&sign="+md5String;
+							"&method="+method+"&sign="+md5String;
 		return authString;
 	}
 
@@ -205,10 +205,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	//post基本操作
 	private String postOperation(String url,String jsonString){
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "post");
-		System.out.println("authString="+url+authString);
-		System.out.println("json="+jsonString);
 		String returnString = postMethod(url+authString, jsonString);
-		System.out.println("<<<<<<<<<<<<<"+returnString+">>>>>>>>>>>>>>>>>>");
 		return returnString;
 	}
 	//delete基本操作，不带请求参数
@@ -491,7 +488,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 */
 	public String getAllIpFromEth(JSONObject jsonObject) {
 		return getOperation(nsfocusWafUrl+REST_URI_V1+"/interfaces/all/ip");
-	}		
+	}
 }
 
 

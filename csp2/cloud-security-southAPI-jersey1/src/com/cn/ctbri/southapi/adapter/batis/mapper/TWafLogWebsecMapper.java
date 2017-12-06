@@ -2,6 +2,7 @@ package com.cn.ctbri.southapi.adapter.batis.mapper;
 
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsec;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecAlertLevelCount;
+import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecCount;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecDstSrc;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecEventTypeCount;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample;
@@ -25,8 +26,30 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 
 public interface TWafLogWebsecMapper {
-    @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="countByExample")
+	@SelectProvider(type=TWafLogWebsecSqlProvider.class, method="countByExample")
     int countByExample(TWafLogWebsecExample example);
+    
+    @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="countInTimeByExample")
+    @Results({
+        @Result(column="count", property="count", jdbcType=JdbcType.BIGINT),
+        @Result(column="time", property="statTime", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecCount> countInTimeByExample(TWafLogWebsecExample example);
+    
+    @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="countEventTypeByExample")
+    @Results({
+        @Result(column="count", property="count", jdbcType=JdbcType.BIGINT),
+        @Result(column="event_type", property="eventType", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecCount> countEventTypeByExample(TWafLogWebsecExample example);
+    
+    @SelectProvider(type=TWafLogWebsecSqlProvider.class,method="countAlertLevelByExample")
+    @Results({
+        @Result(column="count", property="count", jdbcType=JdbcType.BIGINT),
+        @Result(column="alertlevel", property="alertLevel", jdbcType=JdbcType.VARCHAR),
+        @Result(column="time", property="statTime", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecCount> countAlertLevelByExample(TWafLogWebsecExample example);
     
     @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="selectMaxByExample")
     int selectMaxByExample(TWafLogWebsecExample example);
@@ -230,7 +253,7 @@ public interface TWafLogWebsecMapper {
     		"#{item}"+
     		"</foreach>"+
     		"</where> "+
-    		"ORDER BY t.stat_time desc limit #{limitNum,jdbcType=BIGINT}) as e GROUP BY event_type"+
+    		"ORDER BY t.stat_time desc limit #{limitNum,jdbcType=BIGINT}) as e GROUP BY event_type order by count desc"+
     		"</script>"		
     )
     @Results({
@@ -257,15 +280,29 @@ public interface TWafLogWebsecMapper {
     })
     List<TWafLogWebsecEventTypeCount> selectEventTypeCountsByDstIp(@Param("dstIp") List<String> dstIp,@Param("limitNum") int limitNum);
     
+    @Select("<script>"
+    		+ "SELECT MIN(a.log_id) AS log_id FROM ("
+    		+ "SELECT * FROM t_waf_log_websec "
+    		+ "<where>"
+    	    + "domain in"
+    	    + "<foreach item='item' index='index' collection='domain' open='(' separator=',' close=')'>"
+    	    + "#{item}"
+    	    + "</foreach>"
+    		+ "</where>"
+    		+ "ORDER BY log_id DESC LIMIT #{limitNum,jdbcType=BIGINT}"
+    		+ ")as a"
+    		+ "</script>"
+    )
+    int selectMinIDThanCurrent(@Param("domain") List<String> domainList,@Param("limitNum") int limitNum);
+    
     @Select("<script>"+
-    		"SELECT e.alertlevel as alertlevel,COUNT(alertlevel) AS count "
+    		"SELECT e.alertlevel as alertlevel,COUNT(e.alertlevel) AS count "
     		+ "from (SELECT t.alertlevel from t_waf_log_websec as t "
-    		+ "<where> "
+    		+ "where "
     		+ "t.domain in "
     		+ "<foreach item='item' index='index' collection='domain' open='(' separator=',' close=')'>"
     		+ "#{item}"
     		+ "</foreach>"
-    		+ "</where>"
     		+ "ORDER BY t.stat_time desc limit #{limitNum,jdbcType=BIGINT}) as e GROUP BY alertlevel"
     		+ "</script>"
     )
@@ -275,5 +312,7 @@ public interface TWafLogWebsecMapper {
     })
     List<TWafLogWebsecAlertLevelCount> selectAlertLevelCountByDomain(@Param("domain") List<String> domain,@Param("limitNum") int limitNum);
     
+    
+
 
 }

@@ -61,13 +61,13 @@ public class DeviceAdpaterManager {
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
 	public static  WAFConfigManager wafConfigManager = new WAFConfigManager();
 
-	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
+	private ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
 	public static WebsocDeviceAdapter websocDeviceAdapter = new WebsocDeviceAdapter();
 	
 	public static NsfocusWAFAdapter nsfocusWAFAdapter = new NsfocusWAFAdapter();
 	
-	public static IPDataBaseAdapter ipDataBaseAdapter = new IPDataBaseAdapter();
-	public static URLDataBaseAdapter urlDataBaseAdapter = new URLDataBaseAdapter();
+	public IPDataBaseAdapter ipDataBaseAdapter = new IPDataBaseAdapter();
+	public URLDataBaseAdapter urlDataBaseAdapter = new URLDataBaseAdapter();
 	
 	public static JinshanDeviceAdapter jinshanDeviceAdapter = new JinshanDeviceAdapter();
 	
@@ -791,6 +791,10 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogWebSecCount(jsonObject);
 	}
 	
+	public String getWafLogWebSecCountToday(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogWebSecCountToday(jsonObject);
+	}
+	
 	public String getWafLogWebsecInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getWafLogWebsecInTime(jsonObject);
 	}
@@ -912,6 +916,12 @@ public class DeviceAdpaterManager {
 	public String getEventTypeCountInTimeCurrent(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getEventTypeCountInTimeCurrent(jsonObject);
 	}
+	
+	public String getEventTypeCountCurrent(JSONObject jsonObject) {
+		return null;
+//		return nsfocusWAFAdapter.getEventTypeCountCurrent(jsonObject);
+	}
+	
 	public String getEventTypeCountInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
 	}
@@ -1049,6 +1059,10 @@ public class DeviceAdpaterManager {
 	//6.6获取全球所有活动恶意url信息
 	public String getMalurlData() {
 		return ipDataBaseAdapter.getMalurlData();
+	}
+	
+	public String getMalurlDataSegment(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getMalurlDataSegment(jsonObject);
 	}
 	//6.6b获取全球所有活动恶意url信息-最新n条
 	public String getMalurlTopData(JSONObject jsonObject){

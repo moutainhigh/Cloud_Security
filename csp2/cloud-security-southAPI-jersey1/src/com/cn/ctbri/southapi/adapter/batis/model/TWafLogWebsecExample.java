@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TWafLogWebsecExample {
-    protected String orderByClause;
+	protected String orderByClause;
 
     protected boolean distinct;
 
@@ -13,6 +13,8 @@ public class TWafLogWebsecExample {
     protected String offset;
 	//limit语句返回行数
     protected String rows;
+    
+    protected String timeUnit;
     
     protected List<Criteria> oredCriteria;
 
@@ -46,6 +48,14 @@ public class TWafLogWebsecExample {
 
 	public void setRows(String rows) {
 		this.rows = rows;
+	}
+
+	public String getTimeUnit() {
+		return timeUnit;
+	}
+
+	public void setTimeUnit(String timeUnit) {
+		this.timeUnit = timeUnit;
 	}
 
 	public boolean isDistinct() {

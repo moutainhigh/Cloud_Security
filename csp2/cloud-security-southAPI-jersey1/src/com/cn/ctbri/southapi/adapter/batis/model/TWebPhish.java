@@ -1,9 +1,15 @@
 package com.cn.ctbri.southapi.adapter.batis.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TWebPhish extends TWebPhishKey {
-    private String webphishUrl;
+public class TWebPhish extends TWebPhishKey implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private String webphishUrl;
 
     private String webphishField;
 

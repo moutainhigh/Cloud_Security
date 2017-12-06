@@ -1,7 +1,7 @@
 package com.cn.ctbri.southapi.adapter.batis.model;
 
 public class TWafNsfocusTargetinfoKey {
-    private String id;
+	private String id;
 
     private Integer resourceid;
 

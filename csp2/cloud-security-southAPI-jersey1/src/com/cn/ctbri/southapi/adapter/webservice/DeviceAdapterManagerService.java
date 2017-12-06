@@ -264,6 +264,14 @@ public class DeviceAdapterManagerService {
 	}
 	
 	@POST
+	@Path("/getWafLogWebSecCountToday")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebSecCountToday(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebSecCountToday(jsonObject);
+	}
+	
+	@POST
 	@Path("/getWaflogWebsecById")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebsecById(String dataJson) {
@@ -411,6 +419,14 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getEventTypeCountInTimeCurrent(jsonObject);		
 	}
+	@POST
+	@Path("/getEventTypeCountCurrent")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getEventTypeCountCurrent(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getEventTypeCountCurrent(jsonObject);
+	}
+	
 	@POST
 	@Path("/getEventTypeCountByDay")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -815,6 +831,14 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMalurlData(){
 		return deviceAdpaterManager.getMalurlData();
+	}
+	
+	@POST
+	@Path("/secbasedata/malurl/getdata")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataSegment(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getMalurlDataSegment(jsonObject);
 	}
 	//6.6b
 	@POST

@@ -12,16 +12,23 @@ import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
 import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import static org.apache.ibatis.jdbc.SqlBuilder.GROUP_BY;
 
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsec;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criteria;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criterion;
+
+import sun.print.resources.serviceui;
+
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample;
 import java.util.List;
 import java.util.Map;
 
 public class TWafLogWebsecSqlProvider {
-
+	private static final String YEAR = "year";
+	private static final String MONTH = "month";
+	private static final String DAY = "day";
+	
     public String countByExample(TWafLogWebsecExample example) {
         BEGIN();
         SELECT("count(*)");
@@ -29,6 +36,67 @@ public class TWafLogWebsecSqlProvider {
         applyWhere(example, false);
         return SQL();
     }
+    
+    public String countInTimeByExample(TWafLogWebsecExample example){
+    	BEGIN();
+    	if (example.getTimeUnit().equalsIgnoreCase(YEAR)) {
+			SELECT("DATE_FORMAT(stat_time,'%Y') as time");
+		}else if (example.getTimeUnit().equalsIgnoreCase(MONTH)) {
+			SELECT("DATE_FORMAT(stat_time,'%Y-%m') as time");
+		}else{
+			SELECT("DATE_FORMAT(stat_time,'%Y-%m-%d') as time");
+		}
+    	SELECT("count(stat_time) as count");
+    	FROM("t_waf_log_websec");
+    	applyWhere(example, false);
+    	GROUP_BY("time");
+    	return SQL();
+    }
+    
+    
+    public String countEventTypeByExample(TWafLogWebsecExample example) {
+        BEGIN();
+        SELECT("count(event_type) as count");
+        SELECT("event_type");
+        FROM("t_waf_log_websec");
+        applyWhere(example, false);
+        if (example != null && example.getOrderByClause() != null) {
+            ORDER_BY(example.getOrderByClause());
+        }
+        if (example != null && example.getOrderByClause() != null) {
+            ORDER_BY(example.getOrderByClause());
+        }
+        GROUP_BY("event_type");
+        return SQL();
+	}
+    
+    public String countAlertLevelByExample(TWafLogWebsecExample example){
+    	BEGIN();
+    	if (example.getTimeUnit().equalsIgnoreCase(MONTH)) {
+			SELECT("DATE_FORMAT(stat_time,'%Y-%m') as time");
+		}
+    	SELECT("alertlevel");
+    	SELECT("count(alertlevel) as count");
+    	FROM("t_waf_log_websec");
+    	applyWhere(example, false);
+        if (example != null && example.getOrderByClause() != null) {
+            ORDER_BY(example.getOrderByClause());
+        }
+    	GROUP_BY("alertlevel");
+    	if (example.getTimeUnit().equalsIgnoreCase(MONTH)) {
+			GROUP_BY("time");
+		}
+    	return SQL();
+    }
+    
+    public String countEventTypeThanCurrent(TWafLogWebsecExample example){
+    	BEGIN();
+    	SELECT("MIN(a.log_id) as log_id");
+    	FROM(selectByExampleWithBLOBs(example)+"as a");
+    	return SQL();
+    }
+    
+    
     
     public String selectMaxByExample(TWafLogWebsecExample example) {
 		BEGIN();
@@ -224,5 +292,6 @@ public class TWafLogWebsecSqlProvider {
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }
+        
     }
 }

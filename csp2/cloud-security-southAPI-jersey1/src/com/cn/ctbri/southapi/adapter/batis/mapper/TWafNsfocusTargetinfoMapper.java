@@ -16,9 +16,10 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.session.RowBounds;
 
 public interface TWafNsfocusTargetinfoMapper {
-    @SelectProvider(type=TWafNsfocusTargetinfoSqlProvider.class, method="countByExample")
+	@SelectProvider(type=TWafNsfocusTargetinfoSqlProvider.class, method="countByExample")
     int countByExample(TWafNsfocusTargetinfoExample example);
 
     @DeleteProvider(type=TWafNsfocusTargetinfoSqlProvider.class, method="deleteByExample")
