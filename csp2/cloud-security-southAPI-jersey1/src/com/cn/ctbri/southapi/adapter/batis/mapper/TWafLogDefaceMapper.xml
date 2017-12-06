@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogDefaceMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDeface">
+    <id column="log_id" jdbcType="BIGINT" property="logId" />
+    <result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+    <result column="resource_uri" jdbcType="VARCHAR" property="resourceUri" />
+    <result column="resource_ip" jdbcType="VARCHAR" property="resourceIp" />
+    <result column="site_id" jdbcType="VARCHAR" property="siteId" />
+    <result column="protect_id" jdbcType="VARCHAR" property="protectId" />
+    <result column="stat_time" jdbcType="TIMESTAMP" property="statTime" />
+    <result column="alertlevel" jdbcType="VARCHAR" property="alertlevel" />
+    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+    <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
+    <result column="dst_port" jdbcType="VARCHAR" property="dstPort" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="ip_latlong_valid" jdbcType="INTEGER" property="ipLatlongValid" />
+    <result column="src_country_code" jdbcType="VARCHAR" property="srcCountryCode" />
+    <result column="src_country" jdbcType="VARCHAR" property="srcCountry" />
+    <result column="src_subdivision_1" jdbcType="VARCHAR" property="srcSubdivision1" />
+    <result column="src_subdivision_2" jdbcType="VARCHAR" property="srcSubdivision2" />
+    <result column="src_city" jdbcType="VARCHAR" property="srcCity" />
+    <result column="src_latitude" jdbcType="VARCHAR" property="srcLatitude" />
+    <result column="src_longitude" jdbcType="VARCHAR" property="srcLongitude" />
+    <result column="dst_country_code" jdbcType="VARCHAR" property="dstCountryCode" />
+    <result column="dst_country" jdbcType="VARCHAR" property="dstCountry" />
+    <result column="dst_subdivision_1" jdbcType="VARCHAR" property="dstSubdivision1" />
+    <result column="dst_subdivision_2" jdbcType="VARCHAR" property="dstSubdivision2" />
+    <result column="dst_city" jdbcType="VARCHAR" property="dstCity" />
+    <result column="dst_latitude" jdbcType="VARCHAR" property="dstLatitude" />
+    <result column="dst_longitude" jdbcType="VARCHAR" property="dstLongitude" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    log_id, resource_id, resource_uri, resource_ip, site_id, protect_id, stat_time, alertlevel, 
+    event_type, dst_ip, dst_port, url, reason, ip_latlong_valid, src_country_code, src_country, 
+    src_subdivision_1, src_subdivision_2, src_city, src_latitude, src_longitude, dst_country_code, 
+    dst_country, dst_subdivision_1, dst_subdivision_2, dst_city, dst_latitude, dst_longitude
+  </sql>
+  <select id="selectByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDefaceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_waf_log_deface
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_waf_log_deface
+    where log_id = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_waf_log_deface
+    where log_id = #{logId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDefaceExample">
+    delete from t_waf_log_deface
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDeface">
+    insert into t_waf_log_deface (log_id, resource_id, resource_uri, 
+      resource_ip, site_id, protect_id, 
+      stat_time, alertlevel, event_type, 
+      dst_ip, dst_port, url, 
+      reason, ip_latlong_valid, src_country_code, 
+      src_country, src_subdivision_1, src_subdivision_2, 
+      src_city, src_latitude, src_longitude, 
+      dst_country_code, dst_country, dst_subdivision_1, 
+      dst_subdivision_2, dst_city, dst_latitude, 
+      dst_longitude)
+    values (#{logId,jdbcType=BIGINT}, #{resourceId,jdbcType=INTEGER}, #{resourceUri,jdbcType=VARCHAR}, 
+      #{resourceIp,jdbcType=VARCHAR}, #{siteId,jdbcType=VARCHAR}, #{protectId,jdbcType=VARCHAR}, 
+      #{statTime,jdbcType=TIMESTAMP}, #{alertlevel,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, 
+      #{dstIp,jdbcType=VARCHAR}, #{dstPort,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{reason,jdbcType=VARCHAR}, #{ipLatlongValid,jdbcType=INTEGER}, #{srcCountryCode,jdbcType=VARCHAR}, 
+      #{srcCountry,jdbcType=VARCHAR}, #{srcSubdivision1,jdbcType=VARCHAR}, #{srcSubdivision2,jdbcType=VARCHAR}, 
+      #{srcCity,jdbcType=VARCHAR}, #{srcLatitude,jdbcType=VARCHAR}, #{srcLongitude,jdbcType=VARCHAR}, 
+      #{dstCountryCode,jdbcType=VARCHAR}, #{dstCountry,jdbcType=VARCHAR}, #{dstSubdivision1,jdbcType=VARCHAR}, 
+      #{dstSubdivision2,jdbcType=VARCHAR}, #{dstCity,jdbcType=VARCHAR}, #{dstLatitude,jdbcType=VARCHAR}, 
+      #{dstLongitude,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDeface">
+    insert into t_waf_log_deface
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        log_id,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="resourceUri != null">
+        resource_uri,
+      </if>
+      <if test="resourceIp != null">
+        resource_ip,
+      </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
+      <if test="protectId != null">
+        protect_id,
+      </if>
+      <if test="statTime != null">
+        stat_time,
+      </if>
+      <if test="alertlevel != null">
+        alertlevel,
+      </if>
+      <if test="eventType != null">
+        event_type,
+      </if>
+      <if test="dstIp != null">
+        dst_ip,
+      </if>
+      <if test="dstPort != null">
+        dst_port,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="ipLatlongValid != null">
+        ip_latlong_valid,
+      </if>
+      <if test="srcCountryCode != null">
+        src_country_code,
+      </if>
+      <if test="srcCountry != null">
+        src_country,
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1,
+      </if>
+      <if test="srcSubdivision2 != null">
+        src_subdivision_2,
+      </if>
+      <if test="srcCity != null">
+        src_city,
+      </if>
+      <if test="srcLatitude != null">
+        src_latitude,
+      </if>
+      <if test="srcLongitude != null">
+        src_longitude,
+      </if>
+      <if test="dstCountryCode != null">
+        dst_country_code,
+      </if>
+      <if test="dstCountry != null">
+        dst_country,
+      </if>
+      <if test="dstSubdivision1 != null">
+        dst_subdivision_1,
+      </if>
+      <if test="dstSubdivision2 != null">
+        dst_subdivision_2,
+      </if>
+      <if test="dstCity != null">
+        dst_city,
+      </if>
+      <if test="dstLatitude != null">
+        dst_latitude,
+      </if>
+      <if test="dstLongitude != null">
+        dst_longitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUri != null">
+        #{resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIp != null">
+        #{resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=VARCHAR},
+      </if>
+      <if test="protectId != null">
+        #{protectId,jdbcType=VARCHAR},
+      </if>
+      <if test="statTime != null">
+        #{statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alertlevel != null">
+        #{alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="eventType != null">
+        #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="dstIp != null">
+        #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstPort != null">
+        #{dstPort,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="ipLatlongValid != null">
+        #{ipLatlongValid,jdbcType=INTEGER},
+      </if>
+      <if test="srcCountryCode != null">
+        #{srcCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCountry != null">
+        #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision2 != null">
+        #{srcSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCity != null">
+        #{srcCity,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLatitude != null">
+        #{srcLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLongitude != null">
+        #{srcLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountryCode != null">
+        #{dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountry != null">
+        #{dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision1 != null">
+        #{dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision2 != null">
+        #{dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCity != null">
+        #{dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLatitude != null">
+        #{dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLongitude != null">
+        #{dstLongitude,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDefaceExample" resultType="java.lang.Long">
+    select count(*) from t_waf_log_deface
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_waf_log_deface
+    <set>
+      <if test="record.logId != null">
+        log_id = #{record.logId,jdbcType=BIGINT},
+      </if>
+      <if test="record.resourceId != null">
+        resource_id = #{record.resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.resourceUri != null">
+        resource_uri = #{record.resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceIp != null">
+        resource_ip = #{record.resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteId != null">
+        site_id = #{record.siteId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.protectId != null">
+        protect_id = #{record.protectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statTime != null">
+        stat_time = #{record.statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.alertlevel != null">
+        alertlevel = #{record.alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventType != null">
+        event_type = #{record.eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstIp != null">
+        dst_ip = #{record.dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstPort != null">
+        dst_port = #{record.dstPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reason != null">
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ipLatlongValid != null">
+        ip_latlong_valid = #{record.ipLatlongValid,jdbcType=INTEGER},
+      </if>
+      <if test="record.srcCountryCode != null">
+        src_country_code = #{record.srcCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcCountry != null">
+        src_country = #{record.srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcSubdivision1 != null">
+        src_subdivision_1 = #{record.srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcSubdivision2 != null">
+        src_subdivision_2 = #{record.srcSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcCity != null">
+        src_city = #{record.srcCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcLatitude != null">
+        src_latitude = #{record.srcLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcLongitude != null">
+        src_longitude = #{record.srcLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstCountryCode != null">
+        dst_country_code = #{record.dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstCountry != null">
+        dst_country = #{record.dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstSubdivision1 != null">
+        dst_subdivision_1 = #{record.dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstSubdivision2 != null">
+        dst_subdivision_2 = #{record.dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstCity != null">
+        dst_city = #{record.dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstLatitude != null">
+        dst_latitude = #{record.dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstLongitude != null">
+        dst_longitude = #{record.dstLongitude,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_waf_log_deface
+    set log_id = #{record.logId,jdbcType=BIGINT},
+      resource_id = #{record.resourceId,jdbcType=INTEGER},
+      resource_uri = #{record.resourceUri,jdbcType=VARCHAR},
+      resource_ip = #{record.resourceIp,jdbcType=VARCHAR},
+      site_id = #{record.siteId,jdbcType=VARCHAR},
+      protect_id = #{record.protectId,jdbcType=VARCHAR},
+      stat_time = #{record.statTime,jdbcType=TIMESTAMP},
+      alertlevel = #{record.alertlevel,jdbcType=VARCHAR},
+      event_type = #{record.eventType,jdbcType=VARCHAR},
+      dst_ip = #{record.dstIp,jdbcType=VARCHAR},
+      dst_port = #{record.dstPort,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      reason = #{record.reason,jdbcType=VARCHAR},
+      ip_latlong_valid = #{record.ipLatlongValid,jdbcType=INTEGER},
+      src_country_code = #{record.srcCountryCode,jdbcType=VARCHAR},
+      src_country = #{record.srcCountry,jdbcType=VARCHAR},
+      src_subdivision_1 = #{record.srcSubdivision1,jdbcType=VARCHAR},
+      src_subdivision_2 = #{record.srcSubdivision2,jdbcType=VARCHAR},
+      src_city = #{record.srcCity,jdbcType=VARCHAR},
+      src_latitude = #{record.srcLatitude,jdbcType=VARCHAR},
+      src_longitude = #{record.srcLongitude,jdbcType=VARCHAR},
+      dst_country_code = #{record.dstCountryCode,jdbcType=VARCHAR},
+      dst_country = #{record.dstCountry,jdbcType=VARCHAR},
+      dst_subdivision_1 = #{record.dstSubdivision1,jdbcType=VARCHAR},
+      dst_subdivision_2 = #{record.dstSubdivision2,jdbcType=VARCHAR},
+      dst_city = #{record.dstCity,jdbcType=VARCHAR},
+      dst_latitude = #{record.dstLatitude,jdbcType=VARCHAR},
+      dst_longitude = #{record.dstLongitude,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDeface">
+    update t_waf_log_deface
+    <set>
+      <if test="resourceId != null">
+        resource_id = #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUri != null">
+        resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIp != null">
+        resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null">
+        site_id = #{siteId,jdbcType=VARCHAR},
+      </if>
+      <if test="protectId != null">
+        protect_id = #{protectId,jdbcType=VARCHAR},
+      </if>
+      <if test="statTime != null">
+        stat_time = #{statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alertlevel != null">
+        alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="eventType != null">
+        event_type = #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="dstIp != null">
+        dst_ip = #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstPort != null">
+        dst_port = #{dstPort,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="ipLatlongValid != null">
+        ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
+      </if>
+      <if test="srcCountryCode != null">
+        src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCountry != null">
+        src_country = #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision2 != null">
+        src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCity != null">
+        src_city = #{srcCity,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLatitude != null">
+        src_latitude = #{srcLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLongitude != null">
+        src_longitude = #{srcLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountryCode != null">
+        dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountry != null">
+        dst_country = #{dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision1 != null">
+        dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision2 != null">
+        dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCity != null">
+        dst_city = #{dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLatitude != null">
+        dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLongitude != null">
+        dst_longitude = #{dstLongitude,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDeface">
+    update t_waf_log_deface
+    set resource_id = #{resourceId,jdbcType=INTEGER},
+      resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      site_id = #{siteId,jdbcType=VARCHAR},
+      protect_id = #{protectId,jdbcType=VARCHAR},
+      stat_time = #{statTime,jdbcType=TIMESTAMP},
+      alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      event_type = #{eventType,jdbcType=VARCHAR},
+      dst_ip = #{dstIp,jdbcType=VARCHAR},
+      dst_port = #{dstPort,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=VARCHAR},
+      ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
+      src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
+      src_country = #{srcCountry,jdbcType=VARCHAR},
+      src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
+      src_city = #{srcCity,jdbcType=VARCHAR},
+      src_latitude = #{srcLatitude,jdbcType=VARCHAR},
+      src_longitude = #{srcLongitude,jdbcType=VARCHAR},
+      dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      dst_country = #{dstCountry,jdbcType=VARCHAR},
+      dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      dst_city = #{dstCity,jdbcType=VARCHAR},
+      dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      dst_longitude = #{dstLongitude,jdbcType=VARCHAR}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogDefaceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_waf_log_deface
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

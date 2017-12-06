@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogArpMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArp">
+    <id column="log_id" jdbcType="BIGINT" property="logId" />
+    <result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+    <result column="resource_uri" jdbcType="VARCHAR" property="resourceUri" />
+    <result column="resource_ip" jdbcType="VARCHAR" property="resourceIp" />
+    <result column="stat_time" jdbcType="TIMESTAMP" property="statTime" />
+    <result column="alertlevel" jdbcType="VARCHAR" property="alertlevel" />
+    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+    <result column="attack_type" jdbcType="VARCHAR" property="attackType" />
+    <result column="src_ip" jdbcType="VARCHAR" property="srcIp" />
+    <result column="src_mac" jdbcType="VARCHAR" property="srcMac" />
+    <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
+    <result column="dst_mac" jdbcType="VARCHAR" property="dstMac" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="action" jdbcType="VARCHAR" property="action" />
+    <result column="def_ip" jdbcType="VARCHAR" property="defIp" />
+    <result column="def_mac" jdbcType="VARCHAR" property="defMac" />
+    <result column="conflit_mac" jdbcType="VARCHAR" property="conflitMac" />
+    <result column="count_num" jdbcType="VARCHAR" property="countNum" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    log_id, resource_id, resource_uri, resource_ip, stat_time, alertlevel, event_type, 
+    attack_type, src_ip, src_mac, dst_ip, dst_mac, status, action, def_ip, def_mac, conflit_mac, 
+    count_num
+  </sql>
+  <select id="selectByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_waf_log_arp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_waf_log_arp
+    where log_id = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_waf_log_arp
+    where log_id = #{logId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArpExample">
+    delete from t_waf_log_arp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArp">
+    insert into t_waf_log_arp (log_id, resource_id, resource_uri, 
+      resource_ip, stat_time, alertlevel, 
+      event_type, attack_type, src_ip, 
+      src_mac, dst_ip, dst_mac, 
+      status, action, def_ip, 
+      def_mac, conflit_mac, count_num
+      )
+    values (#{logId,jdbcType=BIGINT}, #{resourceId,jdbcType=INTEGER}, #{resourceUri,jdbcType=VARCHAR}, 
+      #{resourceIp,jdbcType=VARCHAR}, #{statTime,jdbcType=TIMESTAMP}, #{alertlevel,jdbcType=VARCHAR}, 
+      #{eventType,jdbcType=VARCHAR}, #{attackType,jdbcType=VARCHAR}, #{srcIp,jdbcType=VARCHAR}, 
+      #{srcMac,jdbcType=VARCHAR}, #{dstIp,jdbcType=VARCHAR}, #{dstMac,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, #{defIp,jdbcType=VARCHAR}, 
+      #{defMac,jdbcType=VARCHAR}, #{conflitMac,jdbcType=VARCHAR}, #{countNum,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArp">
+    insert into t_waf_log_arp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        log_id,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="resourceUri != null">
+        resource_uri,
+      </if>
+      <if test="resourceIp != null">
+        resource_ip,
+      </if>
+      <if test="statTime != null">
+        stat_time,
+      </if>
+      <if test="alertlevel != null">
+        alertlevel,
+      </if>
+      <if test="eventType != null">
+        event_type,
+      </if>
+      <if test="attackType != null">
+        attack_type,
+      </if>
+      <if test="srcIp != null">
+        src_ip,
+      </if>
+      <if test="srcMac != null">
+        src_mac,
+      </if>
+      <if test="dstIp != null">
+        dst_ip,
+      </if>
+      <if test="dstMac != null">
+        dst_mac,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="action != null">
+        action,
+      </if>
+      <if test="defIp != null">
+        def_ip,
+      </if>
+      <if test="defMac != null">
+        def_mac,
+      </if>
+      <if test="conflitMac != null">
+        conflit_mac,
+      </if>
+      <if test="countNum != null">
+        count_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUri != null">
+        #{resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIp != null">
+        #{resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="statTime != null">
+        #{statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alertlevel != null">
+        #{alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="eventType != null">
+        #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="attackType != null">
+        #{attackType,jdbcType=VARCHAR},
+      </if>
+      <if test="srcIp != null">
+        #{srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="srcMac != null">
+        #{srcMac,jdbcType=VARCHAR},
+      </if>
+      <if test="dstIp != null">
+        #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstMac != null">
+        #{dstMac,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="defIp != null">
+        #{defIp,jdbcType=VARCHAR},
+      </if>
+      <if test="defMac != null">
+        #{defMac,jdbcType=VARCHAR},
+      </if>
+      <if test="conflitMac != null">
+        #{conflitMac,jdbcType=VARCHAR},
+      </if>
+      <if test="countNum != null">
+        #{countNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArpExample" resultType="java.lang.Long">
+    select count(*) from t_waf_log_arp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_waf_log_arp
+    <set>
+      <if test="record.logId != null">
+        log_id = #{record.logId,jdbcType=BIGINT},
+      </if>
+      <if test="record.resourceId != null">
+        resource_id = #{record.resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.resourceUri != null">
+        resource_uri = #{record.resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceIp != null">
+        resource_ip = #{record.resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statTime != null">
+        stat_time = #{record.statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.alertlevel != null">
+        alertlevel = #{record.alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventType != null">
+        event_type = #{record.eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attackType != null">
+        attack_type = #{record.attackType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcIp != null">
+        src_ip = #{record.srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcMac != null">
+        src_mac = #{record.srcMac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstIp != null">
+        dst_ip = #{record.dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dstMac != null">
+        dst_mac = #{record.dstMac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.action != null">
+        action = #{record.action,jdbcType=VARCHAR},
+      </if>
+      <if test="record.defIp != null">
+        def_ip = #{record.defIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.defMac != null">
+        def_mac = #{record.defMac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conflitMac != null">
+        conflit_mac = #{record.conflitMac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countNum != null">
+        count_num = #{record.countNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_waf_log_arp
+    set log_id = #{record.logId,jdbcType=BIGINT},
+      resource_id = #{record.resourceId,jdbcType=INTEGER},
+      resource_uri = #{record.resourceUri,jdbcType=VARCHAR},
+      resource_ip = #{record.resourceIp,jdbcType=VARCHAR},
+      stat_time = #{record.statTime,jdbcType=TIMESTAMP},
+      alertlevel = #{record.alertlevel,jdbcType=VARCHAR},
+      event_type = #{record.eventType,jdbcType=VARCHAR},
+      attack_type = #{record.attackType,jdbcType=VARCHAR},
+      src_ip = #{record.srcIp,jdbcType=VARCHAR},
+      src_mac = #{record.srcMac,jdbcType=VARCHAR},
+      dst_ip = #{record.dstIp,jdbcType=VARCHAR},
+      dst_mac = #{record.dstMac,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      action = #{record.action,jdbcType=VARCHAR},
+      def_ip = #{record.defIp,jdbcType=VARCHAR},
+      def_mac = #{record.defMac,jdbcType=VARCHAR},
+      conflit_mac = #{record.conflitMac,jdbcType=VARCHAR},
+      count_num = #{record.countNum,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArp">
+    update t_waf_log_arp
+    <set>
+      <if test="resourceId != null">
+        resource_id = #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUri != null">
+        resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIp != null">
+        resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="statTime != null">
+        stat_time = #{statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alertlevel != null">
+        alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="eventType != null">
+        event_type = #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="attackType != null">
+        attack_type = #{attackType,jdbcType=VARCHAR},
+      </if>
+      <if test="srcIp != null">
+        src_ip = #{srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="srcMac != null">
+        src_mac = #{srcMac,jdbcType=VARCHAR},
+      </if>
+      <if test="dstIp != null">
+        dst_ip = #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstMac != null">
+        dst_mac = #{dstMac,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="defIp != null">
+        def_ip = #{defIp,jdbcType=VARCHAR},
+      </if>
+      <if test="defMac != null">
+        def_mac = #{defMac,jdbcType=VARCHAR},
+      </if>
+      <if test="conflitMac != null">
+        conflit_mac = #{conflitMac,jdbcType=VARCHAR},
+      </if>
+      <if test="countNum != null">
+        count_num = #{countNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArp">
+    update t_waf_log_arp
+    set resource_id = #{resourceId,jdbcType=INTEGER},
+      resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      stat_time = #{statTime,jdbcType=TIMESTAMP},
+      alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      event_type = #{eventType,jdbcType=VARCHAR},
+      attack_type = #{attackType,jdbcType=VARCHAR},
+      src_ip = #{srcIp,jdbcType=VARCHAR},
+      src_mac = #{srcMac,jdbcType=VARCHAR},
+      dst_ip = #{dstIp,jdbcType=VARCHAR},
+      dst_mac = #{dstMac,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      def_ip = #{defIp,jdbcType=VARCHAR},
+      def_mac = #{defMac,jdbcType=VARCHAR},
+      conflit_mac = #{conflitMac,jdbcType=VARCHAR},
+      count_num = #{countNum,jdbcType=VARCHAR}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TWafLogArpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_waf_log_arp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>
