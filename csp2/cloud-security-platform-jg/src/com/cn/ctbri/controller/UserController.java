@@ -381,6 +381,18 @@ public class UserController{
 		return "/source/page/regist/login";
 	}
 	
+
+	/**
+	 * 功能描述：错误页面
+	 * 参数描述：
+	 *		 @time 
+	 */
+	@RequestMapping(value="error.html")
+	public String index(){
+		
+		return "/pageError";
+	}
+	
 	/**
 	 * 功能描述：  登录时检验用户名是否已经存在
 	 * 参数描述：  String name,HttpServletResponse response

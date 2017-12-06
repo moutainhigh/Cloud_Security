@@ -37,6 +37,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/loginUI.html");
 		list.add("/login.html");
 		list.add("/index.html");
+		list.add("/error.html");
 		list.add("/exit.html");
 		list.add("/regist_checkSendEmail.html");
 		list.add("/regist_checkName.html");

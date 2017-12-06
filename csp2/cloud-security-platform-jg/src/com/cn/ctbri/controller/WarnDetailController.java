@@ -1464,7 +1464,7 @@ public class WarnDetailController {
 					
 				}
 				else {
-					return "redirect:/index.html";
+					return "redirect:/error.html";
 				}
 			}
 			
