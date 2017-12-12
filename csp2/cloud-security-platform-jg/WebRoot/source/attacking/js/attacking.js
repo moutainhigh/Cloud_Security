@@ -25,6 +25,7 @@ var settings = {
 
     tableRows: 8,
     wsHost: "ws://"+wsurl+"/websocket",
+    wssHost:"wss://"+wsurl+"/websocket",
     psk: "135de9e2fb6ae653e45f06ed18fbe9a7"+"--"+window.currentId,
     wsTimeout: 30000,
     pruneInterval: 3600,
@@ -741,7 +742,11 @@ var wsDiscTime = 0;
 
 //Websocket操作：连接、接收消息、断开
 function start(loc, psk) {
-   webSocket = new WebSocket(loc || settings.wsHost);
+	if (window.location.protocol == 'http:') {
+	   webSocket = new WebSocket(loc || settings.wsHost);
+   }else{
+	   webSocket = new WebSocket(loc || settings.wssHost);
+   } 
     var pauser = {
         _buffer: [],
 
