@@ -61,6 +61,36 @@ public class TWafLogWebsec {
     @XStreamOmitField 
     private String wsi;
     @XStreamOmitField 
+    private Integer ipLatlongValid;
+    @XStreamOmitField 
+    private String srcCountryCode;
+    @XStreamOmitField 
+    private String srcCountry;
+    @XStreamOmitField 
+    private String srcSubdivision1;
+    @XStreamOmitField 
+    private String srcSubdivision2;
+    @XStreamOmitField 
+    private String srcCity;
+    @XStreamOmitField 
+    private String srcLatitude;
+    @XStreamOmitField 
+    private String srcLongitude;
+    @XStreamOmitField 
+    private String dstCountryCode;
+    @XStreamOmitField 
+    private String dstCountry;
+    @XStreamOmitField 
+    private String dstSubdivision1;
+    @XStreamOmitField 
+    private String dstSubdivision2;
+    @XStreamOmitField 
+    private String dstCity;
+    @XStreamOmitField 
+    private String dstLatitude;
+    @XStreamOmitField 
+    private String dstLongitude;
+
     private byte[] http;
 
     public Long getLogId() {
@@ -285,6 +315,126 @@ public class TWafLogWebsec {
 
     public void setWsi(String wsi) {
         this.wsi = wsi;
+    }
+
+    public Integer getIpLatlongValid() {
+        return ipLatlongValid;
+    }
+
+    public void setIpLatlongValid(Integer ipLatlongValid) {
+        this.ipLatlongValid = ipLatlongValid;
+    }
+
+    public String getSrcCountryCode() {
+        return srcCountryCode;
+    }
+
+    public void setSrcCountryCode(String srcCountryCode) {
+        this.srcCountryCode = srcCountryCode;
+    }
+
+    public String getSrcCountry() {
+        return srcCountry;
+    }
+
+    public void setSrcCountry(String srcCountry) {
+        this.srcCountry = srcCountry;
+    }
+
+    public String getSrcSubdivision1() {
+        return srcSubdivision1;
+    }
+
+    public void setSrcSubdivision1(String srcSubdivision1) {
+        this.srcSubdivision1 = srcSubdivision1;
+    }
+
+    public String getSrcSubdivision2() {
+        return srcSubdivision2;
+    }
+
+    public void setSrcSubdivision2(String srcSubdivision2) {
+        this.srcSubdivision2 = srcSubdivision2;
+    }
+
+    public String getSrcCity() {
+        return srcCity;
+    }
+
+    public void setSrcCity(String srcCity) {
+        this.srcCity = srcCity;
+    }
+
+    public String getSrcLatitude() {
+        return srcLatitude;
+    }
+
+    public void setSrcLatitude(String srcLatitude) {
+        this.srcLatitude = srcLatitude;
+    }
+
+    public String getSrcLongitude() {
+        return srcLongitude;
+    }
+
+    public void setSrcLongitude(String srcLongitude) {
+        this.srcLongitude = srcLongitude;
+    }
+
+    public String getDstCountryCode() {
+        return dstCountryCode;
+    }
+
+    public void setDstCountryCode(String dstCountryCode) {
+        this.dstCountryCode = dstCountryCode;
+    }
+
+    public String getDstCountry() {
+        return dstCountry;
+    }
+
+    public void setDstCountry(String dstCountry) {
+        this.dstCountry = dstCountry;
+    }
+
+    public String getDstSubdivision1() {
+        return dstSubdivision1;
+    }
+
+    public void setDstSubdivision1(String dstSubdivision1) {
+        this.dstSubdivision1 = dstSubdivision1;
+    }
+
+    public String getDstSubdivision2() {
+        return dstSubdivision2;
+    }
+
+    public void setDstSubdivision2(String dstSubdivision2) {
+        this.dstSubdivision2 = dstSubdivision2;
+    }
+
+    public String getDstCity() {
+        return dstCity;
+    }
+
+    public void setDstCity(String dstCity) {
+        this.dstCity = dstCity;
+    }
+
+    public String getDstLatitude() {
+        return dstLatitude;
+    }
+
+    public void setDstLatitude(String dstLatitude) {
+        this.dstLatitude = dstLatitude;
+    }
+
+    public String getDstLongitude() {
+        return dstLongitude;
+    }
+
+    public void setDstLongitude(String dstLongitude) {
+        this.dstLongitude = dstLongitude;
     }
 
     public byte[] getHttp() {

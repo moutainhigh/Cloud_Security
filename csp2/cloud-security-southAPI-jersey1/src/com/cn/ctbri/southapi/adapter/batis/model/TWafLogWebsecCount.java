@@ -27,8 +27,6 @@ public class TWafLogWebsecCount implements Serializable{
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
-    
-    
 
     public String getAlertLevel() {
 		return alertLevel;

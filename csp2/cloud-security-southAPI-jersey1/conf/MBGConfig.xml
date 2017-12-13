@@ -8,17 +8,27 @@
       <property name="suppressAllComments" value="true" />
       <property name="suppressDate" value="true" />
     </commentGenerator>
+	<!-- waf数据中心数据源 
     <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/waflogdata" userId="root" password="7172756" />
-    <!-- <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://123.57.184.186:3306/portscan" userId="root" password="16c32b405b6fa3b6@," />-->
+    -->
+    <!--端口扫描数据源
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://123.57.184.186:3306/portscan" userId="root" password="16c32b405b6fa3b6@," />
+    -->
+    <!-- 本地waf数据中心数据源
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/waflogdata" userId="root" password="7172756" />
+    -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://219.141.189.186:63306/southapi" userId="root" password="mssp@ctbri&amp;" />
     <javaModelGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.model" targetProject="cloud-security-southAPI/src" />
     <sqlMapGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.mapper" targetProject="cloud-security-southAPI/src" />
     <javaClientGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.mapper" targetProject="cloud-security-southAPI/src" type="XMLMAPPER" />
+  	<!--2017 12-06已生成
   	<table schema="t_waf_nsfocus_targetinfo" tableName="t_waf_nsfocus_targetinfo"></table>
   	<table schema="t_waf_log_arp" tableName="t_waf_log_arp"></table>
     <table schema="t_waf_log_ddos" tableName="t_waf_log_ddos"></table>
     <table schema="t_waf_log_deface" tableName="t_waf_log_deface"></table>
     <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>
     <table schema="t_waf_log_websec_count" tableName="t_waf_log_websec_count"></table>
+     -->
 	<!-- <table schema="t_waf_log_websec_dst_src" tableName="t_waf_log_websec_dst_src"></table> -->
 	<table schema="t_view_ipv4_location" tableName="t_view_ipv4_location"></table>
   </context>

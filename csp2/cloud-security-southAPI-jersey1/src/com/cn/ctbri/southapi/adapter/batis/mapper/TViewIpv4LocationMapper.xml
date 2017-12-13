@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.southapi.adapter.batis.mapper.TViewIpv4LocationMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4Location">
+    <result column="latlong_id" jdbcType="BIGINT" property="latlongId" />
+    <result column="network" jdbcType="VARCHAR" property="network" />
+    <result column="netmask" jdbcType="VARCHAR" property="netmask" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="accuracy_radius" jdbcType="VARCHAR" property="accuracyRadius" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
+    <result column="locale_code" jdbcType="VARCHAR" property="localeCode" />
+    <result column="continent_name" jdbcType="VARCHAR" property="continentName" />
+    <result column="country_iso_code" jdbcType="VARCHAR" property="countryIsoCode" />
+    <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+    <result column="subdivision_1_name" jdbcType="VARCHAR" property="subdivision1Name" />
+    <result column="subdivision_2_name" jdbcType="VARCHAR" property="subdivision2Name" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="time_zone" jdbcType="VARCHAR" property="timeZone" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    latlong_id, network, netmask, latitude, longitude, accuracy_radius, postal_code, 
+    locale_code, continent_name, country_iso_code, country_name, subdivision_1_name, 
+    subdivision_2_name, city_name, time_zone
+  </sql>
+  <select id="selectByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_view_ipv4_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="rows != null">
+     <choose>
+      <when test="offset != null">
+     	limit ${offset},${rows}
+      </when>
+      <otherwise>
+     	limit ${rows}
+      </otherwise>
+     </choose>
+    </if>
+
+  </select>
+  <delete id="deleteByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample">
+    delete from t_view_ipv4_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4Location">
+    insert into t_view_ipv4_location (latlong_id, network, netmask, 
+      latitude, longitude, accuracy_radius, 
+      postal_code, locale_code, continent_name, 
+      country_iso_code, country_name, subdivision_1_name, 
+      subdivision_2_name, city_name, time_zone
+      )
+    values (#{latlongId,jdbcType=BIGINT}, #{network,jdbcType=VARCHAR}, #{netmask,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{accuracyRadius,jdbcType=VARCHAR}, 
+      #{postalCode,jdbcType=VARCHAR}, #{localeCode,jdbcType=VARCHAR}, #{continentName,jdbcType=VARCHAR}, 
+      #{countryIsoCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, #{subdivision1Name,jdbcType=VARCHAR}, 
+      #{subdivision2Name,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{timeZone,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4Location">
+    insert into t_view_ipv4_location
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="latlongId != null">
+        latlong_id,
+      </if>
+      <if test="network != null">
+        network,
+      </if>
+      <if test="netmask != null">
+        netmask,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="accuracyRadius != null">
+        accuracy_radius,
+      </if>
+      <if test="postalCode != null">
+        postal_code,
+      </if>
+      <if test="localeCode != null">
+        locale_code,
+      </if>
+      <if test="continentName != null">
+        continent_name,
+      </if>
+      <if test="countryIsoCode != null">
+        country_iso_code,
+      </if>
+      <if test="countryName != null">
+        country_name,
+      </if>
+      <if test="subdivision1Name != null">
+        subdivision_1_name,
+      </if>
+      <if test="subdivision2Name != null">
+        subdivision_2_name,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="timeZone != null">
+        time_zone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="latlongId != null">
+        #{latlongId,jdbcType=BIGINT},
+      </if>
+      <if test="network != null">
+        #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="netmask != null">
+        #{netmask,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracyRadius != null">
+        #{accuracyRadius,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="localeCode != null">
+        #{localeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="continentName != null">
+        #{continentName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryIsoCode != null">
+        #{countryIsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision1Name != null">
+        #{subdivision1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision2Name != null">
+        #{subdivision2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="timeZone != null">
+        #{timeZone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample" resultType="java.lang.Long">
+    select count(*) from t_view_ipv4_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_view_ipv4_location
+    <set>
+      <if test="record.latlongId != null">
+        latlong_id = #{record.latlongId,jdbcType=BIGINT},
+      </if>
+      <if test="record.network != null">
+        network = #{record.network,jdbcType=VARCHAR},
+      </if>
+      <if test="record.netmask != null">
+        netmask = #{record.netmask,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accuracyRadius != null">
+        accuracy_radius = #{record.accuracyRadius,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postalCode != null">
+        postal_code = #{record.postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localeCode != null">
+        locale_code = #{record.localeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.continentName != null">
+        continent_name = #{record.continentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryIsoCode != null">
+        country_iso_code = #{record.countryIsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryName != null">
+        country_name = #{record.countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subdivision1Name != null">
+        subdivision_1_name = #{record.subdivision1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subdivision2Name != null">
+        subdivision_2_name = #{record.subdivision2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityName != null">
+        city_name = #{record.cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeZone != null">
+        time_zone = #{record.timeZone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_view_ipv4_location
+    set latlong_id = #{record.latlongId,jdbcType=BIGINT},
+      network = #{record.network,jdbcType=VARCHAR},
+      netmask = #{record.netmask,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      accuracy_radius = #{record.accuracyRadius,jdbcType=VARCHAR},
+      postal_code = #{record.postalCode,jdbcType=VARCHAR},
+      locale_code = #{record.localeCode,jdbcType=VARCHAR},
+      continent_name = #{record.continentName,jdbcType=VARCHAR},
+      country_iso_code = #{record.countryIsoCode,jdbcType=VARCHAR},
+      country_name = #{record.countryName,jdbcType=VARCHAR},
+      subdivision_1_name = #{record.subdivision1Name,jdbcType=VARCHAR},
+      subdivision_2_name = #{record.subdivision2Name,jdbcType=VARCHAR},
+      city_name = #{record.cityName,jdbcType=VARCHAR},
+      time_zone = #{record.timeZone,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_view_ipv4_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

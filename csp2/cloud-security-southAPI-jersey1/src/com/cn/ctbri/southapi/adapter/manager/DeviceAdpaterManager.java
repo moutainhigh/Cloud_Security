@@ -905,6 +905,8 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getEventTypeCountInterval(jsonObject);
 	}
 	
+	
+	//未对外开放
 	public String getEventTypeCountLimitByIp(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getEventTypeCountLimitByIp(jsonObject);
 	}

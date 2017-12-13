@@ -3,26 +3,23 @@ package com.cn.ctbri.southapi.adapter.batis.mapper;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecCount;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecCountExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.CacheNamespace;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
-@CacheNamespace
 public interface TWafLogWebsecCountMapper {
-	@SelectProvider(type=TWafLogWebsecCountSqlProvider.class, method="countByExample")
-    int countByExample(TWafLogWebsecCountExample example);
+    long countByExample(TWafLogWebsecCountExample example);
 
+    int deleteByExample(TWafLogWebsecCountExample example);
 
-    @SelectProvider(type=TWafLogWebsecCountSqlProvider.class, method="selectByExample")
-    @Results({
-        @Result(column="count", property="count"),
-        @Result(column="event_type", property="eventType"),
-        @Result(column="stat_time", property="statTime")
-    })
+    int insert(TWafLogWebsecCount record);
+
+    int insertSelective(TWafLogWebsecCount record);
+
+    List<TWafLogWebsecCount> selectByExampleWithRowbounds(TWafLogWebsecCountExample example, RowBounds rowBounds);
+
     List<TWafLogWebsecCount> selectByExample(TWafLogWebsecCountExample example);
 
+    int updateByExampleSelective(@Param("record") TWafLogWebsecCount record, @Param("example") TWafLogWebsecCountExample example);
+
+    int updateByExample(@Param("record") TWafLogWebsecCount record, @Param("example") TWafLogWebsecCountExample example);
 }
