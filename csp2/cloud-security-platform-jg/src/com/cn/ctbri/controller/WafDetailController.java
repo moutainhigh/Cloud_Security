@@ -274,9 +274,9 @@ public class WafDetailController {
     public void getWebsec(HttpServletRequest request,HttpServletResponse response)throws Exception {
 		// TODO Auto-generated method stub
     	String orderId = request.getParameter("orderId");
-  
+    	String secId = request.getParameter("secId");
         //获取订单信息
-        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+       // List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
         List assets = orderAssetService.findAssetsByOrderId(orderId);
         List websecList = null;
         List<String> domainList = new ArrayList<String>();
@@ -293,7 +293,8 @@ public class WafDetailController {
             }
             domainList.add(domain);
             String websecStr = "";
-            websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
+            websecStr = WafAPIWorker.getWafLogWebsecByDomainAndSecIdAndNum(domainList,secId,8);
+            //websecStr ＝ 
             websecList = this.getWaflogWebsecByIp(websecStr);
             Map<String, Object> m = new HashMap<String, Object>();
             m.put("websecStr", websecStr);

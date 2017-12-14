@@ -311,7 +311,20 @@ public class WafAPIWorker {
         response.close();
         return str;
 	}
-	
+	//
+	//根据域名、告警序列id、需要查询的数据条数 查询websec日志信息
+		public static String getWafLogWebsecByDomainAndSecIdAndNum(List<String> domainList,String secId,int num) {
+			JSONObject json = new JSONObject();
+			json.put("domain",domainList);
+			json.put("currentId", secId);
+			json.put("limit", num);
+	        WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebsecByDomainCurrent");
+	        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+	        String str = (String)response.readEntity(String.class);
+	        response.close();
+	        return str;
+		}
+		
 	/**
 	 * 功能描述：根据时间查询websec日志信息
 	 * @param logId
