@@ -249,7 +249,7 @@ function getOrderDetail(serviceId,isAPI,orderId,status,websoc,begin_date,type){
 			html = '<a href="'+getCurrentAddress()+'/warningWaf.html?orderId='+orderId+'&type='+type+'" target="_blank">'+orderId+'</a>';
 			break;
 		case 3:
-			html = '<a href="'+getCurrentAddress()+'/sysWarning.html?orderId='+orderId+'&type='+type+'" target="_blank">'+orderId+'</a>';
+			html = '<a href="'+getCurrentAddress()+'/orderSysDetails.html?orderId='+orderId+'&type='+type+'" target="_blank">'+orderId+'</a>';
 			break;
 		default:
 			html = '<a href="admin.html">'+orderId+'</a>';
