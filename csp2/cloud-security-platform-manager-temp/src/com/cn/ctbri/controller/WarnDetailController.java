@@ -38,9 +38,11 @@ import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
@@ -100,27 +102,131 @@ public class WarnDetailController {
 			e.printStackTrace();
 		}
 	}
-	
-	@RequestMapping(value= "sysWarning.html")
-	public String sysWarning(HttpServletRequest request,HttpServletResponse response){
+
+	@RequestMapping(value = "sysWarning.html")
+	public String sysWarning(HttpServletRequest request, HttpServletResponse response) {
 		String orderId = request.getParameter("orderId");
 		String type = request.getParameter("type");
 		// 获取订单信息
 		List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
 		List<HashMap<String, Object>> baseInfoList = orderService.findAPIAssetAndTaskByOrderId(orderId);
-		if(baseInfoList.size() == 0) {
+		if (baseInfoList.size() == 0) {
 			request.setAttribute("baseInfo", null);
-		}
-		else {
+		} else {
 			request.setAttribute("baseInfo", baseInfoList.get(0));
 		}
 		request.setAttribute("order", orderList.get(0));
 		return "/source/page/personalCenter/systemWarning";
 	}
-	
-	
-	
-	
+
+//	@RequestMapping(value = "orderSysDetails.html")
+//	public String orderSysDetails(HttpServletRequest request) {
+//
+//		String strTeString = "test111996";
+//		String orderId = request.getParameter("orderId");
+//		// 获取订单信息
+//		List orderList = orderService.findByOrderId(orderId);
+//		String status = "";
+//
+//		// 不是当前用户的订单,不能查看
+//		// User globle_user = (User) request.getSession().getAttribute("globle_user");
+//		System.out.println("****>>>>>>>>>>>>>ordersysdetail.html");
+//		if (orderId == null || orderList == null || orderList.size() == 0) {
+//			System.out.println("*****>>>>>>>>>>>>>>>>>>>>>orderId is null");
+//			return "redirect:/index.html";
+//
+//		}
+//
+//		HashMap<String, Object> order = new HashMap<String, Object>();
+//		order = (HashMap) orderList.get(0);
+//		// if (((Integer)order.get("userId"))!= globle_user.getId()) {
+//		// System.out.println("*****>>>>>>>>>>>>>>>>>>>>>userid not equal");
+//		// return "redirect:/index.html";
+//		// }
+//
+//		String strBeginDate = order.get("begin_date").toString();
+//		String strEndDate = order.get("end_date").toString();
+//		String strNowDate = DateUtils.dateToString(new Date());
+//		int serviceId = (Integer) order.get("serviceId");
+//		status = status + order.get("status");
+////		Integer userid = new Integer(globle_user.getId());
+//		if (strNowDate.compareTo(strEndDate) > 0 || strNowDate.compareTo(strBeginDate) < 0) {
+//			System.out.println("*****>>>>>>>>>>>>>>>>>>>>> time not in service");
+//			return "";// 时间不在服务范围内
+//		} else {
+//			if (serviceId == 8) { // 调用金山接口
+//				String useridString = ((Integer) order.get("userId")).toString();
+//				String urlRes = SysWorker.getJinshanoauthurl(orderId + useridString);
+//				if (!urlRes.equals("failed")) {
+//					request.setAttribute("returnURL", urlRes);
+//				}
+//			}
+//
+//			else if (serviceId == 9) { // 云眼APM
+//				String useridString = ((Integer) order.get("userId")).toString();
+//				String userTokenString = SysWorker.getYunyanToken(useridString);
+//				if (!userTokenString.equals("failed")) {
+//					//
+//					String urlyunyanString = SysWorker.getYunyanloginURL(userTokenString);
+//					if (!urlyunyanString.equals("failed")) {
+//						request.setAttribute("returnURL", urlyunyanString);
+//					}
+//
+//				}
+//			}
+//
+//			else if (serviceId == 7) { // 绿盟极光
+//				//
+//				String useridString = ((Integer) order.get("userId")).toString();
+//				// orderId
+//				Linkman linkman = orderService.findLinkmanByOrderId(orderId);
+//
+//				String urljiguangString = SysWorker.getjiguangURL(useridString, orderId, linkman.getMobile(),
+//						linkman.getName());
+//				if (!urljiguangString.equals("failed") && urljiguangString != null) {
+//					request.setAttribute("returnURL", urljiguangString);
+//				}
+//
+//			} else if (serviceId == 10) { // 绿盟极光
+//				String useridString = ((Integer) order.get("userId")).toString();
+//				Linkman linkman = orderService.findLinkmanByOrderId(orderId);
+//				String remarks = order.get("remarks").toString();
+//				String scan_type = order.get("scan_type").toString();
+//				int scanType = 0;
+//				if (Integer.parseInt(scan_type) == 1) {
+//					scanType = 15;
+//				} else if (Integer.parseInt(scan_type) == 2) {
+//					scanType = 30;
+//				} else {
+//					scanType = 60;
+//				}
+//
+//				String[] infos = remarks.split(";");
+//				String host = infos[0];
+//				List<ServicePortVO> servicePorts = new ArrayList<ServicePortVO>();
+//				String[] tmp = null;
+//
+//				for (int i = 1, j = 0; i < infos.length; i++, j++) {
+//					tmp = infos[i].split(":");
+//					ServicePortVO servicePortVO = new ServicePortVO(tmp[0], tmp[1]);
+//					servicePorts.add(servicePortVO);
+//				}
+//
+//				request.setAttribute("host", host);
+//				request.setAttribute("beginTime", strBeginDate);
+//				request.setAttribute("endTime", strEndDate);
+//				request.setAttribute("servicePorts", servicePorts);
+//				request.setAttribute("frequency", scanType);
+//				request.setAttribute("orderId", orderId);
+//
+//				/******** 20170702-peidandan ******************/
+//
+//				return "/source/page/personalCenter/sys_warnUsable";
+//			}
+//
+//		}
+//		return "/source/page/personalCenter/listExternal";
+//	}
 
 	@RequestMapping(value = "warningInit.html")
 	public String warningInit(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -145,10 +251,9 @@ public class WarnDetailController {
 
 		// 根据ID获取资产任务订单用户等信息
 		List<HashMap<String, Object>> baseInfoList = orderService.findAssetAndTaskByOrderId(orderId);
-		if(baseInfoList.size() == 0) {
+		if (baseInfoList.size() == 0) {
 			request.setAttribute("baseInfo", null);
-		}
-		else {
+		} else {
 			request.setAttribute("baseInfo", baseInfoList.get(0));
 		}
 
@@ -2162,12 +2267,11 @@ public class WarnDetailController {
 			// }
 
 			// 根据ID获取资产任务等信息
-			
+
 			List<HashMap<String, Object>> baseInfoList = orderService.findAPIAssetAndTaskByOrderId(orderId);
-			if(baseInfoList.size() == 0) {
+			if (baseInfoList.size() == 0) {
 				request.setAttribute("baseInfo", null);
-			}
-			else {
+			} else {
 				request.setAttribute("baseInfo", baseInfoList.get(0));
 			}
 
