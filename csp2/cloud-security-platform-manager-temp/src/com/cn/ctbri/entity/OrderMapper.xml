@@ -28,8 +28,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where o.id = a.orderId and a.id = t.order_asset_Id and u.id = o.userId and o.id = #{orderId}
 	</select>
 	
-	<!-- 根据订单Id查询Task的相关信息(API/sys) -->
+	<!-- 根据订单Id查询Task的相关信息(API) -->
 	<select id = "findAPIAssetAndTaskByOrderId" resultType = "hashmap" parameterType="String">
+		select o.userId,u.name,o.orderListId
+		from cs_user u,cs_order o
+		where u.id = o.userId and o.id = #{orderId}
+	</select>
+	
+	<!-- 根据订单Id查询Task的相关信息(Sys) -->
+	<select id = "findSysAssetAndTaskByOrderId" resultType = "hashmap" parameterType="String">
 		select o.userId,u.name,o.orderListId
 		from cs_user u,cs_order o
 		where u.id = o.userId and o.id = #{orderId}
@@ -55,15 +62,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order o,cs_service s
         where o.id = #{orderId} and o.serviceId = s.id
     </select>
-    <!--  根据订单Id查询API订单  记录 -->
     
-    <!--
-    	<select id="findAPIInfoByOrderId" resultType="hashmap" parameterType="String">
+    <!--  根据订单Id查询API订单  记录 -->
+    <!-- 
+    <select id="findAPIInfoByOrderId" resultType="hashmap" parameterType="String">
         select o.id,o.serviceId,o.type,sapi.name,sapi.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
         from cs_order o,cs_service_api sapi
         where o.id = #{orderId} and o.serviceId = sapi.id and o.isAPI = 1
-    </select>
+    </select> 
     -->
+
     
 	<!-- 根据用户查询所有记录 -->
     <select id="findOrderByUserId" resultMap="OrderRM" parameterType="Integer">
