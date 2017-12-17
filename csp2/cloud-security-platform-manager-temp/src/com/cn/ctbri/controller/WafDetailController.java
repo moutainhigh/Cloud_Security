@@ -70,8 +70,11 @@ public class WafDetailController {
 		}else {
 			request.setAttribute("baseInfo", baseInfoList.get(0));
 		}
-		
 		List assets = orderAssetService.findAssetsByOrderId(orderId);
+		// 根据ID获取资产名和域名
+		List assetsNameAndIP = orderAssetService.findAssetNameByOrderId(orderId);
+		request.setAttribute("assetNameAndIP", assetsNameAndIP);
+		
 		List websecList = null;
 		// if(assets != null && assets.size() > 0){
 		// HashMap<String, Object> assetOrder = new HashMap<String, Object>();
@@ -86,7 +89,6 @@ public class WafDetailController {
 		// websecList = this.getWaflogWebsecByIp(websecStr);
 		// request.setAttribute("websecList", websecList);
 		// }
-
 		List<String> dstIpList = new ArrayList();
 		if (assets != null && assets.size() > 0) {
 			HashMap<String, Object> assetOrder = new HashMap<String, Object>();
@@ -103,10 +105,8 @@ public class WafDetailController {
 			System.out.println(websecStr);
 			websecList = this.getWaflogWebsecByIp(websecStr);
 			request.setAttribute("websecList", websecList);
-
 		}
 		request.setAttribute("websecNum", websecList.size());// 记得改回来websecList.size()
-
 		// end
 		return "/source/page/personalCenter/wafDetail";
 	}
