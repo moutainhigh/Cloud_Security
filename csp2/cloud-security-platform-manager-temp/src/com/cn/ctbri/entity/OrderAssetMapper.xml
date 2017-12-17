@@ -78,4 +78,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!-- select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id -->
     	select oa.assetName as name,oa.assetAddr as addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa where oa.orderId=#{orderId}
     </select>
+   
 </mapper>
