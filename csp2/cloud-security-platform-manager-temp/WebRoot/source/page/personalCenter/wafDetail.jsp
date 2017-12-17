@@ -46,6 +46,8 @@
 	src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript"
 	src="${ctx}/source/scripts/order/wafPic.js"></script>
+<script type="text/javascript"
+	src="${ctx}/source/scripts/order/wafInfo.js"></script>
 <script type="text/javascript">
 $(function() {
      $(".data_cuo").on('click', function() {
@@ -75,38 +77,7 @@ function websecDetail(logId){
       	}
      });
 }
-window.onload = function () {
-    initEvent();
-}
 
-function initEvent() {
-    const select = document.getElementById("select");
-    const add = document.getElementById("add");
-    select.onchange = changeSelect;
-    add.onclick = clickAdd;
-}
-
-function changeSelect(e) {
-    const dateInput = document.getElementById("dateGroup");
-    if(e.target.value === 'custom') {
-        dateInput.setAttribute("class", "show");
-    }
-    else {
-        dateInput.setAttribute("class", "hide");
-    }
-}
-
-function clickAdd(e) {
-    const dateStart = document.getElementById("dateStart");
-    const dateEnd = document.getElementById("dateEnd");
-    //value of date input
-    if (!dateStart.value || !dateEnd.value) {
-        alert("请选择日期");
-    }
-    if(dateStart.value > dateEnd.value) {
-        alert("结束日期需晚于开始日期");
-    }
-}
 </script>
 
 <style type="text/css">
@@ -445,7 +416,53 @@ function clickAdd(e) {
 	<div id="dateGroup" class="hide">
   		<label>开始日期 <input id="dateStart" type="date"></label>
   		<label>结束日期 <input id="dateEnd" type="date"></label>
- 		 <button id="add" type="button">确定</button>
+ 		<button id="add" type="button">确定</button>
+	</div>
+	
+	<div id="wafBase" class="hide">
+		<table>
+			<tr>
+				<td>网站名称</td>
+				<td>${assetNameAndIP.name}</td>
+			</tr>
+			<tr>
+				<td>域名</td>
+				<td>${assetNameAndIP.addr}</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="wafBaseSummary" class="hide">
+		<table>
+			<tr>
+				<td>查询类型</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>查询时间段</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>安全事件阻断/清除数</td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="securityLevel" class="hide">
+	
+	</div>
+	
+	<div id="securityType" class="hide">
+	
+	</div>
+	
+	<div id="securityTime" class="hide">
+	
+	</div>
+	
+	<div id="attackNum" class="hide">
+	
 	</div>
 
 	<!--============bottom============-->

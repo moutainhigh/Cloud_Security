@@ -80,8 +80,6 @@
                  <div class="Basement">
 					<p><span>用户Id:</span>${baseInfo.userId}</p>
 					<p><span>用户名:</span>${baseInfo.name}</p>
-					<p><span>任务编号:</span>${baseInfo.taskId}</p>
-					<p><span>任务引擎:</span>${baseInfo.engineIP}</p>
 					<p><span>orderListId:</span>${baseInfo.orderListId}</p>
 				</div>
                  <div class="coupontab" style="width:1100px;">
