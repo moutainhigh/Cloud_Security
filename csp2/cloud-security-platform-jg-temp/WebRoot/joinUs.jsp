@@ -90,7 +90,7 @@ body,html{
 			top: 2px;
 			right: 30px;
 			background-size: 100% 100%;
-			background-image:url(${ctx}/source/img/加.png);
+			background-image:url(${ctx}/source/img/add.png);
 		}
 		.demand{
 			width: 90%;
@@ -478,7 +478,7 @@ $(function(){
 				/*单击隐藏显示*/
 				if (Bemand[this.a].style.display=="block") {
 					Bemand[this.a].style.display="none";
-					Btn[this.a].style.backgroundImage="url(${ctx}/source/img/加.png)";
+					Btn[this.a].style.backgroundImage="url(${ctx}/source/img/add.png)";
 					safe[0].style.marginTop="40px";
 					Foot[0].style.marginTop="0px";
 					Join[0].style.height="930px";
@@ -486,11 +486,11 @@ $(function(){
 				} else{
 					for (var m=0;m<Bemand.length;m++) {
 						Bemand[m].style.display="none";
-						Btn[this.a].style.backgroundImage="url(${ctx}/source/img/加.png)";
+						Btn[this.a].style.backgroundImage="url(${ctx}/source/img/add.png)";
 						
 					}
 					Bemand[this.a].style.display="block";
-					Btn[this.a].style.backgroundImage="url(${ctx}/source/img/减.png)";
+					Btn[this.a].style.backgroundImage="url(${ctx}/source/img/drop.png)";
 					safe[0].style.marginTop="50px";
 					Foot[0].style.marginTop="0px";
 					Join[0].style.height="1300px";

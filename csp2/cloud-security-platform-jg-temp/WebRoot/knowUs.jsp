@@ -231,7 +231,7 @@ $(function(){
 			<!-- 正文内容 -->
 			<div class="about">
 			<div class="banner">
-				<img src="${ctx}/source/img/测2.jpg"/>
+				<img src="${ctx}/source/img/banner.jpg"/>
 			</div>
 			<p class="Title">
 				我们的产品与服务
@@ -244,7 +244,7 @@ $(function(){
 					真正实现即买即用，按次计费，在线支付。
 				</p>
 				<div class="product_1">
-					<img width="470px" align="left" src="${ctx}/source/img/图片1.png">
+					<img width="470px" align="left" src="${ctx}/source/img/show_one.png">
 					<p>
 						为用户打造全自助一站式在线安全服务体验，动一动鼠标即可享受及时、灵活、智能、便捷的安全服务，
 						并结合丰富多样的图表让企业安全更直观立体，企业所面临的安全厂商多、安全产品繁、安全投资大、
@@ -257,7 +257,7 @@ $(function(){
 				</p>
 				
 				<div class="product_2">
-					<img width="490px" align="right" src="${ctx}/source/img/图片2.png">
+					<img width="490px" align="right" src="${ctx}/source/img/show_two.png">
 					<p>
 						安全帮作为SDS软件定义安全先行者，以极致的专业能力与创新的精神打造了Sec-aaS云安全服务平台，
 						基于多年技术积累进行提炼与抽象，将领域内领先的基础能力对外开放，帮助企业实现快速的安全应用引入，
@@ -266,7 +266,7 @@ $(function(){
 				</div>
 				
 				<div class="product_3">
-					<img width="480px" src="${ctx}/source/img/图片3.png">
+					<img width="480px" src="${ctx}/source/img/show_three.png">
 					<ul>
 						<li>
 							&diams;&nbsp;SDS分布式协同平台基于SDS架构设计，支持安全策略的解析与下发、
@@ -319,11 +319,11 @@ $(function(){
 				</ul>
 				</ul>
 				<div class="pic1">
-					<img width="130px" src="${ctx}/source/img/图片4.png">
+					<img width="130px" src="${ctx}/source/img/show_four.png">
 					<p>关注安全帮微信公众号</p>
 				</div>
 				<div class="pic2">
-					<img width="120px" src="${ctx}/source/img/图片5.png">
+					<img width="120px" src="${ctx}/source/img/show_five.png">
 					<p>关注安全帮微博</p>
 				</div>				
 			</div>
