@@ -25,7 +25,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script> 
 
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
 .dataBox .dataR ul li label {width: 74px;}
 .dataR ul li .text {width: 90px;}

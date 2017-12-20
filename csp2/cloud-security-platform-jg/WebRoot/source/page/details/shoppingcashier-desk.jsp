@@ -18,7 +18,6 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
 <body>

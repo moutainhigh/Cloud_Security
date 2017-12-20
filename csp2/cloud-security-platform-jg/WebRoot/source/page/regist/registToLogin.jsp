@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <title>注册成功</title>
 </head>
  <BODY onload = "showTimer()"> 

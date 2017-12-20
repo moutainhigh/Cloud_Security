@@ -21,7 +21,6 @@
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <script src="${ctx}/source/scripts/order/sysServDetail.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
   $(function() {	
      $(".test-tablespan").on('click', function() {

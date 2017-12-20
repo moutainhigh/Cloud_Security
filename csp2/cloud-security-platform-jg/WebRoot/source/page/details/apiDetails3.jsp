@@ -19,7 +19,6 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
 <script src="${ctx}/source/scripts/order/apidetails.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $(document).ready(function(){
     //回显

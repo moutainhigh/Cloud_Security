@@ -12,7 +12,6 @@
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
-<link rel="shortcut icon" href="${ctx}/source/images/chinatelecom.ico" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">

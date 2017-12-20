@@ -18,7 +18,6 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
     //首页广告页数据定时刷新,数据不去重
 $(function () {

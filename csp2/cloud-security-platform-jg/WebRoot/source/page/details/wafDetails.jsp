@@ -23,7 +23,7 @@
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+
 
 
 </head>

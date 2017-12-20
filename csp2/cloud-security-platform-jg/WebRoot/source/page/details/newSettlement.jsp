@@ -20,7 +20,6 @@
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/shopCart.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
 	.order .settlement-content .listone .test-table td, .order .ordertab td{text-align:center}
 	.order .settlement-content .listone .test-table td{

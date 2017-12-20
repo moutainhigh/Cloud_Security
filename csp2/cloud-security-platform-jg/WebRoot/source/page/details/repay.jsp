@@ -56,7 +56,6 @@
  }
  
 </script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
 <body>

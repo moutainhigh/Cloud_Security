@@ -103,7 +103,6 @@ $("#us").hide("slow");
 });
 })
 </script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
 .dataBox .dataR .select .dropdown-menu li label{ width:86%;}
       .select .dropdown-menu li{ height:auto !important}

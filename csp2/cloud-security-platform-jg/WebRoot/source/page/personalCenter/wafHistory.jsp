@@ -14,7 +14,6 @@
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet" />	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/tab.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
