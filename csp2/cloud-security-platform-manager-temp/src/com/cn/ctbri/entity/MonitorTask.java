@@ -5,6 +5,13 @@ import java.util.Date;
 public class MonitorTask {
 
 	private int id;//主键Id
+	private int task_id; //agent上的taskid
+	public int getTask_id() {
+		return task_id;
+	}
+	public void setTask_id(int task_id) {
+		this.task_id = task_id;
+	}
 	private int userId;//用户ID
 	private String taskName;//任务名称
 	private String targetUrl;//任务目标的URL
