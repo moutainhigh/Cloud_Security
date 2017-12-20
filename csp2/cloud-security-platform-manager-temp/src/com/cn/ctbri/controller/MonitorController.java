@@ -17,10 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cn.ctbri.common.MonitorWorker;
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Advertisement;
 import com.cn.ctbri.entity.MonitorTask;
 import com.cn.ctbri.service.IMonitorTaskService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.util.CommonUtil;
 
 @Controller
 public class MonitorController {
@@ -51,6 +53,31 @@ public class MonitorController {
     	
     	
     	request.setAttribute("MonList", taskList);
+        return "/source/adminPage/userManage/monitor";
+    }
+    /**
+     * 功能描述：可用性监控列表页面
+     * 参数描述：无
+     *       @time 2017-11-3
+     */
+    @RequestMapping("/monitorLine.html")
+    public String monitorLine(HttpServletRequest request, HttpServletResponse response){
+    	
+    	
+    	List taskList = monitorTaskService.findAllTask();
+    	int orderNum = 0;
+		if(taskList!=null&&taskList.size()>0){		
+			orderNum= taskList.size();
+			
+		}
+    	for (int i = 0; i < orderNum; i++) {
+    		HashMap<String,Object>  mapTask = (HashMap<String,Object>)taskList.get(i);
+    		
+    		
+		}
+    	JSONObject obj = JSONObject.fromObject(taskList);
+    	
+    	request.setAttribute("obj", obj);
         return "/source/adminPage/userManage/monitor";
     }
     
@@ -90,15 +117,16 @@ public class MonitorController {
         		 Map map = this.getCreateTaskResult(createtask);
         		 if(map != null && map.size() > 0){
         			 String status = map.get("status").toString();
-        			 int id = Integer.parseInt(map.get("id").toString());
+        			 int task_id = Integer.parseInt(map.get("id").toString());
         			 
-        			 if (status.equals("failed")) {
+        			 if (status.equals("failed")) {//
         				 request.setAttribute("errorcode", 2);
 					}else {
 						request.setAttribute("errorcode", 0);
 						//插入任务数据到 库
 						MonitorTask task = new MonitorTask();
 						task.setId(0);
+						task.setTask_id(task_id);
 						task.setTaskName(taskName);
 						task.setTargetUrl(targetURL);
 						task.setFrequency(frequecy);
