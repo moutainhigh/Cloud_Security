@@ -50,8 +50,6 @@ public class MonitorController {
     		
 		}
     	
-    	
-    	
     	request.setAttribute("MonList", taskList);
         return "/source/adminPage/userManage/monitor";
     }
@@ -61,7 +59,7 @@ public class MonitorController {
      *       @time 2017-11-3
      */
     @RequestMapping("/monitorLine.html")
-    public String monitorLine(HttpServletRequest request, HttpServletResponse response){
+    public void monitorLine(HttpServletRequest request, HttpServletResponse response){
     	
     	
     	List taskList = monitorTaskService.findAllTask();
@@ -75,10 +73,19 @@ public class MonitorController {
     		
     		
 		}
-    	JSONObject obj = JSONObject.fromObject(taskList);
+    	Map<String,Object> m = new HashMap<String, Object>();
+    	m.put("taskList", taskList);
     	
-    	request.setAttribute("obj", obj);
-        return "/source/adminPage/userManage/monitor";
+    	JSONObject obj = CommonUtil.objectToJson(response, m);
+    	try {
+			CommonUtil.writeToJsp(response, obj);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+    	
+    	//request.setAttribute("obj", obj);
+       // return "/source/adminPage/userManage/monitor";
     }
     
     
