@@ -1,7 +1,7 @@
 saveAssetFlag = 0;
 //默认服务频率
 var servType = 0;
-$(function(){
+$(function(){		
 	//修改时间控件选择的最小日期：服务器的当前时间
 	$("#beginDate").onfocus=function(){
 		var datetime = $("#begin").val();
@@ -18,7 +18,6 @@ $(function(){
 	//生成默认价格
 	calDefaultPrice();
 	
-
     //选择网站点击效果
     $('#addhttp').click(function () {
     	//如果当前用户还没有资产，则进入新增资产页面
@@ -261,7 +260,7 @@ $(function(){
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
         var userId = $("#userIdHidden").val();
-        var pay = $(".pay").val();
+        var pay = $(".click").val();
     	if(orderType==2){
     		scanType="";
     	}
@@ -273,7 +272,7 @@ $(function(){
 	    		     async: false, 
 	    		     url: "saveOrder.html", 
 	    		     data: {"orderDetailId":orderDetailId,
-    			            
+    			            //"pay":pay,    			            
 		    			   	"createDate":createDate,
 		    			   	"linkname":userName,
 		    			   	"phone":mobile,
@@ -309,6 +308,12 @@ $(function(){
 								orderListIdInput.name= "orderListId"; 
 								orderListIdInput.value= orderListId; 
 								tempForm.appendChild(orderListIdInput);
+								
+								var payInput = document.createElement("input");
+								payInput.type="hidden"; 
+								payInput.name= "payId"; 
+								payInput.value= pay; 
+								tempForm.appendChild(payInput);
 							
 								document.body.appendChild(tempForm);
 								tempForm.submit();
@@ -332,7 +337,8 @@ $(function(){
     	 var orderDetailId = $('#orderDetailId').val();
     	 var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
-        var mobile =  $(".test_iphone").text();
+        var mobile =  $(".test_iphone").text();      
+        var pay = $(".click").val();
       //  var userId = $("#userIdHidden").val();
 		//var result = window.confirm("确定要提交订单吗？");
     	//if(result){
@@ -356,7 +362,7 @@ $(function(){
 	    		    		 //alert("完成下单，去订单跟踪查看订单吧~~");  
     		    			 //window.location.href = "orderTrackInit.html";
     		    			 var orderListId = data.orderListId;
-	    		    		 window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    		 window.location.href = "cashierUI.html?orderListId="+orderListId+"&payId="+pay;
 				    	 }else{
 				    		 alert(data.message);
 				     		 return;
@@ -949,3 +955,5 @@ function tasknum_verification(){
       	$("#selfHelpOrderAPIInitNewForm").submit();
       
       }
+
+      
