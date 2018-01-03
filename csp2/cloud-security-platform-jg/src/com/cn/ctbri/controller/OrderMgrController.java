@@ -292,6 +292,7 @@ public class OrderMgrController {
          String linkname =request.getParameter("linkname");
          String phone = request.getParameter("phone");
          String email = request.getParameter("email");
+         String pay = request.getParameter("payId"); //支付方式
        
       	//判断参数值
       
@@ -487,9 +488,11 @@ public class OrderMgrController {
    	    ol.setUserId(globle_user.getId());
    	    ol.setPrice(orderDetail.getPrice());
    	    ol.setServerName(serv.getName());
+   	    ol.setRemarks(pay); //remarks字段保存支付方式
    	    orderListService.insert(ol);   //插入cs_order_list
    	    
    	    m.put("orderListId", id);
+   	    m.put("pay", pay);
    	    //object转化为Json格式
            JSONObject JSON = CommonUtil.objectToJson(response, m);
            try {
