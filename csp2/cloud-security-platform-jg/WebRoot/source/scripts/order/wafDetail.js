@@ -276,6 +276,7 @@ $(function(){
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
     	var orderId = $("#orderId").val();
+    	var pay = $(".click").val();
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveWafOrder.html", 
@@ -308,6 +309,12 @@ $(function(){
 									orderListIdInput.name= "orderListId"; 
 									orderListIdInput.value= orderListId; 
 									tempForm.appendChild(orderListIdInput);
+									
+									var payInput = document.createElement("input");
+									payInput.type="hidden"; 
+									payInput.name= "payId"; 
+									payInput.value= pay; 
+									tempForm.appendChild(payInput);
 								
 									document.body.appendChild(tempForm);
 									tempForm.submit();
@@ -334,6 +341,7 @@ $(function(){
       	var reMonth = $('#Remonth').val();
       	var orderIdList = $("#orderListId").val();
       	var renew = $("#renew").val();
+      	var pay = $(".click").val();
       	if(reMonth==0){
       		alert("请选择续费时长！");
       		return;
@@ -377,6 +385,12 @@ $(function(){
   									renewInput.name= "renew"; 
   									renewInput.value= renew; 
   									tempForm.appendChild(renewInput);
+  									
+  									var payInput = document.createElement("input");
+									payInput.type="hidden"; 
+									payInput.name= "payId"; 
+									payInput.value= pay; 
+									tempForm.appendChild(payInput);
   									
   									document.body.appendChild(tempForm);
   									tempForm.submit();
