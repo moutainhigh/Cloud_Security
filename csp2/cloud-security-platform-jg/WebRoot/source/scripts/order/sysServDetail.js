@@ -256,6 +256,7 @@ $(function(){
     var mobile =  $(".test_iphone").text();
     var userId = $("#userIdHidden").val();
     var scanType = $("#scanType").val();
+    var pay = $(".click").val();
   	$.ajax({
   		type: "POST",
   	    async: false, 
@@ -293,6 +294,12 @@ $(function(){
   					orderListIdInput.name= "orderListId"; 
   					orderListIdInput.value= orderListId; 
   					tempForm.appendChild(orderListIdInput);
+  					
+  					var payInput = document.createElement("input");
+					payInput.type="hidden"; 
+					payInput.name= "payId"; 
+					payInput.value= pay; 
+					tempForm.appendChild(payInput);
   				
   					document.body.appendChild(tempForm);
   					tempForm.submit();
