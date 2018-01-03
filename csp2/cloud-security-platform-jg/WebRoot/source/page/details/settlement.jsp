@@ -22,6 +22,19 @@
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <script src="${ctx}/source/scripts/order/sysServDetail.js"></script>
 <script type="text/javascript">
+	$(function(){
+		//支付方式
+		$('.pay').click(function(){
+			var pay = $('.click').val();
+			if(pay=="1"){	//安全币
+				$('.payment').html('&nbsp;安全币');
+			}
+			else if(pay=="2"){
+				$('.payment').html('&nbsp;人民币');
+			}
+		})
+	});
+	
   $(function() {	
      $(".test-tablespan").on('click', function() {
         $(".ta-box").hide();
@@ -263,8 +276,8 @@
                     <li class="listone">
                     	<h3>支付方式</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
-                       <button type="button" name="paybutton" value="1" class="pay click">安全币</button>
-                       <button type="button" name="paybutton" value="2" class="pay">支付宝</button>
+                       <button class="pay click" value="1">安全币</button>
+                       <button class="pay" value="2">支付宝</button>
                        	<!-- <button type="button" class="click">在线支付</button>
                         <button type="button">邮局汇款</button>
                         <button type="button">公司转账</button> -->
@@ -443,7 +456,7 @@
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                 		
-                          <em>&nbsp;安全币</em>                                                
+                          <em class="payment">&nbsp;安全币</em>                                                
                        
                 	</span>
                 </li>
@@ -457,7 +470,7 @@
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                         
-                		  <em>&nbsp;安全币</em>
+                		  <em class="payment">&nbsp;安全币</em>
                                                                        
                 	</span>
                 </li>
@@ -470,7 +483,7 @@
             	<span style="padding-bottom:10px;">
 	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                     
-	            	  <em style="font-size:14px">&nbsp;安全币</em>
+	            	  <em style="font-size:14px" class="payment">&nbsp;安全币</em>
                     
             	</span>
             	</c:if>
