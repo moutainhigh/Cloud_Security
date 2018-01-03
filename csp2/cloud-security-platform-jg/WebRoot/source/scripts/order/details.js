@@ -261,6 +261,7 @@ $(function(){
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
         var userId = $("#userIdHidden").val();
+        var pay = $(".pay").val();
     	if(orderType==2){
     		scanType="";
     	}
