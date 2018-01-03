@@ -21,6 +21,19 @@
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <script type="text/javascript">
+	$(function(){
+		//支付方式
+		$('.pay').click(function(){
+			var pay = $('.click').val();
+			if(pay=="1"){	//安全币
+				$('.payment').html('&nbsp;安全币');
+			}
+			else if(pay=="2"){
+				$('.payment').html('&nbsp;人民币');
+			}
+		})
+	});
+
   $(function() {
      $(".test-tablespan").on('click', function() {
         $(".ta-box").hide();
@@ -260,7 +273,8 @@
                     <li class="listone">
                     	<h3>支付方式</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
-                        <button type="button" class="click">安全币</button>
+                        <button class="pay click" value="1">安全币</button>
+                        <button class="pay" value="2">支付宝</button>
                        </div>
                         <div class="hr"></div>
                     </li>
@@ -333,7 +347,7 @@
                 	<em name="orderPrice">
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                 		</em>
-                		<em>&nbsp;安全币</em>
+                		<em class="payment">&nbsp;安全币</em>
                 	</span>
                 </li>
              
@@ -343,7 +357,7 @@
                 	<em name="orderPrice">
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                 		</em>
-                		<em>&nbsp;安全币</em>
+                		<em class="payment">&nbsp;安全币</em>
                 	</span>
                 </li>
             </ul>
@@ -356,7 +370,7 @@
             		<em name="orderPrice">
 	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
 	            	</em>
-	            	<em style="font-size:14px">&nbsp;安全币</em>
+	            	<em style="font-size:14px" class="payment">&nbsp;安全币</em>
             	</span>
             	</c:if>
             	
