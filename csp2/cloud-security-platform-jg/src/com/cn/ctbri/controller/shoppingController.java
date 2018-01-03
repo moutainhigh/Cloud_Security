@@ -13,6 +13,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.APIWorker;
+import com.cn.ctbri.common.AlipayConfig;
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.common.WafAPIWorker;
@@ -1974,6 +1976,7 @@ public class shoppingController {
     public String cashier(Model model, HttpServletRequest request){
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     	String renew = request.getParameter("renew");
+    	String payflag = request.getParameter("payId"); // 支付方式
     	//获取orderId,购买时间,交易金额
     	OrderList orderList = orderListService.findById(orderListId);
     	
@@ -2010,6 +2013,7 @@ public class shoppingController {
         model.addAttribute("serverName", serverNameMap);
         model.addAttribute("balance",balance);
         model.addAttribute("renew",renew);
+        model.addAttribute("pay", payflag);
     	return "source/page/details/shoppingcashier-desk2";
     }
     
@@ -2019,6 +2023,21 @@ public class shoppingController {
     @RequestMapping(value="payConfirm.html", method=RequestMethod.POST)
     public void payConfirm(HttpServletRequest request, HttpServletResponse response){
     	Map<String, Object> m = new HashMap<String, Object>();
+    	
+    	AlipayConfig aConfig = new AlipayConfig();
+    	try {
+			aConfig.doPost(request, response);
+		} catch (ServletException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+    	
+    	
+    	
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     		//判断是否续费
@@ -2573,6 +2592,8 @@ public class shoppingController {
     		
     		//只有一个订单明细时，订单编号(orderList的Id)和订单明细的编号(order的Id)一致
     		if (orderIdList!= null && orderIdList.size() == 1) {
+    			if(newOrderIds==null||newOrderIds.equals(""))
+    				System.out.println("newOrderIds =====NULLLLLLLLLLLLLLLLLLL+ 可能waf接口返回数据异常导致orderval 为空");
     			orderListService.updateOrderListId(orderList.getId(), newOrderIds);
     			orderList.setId(newOrderIds);
     			selfHelpOrderService.updateOrderListId(newOrderIds);
