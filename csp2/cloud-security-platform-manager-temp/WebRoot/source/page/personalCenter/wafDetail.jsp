@@ -423,11 +423,11 @@ function websecDetail(logId){
 		<table>
 			<tr>
 				<td>网站名称</td>
-				<td>${assetNameAndIP.name}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td>域名</td>
-				<td>${assetNameAndIP.addr}</td>
+				<td></td>
 			</tr>
 		</table>
 	</div>
