@@ -2311,9 +2311,7 @@ public class WarnDetailController {
 				System.out.println("error error error");
 				return "redirect:/admin.html";
 			}
-
 			// request.setAttribute("user",globle_user);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
