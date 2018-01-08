@@ -68,7 +68,7 @@ public class SynData {
 		String find = p.getProperty(selectSql);
 		String add = p.getProperty(insertSql);
 		
-		deleteOldData(find); //先删除原始数据
+		//deleteOldData(find); //先删除原始数据
 		
 		System.out.println(find);
 		System.out.println(add);
