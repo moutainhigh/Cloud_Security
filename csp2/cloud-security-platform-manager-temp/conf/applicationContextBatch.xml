@@ -20,6 +20,7 @@
         http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 		        
+    <import resource="classpath:/readDataSource.xml" />
     <context:property-placeholder location="classpath:/jdbc.properties" /> 
     <context:component-scan base-package="com.cn.ctbri" /> 
 	
