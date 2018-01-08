@@ -29,7 +29,7 @@
 			<ref bean="ledgerJobDetail" />  
 		</property>  
 		<property name="cronExpression" > 
-			<value>0 */1 * * * ? </value> 
+			<value>0 */10 * * * ? </value> 
 		</property>  
 	</bean>  
       
@@ -41,6 +41,6 @@
 				<!-- 将上面定义的测试定时任务注入（可以定义多个定时任务，同时注入）-->  
 				<ref local="ledgerCronTrigger" />
 			</list>  
-		</property>  
+		</property>
 	</bean>    
 </beans>
