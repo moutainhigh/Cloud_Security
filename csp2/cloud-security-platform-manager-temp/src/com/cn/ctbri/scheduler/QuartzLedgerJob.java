@@ -1,9 +1,11 @@
 package com.cn.ctbri.scheduler;
 
+import org.springframework.stereotype.Component;
 
 /**
  * 定时调度类
  */
+@Component
 public class QuartzLedgerJob {
 	private boolean exceRun;
 
@@ -23,6 +25,7 @@ public class QuartzLedgerJob {
 		if(exceRun){
 			SerialThread s = new SerialThread();
 			s.getParams();
+			
 		}else{
 			System.out.println("=====>>>>不执行……");
 		}
