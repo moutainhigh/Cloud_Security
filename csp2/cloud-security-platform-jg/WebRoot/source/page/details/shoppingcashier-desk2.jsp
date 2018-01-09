@@ -44,7 +44,8 @@ $(function(){
 			alert("请选择付款方式!");
 		}else{
 			var orderListId=$("#orderListId").val();
-		   var renew=$("#renew").val();
+			var pay = $("#pay").val();
+		   	var renew=$("#renew").val();
 			$.ajax({
 				type:"POST",
 				async: false, 
@@ -57,8 +58,9 @@ $(function(){
 					} else if(data.payFlag ==2) {
 						alert("该订单不存在!");
 					} else if(data.payFlag ==3 || data.payFlag ==0) {
-					    //余额不足/支付成功
-					    //虚拟表单post提交
+					    //余额不足/支付成功							
+					    if(pay==1){	//安全币
+					    	//虚拟表单post提交
 					    	var tempForm = document.createElement("form");
   							tempForm.action = "repayUI.html";
   							tempForm.method = "post";
@@ -83,6 +85,46 @@ $(function(){
 					    //var modifyOrderId = data.modifyOrderId;
 					    //orderListId = data.orderListId;
 						//window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
+					    }
+					    else if(pay==2){	//支付宝
+					    	var tempForm = document.createElement("form");
+  							//tempForm.action = "alipay.trade.page.pay.jsp";
+  							tempForm.action = "alipay.trade.page.pay.jsp";
+  							tempForm.method = "post";
+  							tempForm.name = "alipayment";
+  							tempForm.submit();
+							document.body.removeChild(tempForm);
+					    }
+					    
+					    /*
+						var tempForm = document.createElement("form");
+						tempForm.action = "repayUI.html";
+						tempForm.method = "post";
+						tempForm.style.display = "none";
+							
+						var orderListIdInput = document.createElement("input");
+						orderListIdInput.type="hidden"; 
+						orderListIdInput.name= "orderListId"; 
+						orderListIdInput.value= data.orderListId; 
+						tempForm.appendChild(orderListIdInput);
+						
+						var modifyOrderIdInput = document.createElement("input");
+						modifyOrderIdInput.type="hidden"; 
+						modifyOrderIdInput.name= "modifyOrderId"; 
+						modifyOrderIdInput.value= data.modifyOrderId; 
+						tempForm.appendChild(modifyOrderIdInput); 
+						
+						var payInput = document.createElement("input");
+						payInput.type="hidden"; 
+						payInput.name= "payId"; 
+						payInput.value= pay; 
+						tempForm.appendChild(payInput); 
+						
+						document.body.appendChild(tempForm);
+						tempForm.submit();
+						document.body.removeChild(tempForm);
+						*/
+						
 					} else if (data.payFlag ==5){
 						alert("部分订单已失效!");
 					}else {
@@ -202,7 +244,12 @@ $(function(){
                                 </li>
                                 <li>
                                     <b>付款方式</b>
-                                    <P>安全币</P>
+                                    <c:if test="${pay==1 }">
+                                    	<P>安全币</P>
+                                    </c:if>
+                                    <c:if test="${pay==2 }">
+                                    	<P>人民币</P>
+                                    </c:if>
                                 </li>
                             <ul>
                         
@@ -210,14 +257,29 @@ $(function(){
                     </div>
                     <div class="shoping_line"></div>
                     <div class="shoping_txt">付款方式</div>
+                    <input type="hidden" id="pay" value = "${pay }"/>
                     <div class="shoping_contant">
                          <div class="shopCant_Btn">
                              <input type="checkbox"class="cklost"  style="display:none" value="" />
                              <i class="chekLost"></i>
                         </div>
-                        <div class="shopCant_fix"><i></i>安全币余额${balance }</div>
+                        <div class="shopCant_fix"><i></i>
+                        	<c:if test="${pay==1 }">
+                        		安全币余额${balance }
+                        	</c:if>
+                        	<c:if test="${pay==2 }">
+                        		支付宝
+                        	</c:if>
+                        </div>
                         <!-- <div class="shopCant_con">更换其他付款方式</div> -->
-                        <div class="shop_pay"><b>支付：</b>${price }<em style="font-size:14px;line-height:36px">&nbsp;安全币</em></div>
+                        <div class="shop_pay"><b>支付：</b>${price }
+                        	<c:if test="${pay==1 }">
+                        		<em style="font-size:14px;line-height:36px">&nbsp;安全币</em>
+                        	</c:if>
+                        	<c:if test="${pay==2 }">
+                        		<em style="font-size:14px;line-height:36px">&nbsp;人民币</em>
+                        	</c:if>
+                        </div>
                     </div>
             	    
             </div>
