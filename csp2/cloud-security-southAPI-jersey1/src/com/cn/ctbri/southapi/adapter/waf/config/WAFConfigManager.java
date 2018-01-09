@@ -1,5 +1,6 @@
 package com.cn.ctbri.southapi.adapter.waf.config;
 
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +11,12 @@ import org.dom4j.io.SAXReader;
 
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogConfig;
 
-
+/*
+ * Description : 
+ * Author: niujf
+ * Date : 2016/05/10
+ * Copyright: CTBRI
+ */
 public class WAFConfigManager {
 	public String DEFAULT_FILE_WAF_CONFIG = "../conf/WafConfig.xml";
 	
@@ -481,7 +487,45 @@ public class WAFConfigManager {
 		
 		return null;
 	}
+	
+	/*
+	 * 
+	 */
+	public static WAFConfigDevice getWAFConfigDeviceBySyslogTag(String host) {
+		if ( host == null || "".equals(host)  ) return null;
+		
+		for (Map.Entry<String,WAFConfigDevice> entry : mapWAFConfigDeviceList.entrySet() ) {
+			WAFConfigDevice wafConfigDevice = entry.getValue();
+			if ( wafConfigDevice == null ) continue;
+			
+			/*
+			 * First: compare device ip address
+			 * Second: compare host tag
+			 */
+			host = host.trim();
+			if ( host.equalsIgnoreCase(wafConfigDevice.getDevicePhyIP() )) return wafConfigDevice;
+			if ( host.equalsIgnoreCase(wafConfigDevice.getSyslogDeviceTag() )) return wafConfigDevice;
+		}
 
+		return null;
+	}
+	
+	
+	/*
+	 * Default : Return first device configure
+	 */
+	public static WAFConfigDevice getWAFConfigDeviceByDefault() {
+		
+		for (Map.Entry<String,WAFConfigDevice> entry : mapWAFConfigDeviceList.entrySet() ) {
+			WAFConfigDevice wafConfigDevice = entry.getValue();
+			if ( wafConfigDevice == null ) continue;
+			
+			return wafConfigDevice;
+		}
+
+		return null;
+	}
+	
 	/*
 	 * 
 	 */

@@ -13,6 +13,7 @@ import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigSyslog;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigSyslogItem;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigSyslogItemPre;
 import com.cn.ctbri.southapi.adapter.waf.syslog.IWAFSyslogDisposeFactory;
+import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogConfig;
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogDBHelper;
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogHostParam;
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogUtil;
@@ -44,7 +45,13 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		//Get Syslog Message Tag
 		String tagValue = getSyslogMessageTagRegex(message,wafConfigSyslog);		
 		WAFConfigSyslogItem item = getWAFConfigSyslogItem(tagValue,wafConfigSyslog);
-		if ( item == null ) return false;
+		if ( item == null ) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				System.out.println("WAFConfigSyslogItem : item==null : tagValue=" + tagValue);
+			
+			return false;
+
+		}
 		
 		//For extract syslog message
 		message = extractSyslogMessage(message,tagValue);
@@ -55,7 +62,12 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		
 		//Get Syslog Message Key/Value
 		HashMap<String,String> mapSyslogKeyValue = disposeSyslogMessageRegex(message,item) ;
-		if ( mapSyslogKeyValue == null ) return false;
+		if ( mapSyslogKeyValue == null ) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				System.out.println("mapSyslogKeyValue==null : message=" + message);
+
+			return false;
+		}
 		
 		
 		//CPU,Memory Performance Information
@@ -73,7 +85,12 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		disposePreparedStatement(item.getSqlValueNames(),mapSyslogKeyValue,item,ps);
 		
 		wafSyslogDBHelper.executePreparedStatement(ps);
-				
+		
+		/*
+		if ( WAFSyslogConfig.isDebugMode() )
+			System.out.println("executePreparedStatement: successful! ");
+		*/
+		
 		return true;
 	}
 	
@@ -95,6 +112,9 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 			
 			return temp;
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return message; //No dispose;
 		}
 	}
@@ -111,6 +131,9 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 			
 			return true;
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return false;
 		}
 	}
@@ -173,6 +196,9 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 	        
 	        return mapSyslogKeyValue;
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return null;
 		}
 	}
@@ -186,6 +212,9 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 			temp = temp.substring(nPos + tag.length(),nLen);
 			return temp.trim();
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return ""; //
 		}
 	}
@@ -213,7 +242,7 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		//Get SQL String
 		String sql = item.getSqlInsertSentence();
 		if ( sql == null ) {
-			sql = getSQLSentence(item.getSqlForDB(),arrayFields.length);
+			sql = getSQLSentence(item.getSqlForDB(),arrayValueNames);
 			item.setSqlInsertSentence(sql);
 		}
 		
@@ -229,6 +258,9 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 
 			return temp.split(",");
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return null;
 		}		
 	}
@@ -242,17 +274,39 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 
 			return temp.split(",");
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return null;
 		}		
 	}
 	
-	private String getSQLSentence(String sql,int nLen) {
+
+	/*
+	 * 2018-1-9 by niujf
+	 * For dispose default databases internal function
+	 * Example : INSERT INTO A(id,date.....) VALUES(1,NOW(),......)
+	 */
+	private String getSQLSentence(String sql,String[] arrayValueNames ) {
 		String temp = sql;
 		int nTail = temp.indexOf(')');
 		temp = temp.substring(0, nTail+1);
 		
-		String sqlSentence = temp + " VALUES(?";
-		for( int i=1; i<nLen; i++) sqlSentence += ",?";
+		String sqlSentence = temp + " VALUES(";
+		for( int i=0; i<arrayValueNames.length; i++) {
+			String valueName = arrayValueNames[i];
+			
+			char tagChar = valueName.charAt(0);
+			if (tagChar == '@' || tagChar == '#' ) {
+				sqlSentence += "?";
+			} else {
+				sqlSentence += valueName;
+			}
+			
+			//Not last
+            if ( i < arrayValueNames.length-1 )
+            	sqlSentence += ",";
+		}
 		
 		sqlSentence += ")";
 		
@@ -273,25 +327,43 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 
 			return temp;
 		} catch(Exception e) {
+			if ( WAFSyslogConfig.isDebugMode() )
+				e.printStackTrace();
+
 			return null;
 		}		
 	}
 
-	
-	
+	/*
+	 * 2018-1-9 by niujf modify
+	 * For dispose default databases internal function
+	 * Example : INSERT INTO A(id,date.....) VALUES(1,NOW(),......)
+	 */
 	private boolean disposePreparedStatement(String[] arrayValueNames,HashMap<String,String> mapSyslogKeyValue,WAFConfigSyslogItem item,PreparedStatement ps) {
 		
 		/*
 		 * 1.�������е�SQL�е��ֶ�
 		 * 2.��Syslog�ж�Ӧ������
-		 * 3.���Syslog�е������Ƿ���Ҫ���д�����ʽת�� or PreparedStatement ����
-		 * 4.Ĭ��Ϊ�ַ�������������
+		 * 3.���Syslog�е������Ƿ���Ҫ���д��?��ʽת�� or PreparedStatement ���?
+		 * 4.Ĭ��Ϊ�ַ���������
 		 */
 		try {
+			int nPos = 0;
 			for( int i=0; i<arrayValueNames.length; i++ ) {
 				String valueName = arrayValueNames[i];
 				
-				disposePreparedStatementField(i+1,valueName,mapSyslogKeyValue,item,ps);		//ps : 1.....n		
+				char tagChar = valueName.charAt(0);
+				valueName = valueName.substring(1);
+				String fieldContent = mapSyslogKeyValue.get(valueName);
+			
+				if (tagChar == '@') {
+					disposePreparedStatementFieldForQuote(++nPos,valueName,item,ps);
+				} else if (tagChar == '#') {
+					disposePreparedStatementFieldForExpress(++nPos,valueName,fieldContent,item,ps);
+				} else {
+					// No dispose, Skip;
+				}
+			
 			}
 		} catch(Exception e) {
 			return false;
@@ -299,23 +371,6 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		return true;
 	}
 	
-	
-	
-	private boolean disposePreparedStatementField(int nIndex,String valueName,HashMap<String,String> mapSyslogKeyValue,WAFConfigSyslogItem item,PreparedStatement ps) {
-		
-		char tagChar = valueName.charAt(0);
-		valueName = valueName.substring(1);
-		String fieldContent = mapSyslogKeyValue.get(valueName);
-		
-		if (tagChar == '@') {
-			return disposePreparedStatementFieldForQuote(nIndex,valueName,item,ps);
-		} else if (tagChar == '#') {
-			return disposePreparedStatementFieldForExpress(nIndex,valueName,fieldContent,item,ps);
-		}
-
-		return true;
-	}
-
 	
 	private boolean disposePreparedStatementFieldForQuote(int nIndex,String fieldValue,WAFConfigSyslogItem item,PreparedStatement ps) {		
 		try {
@@ -355,7 +410,7 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 				if ("Integer.parseInt".equalsIgnoreCase(express)) {
 					int nContent = -1;
 					try {
-						nContent = Integer.parseInt(filedContent); // �����Ƿ�Ϊ�ջ��ߡ����������쳣����ȡȱʡ-1ֵ��
+						nContent = Integer.parseInt(filedContent); // �����Ƿ�Ϊ�ջ��ߡ����������쳣���?ȡȱʡ-1ֵ��
 					} catch (Exception e) {
 
 					}
