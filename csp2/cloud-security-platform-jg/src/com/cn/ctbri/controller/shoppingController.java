@@ -2023,7 +2023,7 @@ public class shoppingController {
     @RequestMapping(value="payConfirm.html", method=RequestMethod.POST)
     public void payConfirm(HttpServletRequest request, HttpServletResponse response){
     	Map<String, Object> m = new HashMap<String, Object>();
-    	
+    	/*
     	AlipayConfig aConfig = new AlipayConfig();
     	try {
 			aConfig.doPost(request, response);
@@ -2034,7 +2034,7 @@ public class shoppingController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	
+    	*/
     	
     	
     	
