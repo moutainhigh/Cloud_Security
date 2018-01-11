@@ -3214,6 +3214,7 @@ public class shoppingController {
 		return result;
 	}
 	
+	
 	/**
      * 功能描述： 订单详情,支付成功之后的跳转
      * */
@@ -3271,4 +3272,27 @@ public class shoppingController {
     	
     	return "redirect:/orderDetails.html?orderId=" + orderId;
     }
+    
+    /**
+     * 功能描述： 跳转阿里支付页面
+     * */
+    @RequestMapping(value="alipaytradepaagepay.html")
+	public String alipaytradepaagepay(Model m){
+		return "/source/page/details/alipay.trade.page.pay";
+	}
+    /**
+     * 功能描述： 跳转阿里支付页面
+     * */
+    @RequestMapping(value="alipayreturnURL.html")
+	public String alipayreturnURL(Model m){
+		return "/return_url";
+	}
+    /**
+     * 功能描述： 跳转阿里支付页面
+     * */
+    @RequestMapping(value="alipaynotifyURL.html")
+	public String alipaynotifyURL(Model m){
+		return "/notify_url";
+	}
+    
 }
