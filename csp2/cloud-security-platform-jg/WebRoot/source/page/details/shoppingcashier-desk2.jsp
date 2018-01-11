@@ -46,98 +46,90 @@ $(function(){
 			var orderListId=$("#orderListId").val();
 			var pay = $("#pay").val();
 		   	var renew=$("#renew").val();
-			$.ajax({
-				type:"POST",
-				async: false, 
-				url:"payConfirm.html",
-				dataType:"json",
-				data:{"orderListId":orderListId,"renew":renew},
-				success: function(data) {
-					if (data.payFlag == 1){
-						alert("您的订单已支付完成，请勿重复支付!");
-					} else if(data.payFlag ==2) {
-						alert("该订单不存在!");
-					} else if(data.payFlag ==3 || data.payFlag ==0) {
-					    //余额不足/支付成功							
-					    if(pay==1){	//安全币
-					    	//虚拟表单post提交
-					    	var tempForm = document.createElement("form");
-  							tempForm.action = "repayUI.html";
-  							tempForm.method = "post";
-  							tempForm.style.display = "none";
-  							
-  							var orderListIdInput = document.createElement("input");
-  							orderListIdInput.type="hidden"; 
+		   	var price=$("#price").val();
+		   	var serverName=$("#serverName").val();
+		   	if(pay==1){	//安全币
+				$.ajax({
+					type:"POST",
+					async: false, 
+					url:"payConfirm.html",
+					dataType:"json",
+					data:{"orderListId":orderListId,"renew":renew},
+					success: function(data) {
+						if (data.payFlag == 1){
+							alert("您的订单已支付完成，请勿重复支付!");
+						} else if(data.payFlag ==2) {
+							alert("该订单不存在!");
+						} else if(data.payFlag ==3 || data.payFlag ==0) {
+						    //余额不足/支付成功	
+						    //虚拟表单post提交
+						    var tempForm = document.createElement("form");
+	  						tempForm.action = "repayUI.html";
+	  						tempForm.method = "post";
+	  						tempForm.style.display = "none";
+	  							
+	  						var orderListIdInput = document.createElement("input");
+	  						orderListIdInput.type="hidden"; 
 							orderListIdInput.name= "orderListId"; 
 							orderListIdInput.value= data.orderListId; 
 							tempForm.appendChild(orderListIdInput);
-							
+								
 							var modifyOrderIdInput = document.createElement("input");
-  							modifyOrderIdInput.type="hidden"; 
+	  						modifyOrderIdInput.type="hidden"; 
 							modifyOrderIdInput.name= "modifyOrderId"; 
 							modifyOrderIdInput.value= data.modifyOrderId; 
 							tempForm.appendChild(modifyOrderIdInput); 
-							
+																						
 							document.body.appendChild(tempForm);
 							tempForm.submit();
 							document.body.removeChild(tempForm);
-  
-					    //var modifyOrderId = data.modifyOrderId;
-					    //orderListId = data.orderListId;
-						//window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
-					    }
-					    else if(pay==2){	//支付宝
-					    	var tempForm = document.createElement("form");
-  							//tempForm.action = "alipay.trade.page.pay.jsp";
-  							tempForm.action = "alipay.trade.page.pay.jsp";
-  							tempForm.method = "post";
-  							tempForm.name = "alipayment";
-  							tempForm.submit();
-							document.body.removeChild(tempForm);
-					    }
-					    
-					    /*
-						var tempForm = document.createElement("form");
-						tempForm.action = "repayUI.html";
-						tempForm.method = "post";
-						tempForm.style.display = "none";
-							
-						var orderListIdInput = document.createElement("input");
-						orderListIdInput.type="hidden"; 
-						orderListIdInput.name= "orderListId"; 
-						orderListIdInput.value= data.orderListId; 
-						tempForm.appendChild(orderListIdInput);
-						
-						var modifyOrderIdInput = document.createElement("input");
-						modifyOrderIdInput.type="hidden"; 
-						modifyOrderIdInput.name= "modifyOrderId"; 
-						modifyOrderIdInput.value= data.modifyOrderId; 
-						tempForm.appendChild(modifyOrderIdInput); 
-						
-						var payInput = document.createElement("input");
-						payInput.type="hidden"; 
-						payInput.name= "payId"; 
-						payInput.value= pay; 
-						tempForm.appendChild(payInput); 
-						
-						document.body.appendChild(tempForm);
-						tempForm.submit();
-						document.body.removeChild(tempForm);
-						*/
-						
-					} else if (data.payFlag ==5){
-						alert("部分订单已失效!");
-					}else {
-						alert("系统异常,您的订单已加入购物车,请稍后付款!");
-		    		    return;
+	  
+						    //var modifyOrderId = data.modifyOrderId;
+						    //orderListId = data.orderListId;
+							//window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
+												        					    						
+						} else if (data.payFlag ==5){
+							alert("部分订单已失效!");
+						}else {
+							alert("系统异常,您的订单已加入购物车,请稍后付款!");
+			    		    return;
+						}
+					},
+					error:function(data){
+						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+				    		 window.location.href = "loginUI.html"; } 
+				    	 else { window.location.href = "loginUI.html"; }
 					}
-				},
-				error:function(data){
-					 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-			    		 window.location.href = "loginUI.html"; } 
-			    	 else { window.location.href = "loginUI.html"; }
-				}
-			});
+				});
+		    }		   	
+		    else if(pay==2){	//支付宝
+		    	var tempForm = document.createElement("form");
+				tempForm.action = "alipaytradepaagepay.html";
+				tempForm.method = "post";
+				tempForm.style.display = "none";  							  					
+				
+				var orderListIdInput = document.createElement("input");
+				orderListIdInput.type="hidden"; 
+				orderListIdInput.name= "orderListId"; 
+				orderListIdInput.value= orderListId; 
+				tempForm.appendChild(orderListIdInput);				
+				
+				var priceInput = document.createElement("input");
+				priceInput.type="hidden"; 
+				priceInput.name= "price"; 
+				priceInput.value= price; 
+				tempForm.appendChild(priceInput); 
+				
+				var serverNameInput = document.createElement("input");
+				serverNameInput.type="hidden"; 
+				serverNameInput.name= "serverName"; 
+				serverNameInput.value= serverName; 
+				tempForm.appendChild(serverNameInput); 
+					
+				document.body.appendChild(tempForm);
+				tempForm.submit();
+				document.body.removeChild(tempForm);
+		    }							   	
 		}
     }
 </script>
@@ -187,6 +179,9 @@ $(function(){
 			
 
 		</div>
+		<input type="hidden" id="pay" value = "${pay }"/>
+        <input type="hidden" id="price" value = "${price }"/>
+        <input type="hidden" id="serverName" value = "${serverName }"/>
 		<div class="dataCent seetlentBox" style="margin-top:20px; padding-top:30px;">
 			<div class="seetT">
 				<h2>请及时付款</h2>
@@ -257,7 +252,6 @@ $(function(){
                     </div>
                     <div class="shoping_line"></div>
                     <div class="shoping_txt">付款方式</div>
-                    <input type="hidden" id="pay" value = "${pay }"/>
                     <div class="shoping_contant">
                          <div class="shopCant_Btn">
                              <input type="checkbox"class="cklost"  style="display:none" value="" />
