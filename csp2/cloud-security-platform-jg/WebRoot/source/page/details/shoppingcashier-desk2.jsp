@@ -104,7 +104,7 @@ $(function(){
 		    }		   	
 		    else if(pay==2){	//支付宝
 		    	var tempForm = document.createElement("form");
-				tempForm.action = "alipaytradepaagepay.html";
+				tempForm.action = "aliPayConfirm.html";
 				tempForm.method = "post";
 				tempForm.style.display = "none";  							  					
 				
