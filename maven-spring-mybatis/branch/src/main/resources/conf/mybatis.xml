@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC  
+    "-//mybatis.org//DTD Config 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+	<settings>  
+        <setting name="logImpl" value="LOG4J2"/>  
+    </settings>
+    <mappers>  
+        <mapper resource="com/cn/ctbri/mapping/WebsecMapper.xml"/>  
+        <mapper resource="com/cn/ctbri/mapping/IpMapper.xml"/>  
+        <mapper resource="com/cn/ctbri/mapping/CityMapper.xml"/>  
+        <mapper resource="com/cn/ctbri/mapping/CntByTypeMapper.xml"/>
+        <mapper resource="com/cn/ctbri/mapping/CntByHourMapper.xml"/>  
+        <mapper resource="com/cn/ctbri/mapping/CntBySrcMapper.xml"/> 
+        <mapper resource="com/cn/ctbri/mapping/DstIpMapper.xml"/> 
+    </mappers>  
+</configuration>
