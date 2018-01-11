@@ -34,6 +34,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.common.AlipayConfig;
 import com.cn.ctbri.common.NorthAPIWorker;
@@ -2023,8 +2027,8 @@ public class shoppingController {
     @RequestMapping(value="payConfirm.html", method=RequestMethod.POST)
     public void payConfirm(HttpServletRequest request, HttpServletResponse response){
     	Map<String, Object> m = new HashMap<String, Object>();
-    	/*
-    	AlipayConfig aConfig = new AlipayConfig();
+    	
+    	/*AlipayConfig aConfig = new AlipayConfig();
     	try {
 			aConfig.doPost(request, response);
 		} catch (ServletException e1) {
@@ -2034,10 +2038,7 @@ public class shoppingController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	*/
-    	
-    	
-    	
+    	*/	
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     		//判断是否续费
@@ -2148,7 +2149,63 @@ public class shoppingController {
     			e.printStackTrace();
     		}
     	}
+    	
     }
+    /**
+     * 功能描述： 确认支付
+     * */
+    @RequestMapping(value="aliPayConfirm.html", method=RequestMethod.POST)
+    public void AlipayConfirm(HttpServletRequest request, HttpServletResponse response){
+    	AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
+    			AlipayConfig.app_id, 
+    			AlipayConfig.merchant_private_key, 
+    			"json", 
+    			AlipayConfig.charset, 
+    			AlipayConfig.alipay_public_key, 
+    			"RSA2");
+    	//实例化具体API对应的request类,类名称和接口名称对应,当前}
+    	
+    	//alipayClient.
+    	AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
+    	//alipayRequest.setReturnUrl(returnUrl);
+    	//String returnUrl = "http://localhost:8080/csp/cashierUI.html";
+    	//String notifyUrl = "http://localhost:8080/csp/payConfirm.html";
+    	
+    	alipayRequest.setReturnUrl(AlipayConfig.return_url);
+    	alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+    	 alipayRequest.setBizContent("{" +
+    		        "    \"out_trade_no\":\"20150320010101001\"," +
+    		        "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
+    		        "    \"total_amount\":88.88," +
+    		        "    \"subject\":\"Iphone6 16G\"," +
+    		        "    \"body\":\"Iphone6 16G\"," +
+    		        "    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
+    		        "    \"extend_params\":{" +
+    		        "    \"sys_service_provider_id\":\"2088511833207846\"" +
+    		        "    }"+
+    		        "  }");//填充业务参数
+    	 
+    	 String form="";
+    	    try {
+    	        form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+    	    } catch (AlipayApiException e) {
+    	        e.printStackTrace();
+    	    }
+    	    
+    	    
+    	    try {
+    	    	response.setContentType("text/html;charset=" + AlipayConfig.charset);
+				response.getWriter().write(form);
+				response.getWriter().flush();
+				response.getWriter().close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//直接将完整的表单html输出到页面
+    	   
+    	
+    }
+    
     
     
     /**
