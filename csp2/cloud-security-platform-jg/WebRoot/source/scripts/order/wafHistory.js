@@ -5,8 +5,6 @@ var ontimeLine = null;
 var sourceIp = null;
 var sourceArea = null;
 
-var eventName = null;
-var eventJson = null;
 
     require.config({
         paths:{ 
