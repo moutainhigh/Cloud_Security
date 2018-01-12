@@ -40,31 +40,7 @@ $(function() {
         $(".mark,.data_tanc").hide();
      });
  });
-function websecDetail(logId){
-     $.ajax({
-       type: "POST",
-       url: "warningWafDetail.html",
-       data: {"logId":logId},
-       dataType:"json",
-       success: function(data){
-      		$("#dstIp").html(data.dstIp);
-      		$("#srcIp").html(data.srcIp);
-      		$("#srcPort").html(data.srcPort);
-      		$("#alertlevel").html(data.alertlevel);
-      		$("#eventType").html(data.eventType);
-      		$("#statTime").html(data.statTime);
-      		$("#alertinfo").html(data.alertinfo);
-      		$("#protocolType").html(data.protocolType);
-      		
-      		$(".mark,.data_tanc").show();
-      	}
-     });
-}
 
-$(function(){
-	 pielevel();  	 
- 	 event();
-});
 </script>
 </head>
 
@@ -179,7 +155,7 @@ $(function(){
             <li><a href="${ctx}/warningWaf.html?orderId=${order.id }&isHis=1&type=month&beginDate=<%=str_date %>" title="">历史数据</a></li>
           </ul>
         </div> 
-
+<!--  
         <div class="data_min">
         	<c:if test="${websecNum>0}">
              <div class="data_1" id="levelPie"></div>
@@ -192,7 +168,14 @@ $(function(){
              <div class="data_1" style="margin-right:0px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
             </c:if>
         </div>
+-->
+        <div class="data_min">
+             <div class="data_1" id="levelPie"></div>
+             <div class="data_1" id="eventBar"></div>
+             <div class="data_1" style="margin-right:0px;" id="eventPie"></div>
+        </div>
         <div class="data_table">
+        <!--  
             <c:if test="${websecNum!=0}">
 	            <table class="data_table_tab" width="100%">
 	              <tbody>
@@ -206,7 +189,9 @@ $(function(){
 	             </table>
 	             <div style="overflow:auto;height:312px;width:1138px">
 	             <table class="data_table_tab" width="100%">
-	              <tbody>
+	              <tbody id="websec">
+	              
+	                
 	                 <c:forEach var="list" items="${websecList}" varStatus="sta">
 	                 	 <input type="hidden" id="logIdHidden" value="${list.logId}">
 		                 <tr>
@@ -220,13 +205,35 @@ $(function(){
 		                     </td>                     
 		                 </tr>
 	                 </c:forEach>
+	               
 	              </tbody>
 	            </table>
 	            </div>
+	            <div class="nodata_time" style="display:none"><img src="${ctx}/source/images/waf_nodata1.png"/></div>
             </c:if>
             <c:if test="${websecNum==0}">
 	            	<div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
+            -->
+            
+            	<table class="data_table_tab" width="100%">
+	              <tbody>
+	                 <tr>
+	                     <th width="30%">开始时间</th>
+	                     <th width="30%">告警类型</th>
+	                     <th width="25%">服务器IP地址</th> 
+	                     <th width="15%">风险级别</th>                     
+	                 </tr>
+	             </tbody>
+	        	</table>
+	        	<div style="overflow:auto;height:312px;width:1138px;overflow:hidden;">
+		        	<table class="data_table_tab" width="100%">
+		              <tbody id="websec">      
+		              </tbody>
+		        	</table>	        	
+	            </div>
+	            
+	            
         </div>
        </div>  
      
