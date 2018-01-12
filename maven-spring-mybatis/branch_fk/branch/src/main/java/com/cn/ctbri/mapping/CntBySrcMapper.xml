@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.CntBySrcMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.CntBySrc">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="num" jdbcType="BIGINT" property="num" />
+    <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
+    <result column="domain" jdbcType="VARCHAR" property="domain" />
+    <result column="src_ip" jdbcType="VARCHAR" property="srcIp" />
+    <result column="src_country" jdbcType="VARCHAR" property="srcCountry" />
+    <result column="src_subdivision_1" jdbcType="VARCHAR" property="srcSubdivision1" />
+    <result column="day" jdbcType="DATE" property="day" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, num, dst_ip, domain, src_ip, src_country, src_subdivision_1, day
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cntBySrc
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cntBySrc
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.CntBySrc">
+    insert into cntBySrc (id, num, dst_ip, 
+      domain, src_ip, src_country, 
+      src_subdivision_1, day)
+    values (#{id,jdbcType=BIGINT}, #{num,jdbcType=BIGINT}, #{dstIp,jdbcType=VARCHAR}, 
+      #{domain,jdbcType=VARCHAR}, #{srcIp,jdbcType=VARCHAR}, #{srcCountry,jdbcType=VARCHAR}, 
+      #{srcSubdivision1,jdbcType=VARCHAR}, #{day,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.CntBySrc">
+    insert into cntBySrc
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="dstIp != null">
+        dst_ip,
+      </if>
+      <if test="domain != null">
+        domain,
+      </if>
+      <if test="srcIp != null">
+        src_ip,
+      </if>
+      <if test="srcCountry != null">
+        src_country,
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1,
+      </if>
+      <if test="day != null">
+        day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=BIGINT},
+      </if>
+      <if test="dstIp != null">
+        #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="srcIp != null">
+        #{srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCountry != null">
+        #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.CntBySrc">
+    update cntBySrc
+    <set>
+      <if test="num != null">
+        num = #{num,jdbcType=BIGINT},
+      </if>
+      <if test="dstIp != null">
+        dst_ip = #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="srcIp != null">
+        src_ip = #{srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCountry != null">
+        src_country = #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null">
+        day = #{day,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.CntBySrc">
+    update cntBySrc
+    set num = #{num,jdbcType=BIGINT},
+      dst_ip = #{dstIp,jdbcType=VARCHAR},
+      domain = #{domain,jdbcType=VARCHAR},
+      src_ip = #{srcIp,jdbcType=VARCHAR},
+      src_country = #{srcCountry,jdbcType=VARCHAR},
+      src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      day = #{day,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+     <select id="selectMaxDay"  resultType="java.util.Date">
+  	select max(day) from cntBySrc
+  </select>
+  <select id="selectCntBySrc" resultMap="BaseResultMap" parameterType="map">
+  		<![CDATA[ select count(1) as num,dst_ip,domain,src_ip ,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d') as day
+		from
+		(SELECT  * from t_waf_log_websec  where 
+		ip_latlong_valid=1 and src_ip<>'192.168.0.1'	]]>
+		<if test="maxDate != null">
+			and date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
+		</if>
+		
+		) t 
+		group by dst_ip,domain,src_ip,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d')
+	
+  </select>
+  <insert id="batchInsert" parameterType="map">
+  		insert into cntBySrc (src_ip,src_country ,src_subdivision_1,num,day,dst_ip,domain)
+  		  		VALUES  
+    <foreach collection="list" item="member" index="index" separator=",">  
+        (#{member.srcIp}, #{member.srcCountry},#{member.srcSubdivision1},#{member.num}, #{member.day}, #{member.dstIp}, #{member.domain})  
+    </foreach> 
+  </insert>
+  
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.CntByHourMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.CntByHour">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="hour" jdbcType="TIMESTAMP" property="hour" />
+    <result column="num" jdbcType="BIGINT" property="num" />
+    <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
+    <result column="domain" jdbcType="VARCHAR" property="domain" />
+    <result column="day" jdbcType="DATE" property="day" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, hour, num, dst_ip, domain, day
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cntByHour
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cntByHour
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.CntByHour">
+    insert into cntByHour (id, hour, num, 
+      dst_ip, domain, day)
+    values (#{id,jdbcType=BIGINT}, #{hour,jdbcType=TIMESTAMP}, #{num,jdbcType=BIGINT}, 
+      #{dstIp,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, #{day,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.CntByHour">
+    insert into cntByHour
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hour != null">
+        hour,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="dstIp != null">
+        dst_ip,
+      </if>
+      <if test="domain != null">
+        domain,
+      </if>
+      <if test="day != null">
+        day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="hour != null">
+        #{hour,jdbcType=TIMESTAMP},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=BIGINT},
+      </if>
+      <if test="dstIp != null">
+        #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.CntByHour">
+    update cntByHour
+    <set>
+      <if test="hour != null">
+        hour = #{hour,jdbcType=TIMESTAMP},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=BIGINT},
+      </if>
+      <if test="dstIp != null">
+        dst_ip = #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null">
+        day = #{day,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.CntByHour">
+    update cntByHour
+    set hour = #{hour,jdbcType=TIMESTAMP},
+      num = #{num,jdbcType=BIGINT},
+      dst_ip = #{dstIp,jdbcType=VARCHAR},
+      domain = #{domain,jdbcType=VARCHAR},
+      day = #{day,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectMaxDay"  resultType="java.util.Date">
+  	select max(day) from cntByHour
+  </select>
+
+  <select id="selectCntByHour" resultMap="BaseResultMap" parameterType="map">
+  		<![CDATA[ select count(1) as num,dst_ip,domain,date_format(stat_time,'%Y-%m-%d %H:00:00') as hour  ,date_format(stat_time,'%Y-%m-%d') as day
+		from
+		(SELECT  * from t_waf_log_websec  where 
+		ip_latlong_valid=1 and src_ip<>'192.168.0.1'	]]>
+		<if test="maxDate != null">
+			 and date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
+		</if>
+		) t 
+		group by dst_ip,domain,date_format(stat_time,'%Y-%m-%d %H') ,date_format(stat_time,'%Y-%m-%d')
+	
+  </select>
+  <insert id="batchInsert" parameterType="map">
+  		insert into cntByHour (num,hour,day,dst_ip,domain)
+  		  		VALUES  
+    <foreach collection="list" item="member" index="index" separator=",">  
+        (#{member.num,jdbcType=BIGINT},#{member.hour,jdbcType=TIMESTAMP},  #{member.day,jdbcType=DATE}, #{member.dstIp,jdbcType=VARCHAR}, #{member.domain,jdbcType=VARCHAR})  
+    </foreach> 
+  </insert>
+</mapper>

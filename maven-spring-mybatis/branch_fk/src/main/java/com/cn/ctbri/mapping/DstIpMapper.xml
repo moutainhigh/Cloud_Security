@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.DstIpMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.DstIp">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
+    <result column="dst_country_code" jdbcType="VARCHAR" property="dstCountryCode" />
+    <result column="dst_country" jdbcType="VARCHAR" property="dstCountry" />
+    <result column="dst_subdivision_1" jdbcType="VARCHAR" property="dstSubdivision1" />
+    <result column="dst_subdivision_2" jdbcType="VARCHAR" property="dstSubdivision2" />
+    <result column="dst_city" jdbcType="VARCHAR" property="dstCity" />
+    <result column="dst_latitude" jdbcType="VARCHAR" property="dstLatitude" />
+    <result column="dst_longitude" jdbcType="VARCHAR" property="dstLongitude" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, dst_ip, dst_country_code, dst_country, dst_subdivision_1, dst_subdivision_2, 
+    dst_city, dst_latitude, dst_longitude
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_dst_ip
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_dst_ip
+    
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_dst_ip
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.DstIp">
+    insert into t_dst_ip (id, dst_ip, dst_country_code, 
+      dst_country, dst_subdivision_1, dst_subdivision_2, 
+      dst_city, dst_latitude, dst_longitude
+      )
+    values (#{id,jdbcType=INTEGER}, #{dstIp,jdbcType=VARCHAR}, #{dstCountryCode,jdbcType=VARCHAR}, 
+      #{dstCountry,jdbcType=VARCHAR}, #{dstSubdivision1,jdbcType=VARCHAR}, #{dstSubdivision2,jdbcType=VARCHAR}, 
+      #{dstCity,jdbcType=VARCHAR}, #{dstLatitude,jdbcType=VARCHAR}, #{dstLongitude,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.DstIp">
+    insert into t_dst_ip
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dstIp != null">
+        dst_ip,
+      </if>
+      <if test="dstCountryCode != null">
+        dst_country_code,
+      </if>
+      <if test="dstCountry != null">
+        dst_country,
+      </if>
+      <if test="dstSubdivision1 != null">
+        dst_subdivision_1,
+      </if>
+      <if test="dstSubdivision2 != null">
+        dst_subdivision_2,
+      </if>
+      <if test="dstCity != null">
+        dst_city,
+      </if>
+      <if test="dstLatitude != null">
+        dst_latitude,
+      </if>
+      <if test="dstLongitude != null">
+        dst_longitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dstIp != null">
+        #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountryCode != null">
+        #{dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountry != null">
+        #{dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision1 != null">
+        #{dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision2 != null">
+        #{dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCity != null">
+        #{dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLatitude != null">
+        #{dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLongitude != null">
+        #{dstLongitude,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.DstIp">
+    update t_dst_ip
+    <set>
+      <if test="dstIp != null">
+        dst_ip = #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountryCode != null">
+        dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountry != null">
+        dst_country = #{dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision1 != null">
+        dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision2 != null">
+        dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCity != null">
+        dst_city = #{dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLatitude != null">
+        dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLongitude != null">
+        dst_longitude = #{dstLongitude,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.DstIp">
+    update t_dst_ip
+    set dst_ip = #{dstIp,jdbcType=VARCHAR},
+      dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      dst_country = #{dstCountry,jdbcType=VARCHAR},
+      dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      dst_city = #{dstCity,jdbcType=VARCHAR},
+      dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      dst_longitude = #{dstLongitude,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
