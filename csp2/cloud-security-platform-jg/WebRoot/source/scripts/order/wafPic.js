@@ -1,6 +1,21 @@
+var isLoaded = false;
+var secId = 0;
 var myChartPieLevel = null;
 var myChartPieEvent = null;
 var myChartBar = null;
+var num = 8;
+
+$(function(){
+	pielevel();  	 
+	event();
+	websec();
+	
+	setInterval(function(){
+		if(isLoaded) websec();
+	},10000);
+	
+
+});
 	
 	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
@@ -339,5 +354,88 @@ function event(){
     	return lineData3;
     }
     
+//实时攻击数据
+function websec(){
+	$.ajax({		
+		type:"post",		
+		data:{
+			"orderId":$('#orderId').val(),
+			"secId":secId
+		},
+		url:"getWebsec.html",
+		dataType:"json",
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		beforeSend:function(){
+			//if()
+			isLoaded = false;
+		},
+		success:function(data){
+			//$(".nodata_time").hide();
+    		//$(".timeTable").show();
+        	var htmlStr = "";
+        	var level;
+        	for(var i=data.websecList.length-1;i>=0;i--){
+        		if(data.websecList[i].logId>secId){
+        			secId=data.websecList[i].logId;
+        			//console.log(secId);
+        		}
+        		switch(data.websecList[i].alertlevel){
+        		case "HIGH":
+        			level="高风险";
+        			break;
+        		case "MEDIUM":
+        			level="中风险";
+        			break;
+        		case "LOW":
+        			level="低风险";
+        			break;
+        		default:
+        			level="低风险";
+        		}
+        		//htmlStr = '<tr><td width="30%">'+data.websecList[i].statTime+'</td>'+'<td width="30%">'+data.websecList[i].eventType+'</td>'+
+        		htmlStr = '<tr><td width="30%">'+data.websecList[i].statTime+'</td>'+'<td width="30%" class="data_table_cont"><a href="javascript:void(0)" onclick="websecDetail('+data.websecList[i].logId+')">'+data.websecList[i].eventType+'</a></td>'+
+        		'<td width="25%">'+data.websecList[i].dstIp+'</td>'+'<td width="15%">'+level+'</td></tr>';
+        		if(!num){
+            		$("#websec tr:last").remove();
+            		num++;
+            	}   
+        		$("#websec").prepend(htmlStr);
+        		num--;
+            	        	
+        	}     	
+        	//websec();
+        	console.log("true");
 
+		},
+		complete:function(){
+			isLoaded = true;
+		},
+		error:function(){
+			//websec();
+			console.log("error");
+		}
+		
+	});
+}
+
+function websecDetail(logId){
+    $.ajax({
+      type: "POST",
+      url: "warningWafDetail.html",
+      data: {"logId":logId},
+      dataType:"json",
+      success: function(data){
+     		$("#dstIp").html(data.dstIp);
+     		$("#srcIp").html(data.srcIp);
+     		$("#srcPort").html(data.srcPort);
+     		$("#alertlevel").html(data.alertlevel);
+     		$("#eventType").html(data.eventType);
+     		$("#statTime").html(data.statTime);
+     		$("#alertinfo").html(data.alertinfo);
+     		$("#protocolType").html(data.protocolType);
+     		
+     		$(".mark,.data_tanc").show();
+     	}
+    });
+}
 
