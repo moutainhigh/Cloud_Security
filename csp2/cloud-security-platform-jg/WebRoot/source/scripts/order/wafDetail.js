@@ -281,6 +281,7 @@ $(function(){
 	    		     async: false, 
 	    		     url: "saveWafOrder.html", 
 	    		     data: {"orderDetailId":orderDetailId,
+	    		    	 	"payId":pay,
     			            "linkname": userName,
 		    			   	"email":userAdd,
 		    			   	"createDate":createDate,
@@ -355,7 +356,8 @@ $(function(){
   		    			   	"phone":mobile,
   		    			   	"orderId":orderId,
   		    			   	"month":reMonth,
-  		    			   	"orderIdList":orderIdList},  
+  		    			   	"orderIdList":orderIdList
+  		    			   	"payId":pay,},  
   	    		     dataType: "json", 
   	    		     success: function(data) {
   		    		         if(data.error){
