@@ -356,8 +356,8 @@ $(function(){
   		    			   	"phone":mobile,
   		    			   	"orderId":orderId,
   		    			   	"month":reMonth,
-  		    			   	"orderIdList":orderIdList
-  		    			   	"payId":pay,},  
+  		    			   	"orderIdList":orderIdList,
+  		    			   	"payId":pay},  
   	    		     dataType: "json", 
   	    		     success: function(data) {
   		    		         if(data.error){
