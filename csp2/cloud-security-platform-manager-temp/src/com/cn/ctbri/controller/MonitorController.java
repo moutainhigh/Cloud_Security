@@ -98,13 +98,26 @@ public class MonitorController {
     @RequestMapping("/addMonitorTask.html")
     public String addMonitorTask(HttpServletRequest request,HttpServletResponse response){
     	
-    	 String taskName = request.getParameter("taskName");
-         String targetURL = request.getParameter("targetURL");
+    	 String taskName = request.getParameter("name");
+         String targetURL = request.getParameter("addr");
          String frequencyStr = request.getParameter("frequency");
-         String monitor_typestr = request.getParameter("monitor_type");
+         String monitor_typestr = request.getParameter("monType");
+         String server_Type = request.getParameter("serverType");
          String port_lists = request.getParameter("port_lists");
-         String alarmEmail  = request.getParameter("alarmEmail");
-         String alarmPhone = request.getParameter("alarmPhone");
+         //String alarmEmail  = request.getParameter("alarmEmail");
+         //String alarmPhone = request.getParameter("alarmPhone");
+         String alarmNews = request.getParameter("alarm");
+         String[] alarm = alarmNews.split(";");
+         String[] alarmEmailArray = alarm[0].split(",");
+         String[] alarmMessageArray = alarm[1].split(",");
+         String alarmEmail="";
+         String alarmMessage="";
+         if (alarmEmailArray.length>1) {
+			alarmEmail = alarmEmailArray[1];
+		}
+         if (alarmMessageArray.length>1) {
+			alarmMessage = alarmMessageArray[1];
+		}
          
          int frequecy = Integer.parseInt(frequencyStr);
          int monitor_type = Integer.parseInt(monitor_typestr);
@@ -140,7 +153,7 @@ public class MonitorController {
 						task.setMonitor_Type(monitor_type);
 						task.setPort_lists(port_lists);
 						task.setAlarmemail(alarmEmail);
-						task.setAlarmphone(alarmPhone);
+						task.setAlarmphone(alarmMessage);
 						
 						Date date = new Date();
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
