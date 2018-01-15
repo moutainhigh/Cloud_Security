@@ -226,9 +226,9 @@ $(function(){
                 <label style="margin-left:10px;"><input type="checkbox" name="monType" id="server" value="server">&nbsp;服务监控</label>
 
                 <select style="margin-left:10px;border:1px solid #cbc9c9;" id="serverType" name="serverType">
-                	<option selected="selected" value="-1">http</option>
-                	<option value="0" >https</option>
-                	<option value="1" >其他服务</option>
+                	<option selected="selected" value="1">http</option>
+                	<option value="2" >https</option>
+                	<option value="3" >其他服务</option>
                 </select>
             </td>
             <td class="regist_prompt prompt" style="color:#e32929;text-align:left;font-size: 12px;" id="type_msg"></td>
