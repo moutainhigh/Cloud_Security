@@ -1,5 +1,11 @@
 
 $(function(){
+	/*
+	setInterval(function(){
+		monitorLine();
+	},300000);
+	*/
+	
 	var oMark =document.getElementById('modelbox');
 	var oLogin =document.getElementById('box_logoIn');
 	
@@ -45,18 +51,12 @@ $(function(){
 	
 	$("#add_ser").click(function(){
 		var _index =$(".add_ser").index(this);  //获取当前点击按钮
+		$(".prompt").html("");
+		$("#name").val("");
+		$("#addr").val("");
+		$("#email").val("");
+		$("#message").val("");
 		
-		$("#regist_name").val("");
-		$("#regist_images").val("");
-		$(".filename").val("");
-		$("#regist_type").val("");
-		$("#regist_startDate").val("");
-		$("#regist_endDate").val("");
-		
-		$("#regist_name_msg").html("");
-		$("#regist_image_msg").html("");
-		$("#regist_date_msg").html("");
-		$("#regist_type_msg").html("");
 		//var image=$(this).parent().find("a img");
 		//$(".box_logoIn").empty()
 		oMark.style.display ="block";
@@ -126,4 +126,136 @@ function deleteMon(id){}
 function AlterMon(id){}
 
 //立即创建
-function add(){}
+function add(){
+	$(".prompt").html("");
+	var name = $("#name").val();
+	var addr = $("#addr").val();
+	var frequency = $("input:radio[name='frequency']:checked").val();
+	var typeFalg=0;
+	var monType = null;
+	var serverType = null;
+	var alarm = null;	//格式：email,***;message,***
+	var alarmFalg = 0;
+	
+	if(!name){
+		$("#name_msg").html("监控名称不能为空！"); 
+		$("#name").focus(); 
+		return false;
+	}
+	if(!addr){
+		$("#addr_msg").html("监控地址不能为空！"); 
+		$("#addr").focus(); 
+		return false;
+	}
+	
+	$("input:checkbox[name='monType']:checked").each(function(){
+		typeFalg=1;
+		monType+=$(this).val()+',';
+		if($(this).val()=='server'){
+			serverType = $("#serverType").val();
+		}
+	});
+	if(!typeFalg){
+		$("#type_msg").html("选择告警提示方式！"); 
+		$("#host").focus(); 
+		return false;
+	}else{
+		if(monType!=null){	
+			monType=monType.substring(0,monType.length-1);
+		}
+	}
+	
+	$("input:checkbox[name='alarm']:checked").each(function(){
+		alarmFalg=1;
+		if($(this).val()=='email'){
+			if($("#email").val()==""){
+				$("#alarm_msg").html("邮箱地址不能为空！"); 
+				$("#email").focus();
+				return false;
+			}
+			if (!$("#email").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) { 
+				$("#alarm_msg").html("邮箱格式不正确！请重新输入！"); 
+				$("#email").focus(); 
+				return false; 
+			}
+			alarm+="email,"+$("#email").val()+";";
+		}
+		else if($(this).val()=='message'){
+			if ($("#message").val() == "") { 
+				$("#alarm_msg").html("手机号码不能为空！"); 
+				$("#message").focus(); 
+				return false; 
+			} 
+
+			if (!$("#message").val().match(/^(((13[0-9]{1})|159|153)+\d{8})$/)) { 
+				$("#alarm_msg").html("手机号码格式不正确！请重新输入！"); 
+				$("#message").focus(); 
+				return false; 
+			}
+			alarm+="message,"+$("#message").val()+";";
+		}		
+	});
+	if(!alarmFalg){
+		$("#alarm_msg").html("选择告警提示方式！"); 
+		$("#alarm1").focus(); 
+		return false;
+	}else{
+		if(alarm){
+			alarm=alarm.substring(0, alarm.length-1);
+		}
+	}
+	
+	$.ajax({
+		type:"post",
+		url:"",
+		data:{
+			"name":name,
+			"addr":addr,
+			"frequency":frequency,
+			"monType":monType,
+			"serverType":serverType,
+			"alarm":alarm
+		},
+		dataType:"json",
+		success:function(data){
+			
+		},
+		error:function(data){
+			alert("cuowu");
+		}
+	});
+}
+
+//显示列表
+function monitorLine(){
+	$.ajax({
+		type:"post",
+		url:"monitorLine.html",
+		dataType:"json",
+		success:function(data){
+			var htmlStr="";		
+			for(i=0;i<data.taskList.length;i++){
+				var lasttime,createtime;
+				if(data.taskList[i].lastdetecttime){
+					lasttime=data.taskList[i].lastdetecttime.split(" ")[0];
+				}else{
+					lasttime="null";
+				}
+				if(data.taskList[i].createtime){
+					createtime=data.taskList[i].createtime.split(" ")[0];
+				}else{
+					createtime="null";
+				}
+				htmlStr += '<tr><td width="12%"><span>'+data.taskList[i].taskname+'</span></td>'+'<td width="16%"><span>'+data.taskList[i].targeturl+'</span></td>'
+				+'<td width="6%">'+data.taskList[i].monitor_type+'</td>'+'<td width="6%">'+data.taskList[i].frequency+'</td>'
+				+'<td width="6%">'+data.taskList[i].availability+'</td>'+'<td width="6%">'+data.taskList[i].responsetime+'</td>'
+				+'<td width="6%">'+data.taskList[i].laststatus+'</td>'+'<td width="18%">'+lasttime+'</td>'
+				+'<td width="18%">'+createtime+'</td>'+'<td width="6%"><a href="javascript:void(0)" style="color:#2499fb;" onclick="deleteMon('+data.taskList[i].id+')">删除</a></td></tr>';
+			}
+			$("#monList").html(htmlStr);
+		},
+		error:function(data){
+			alert("cuowu");
+		}
+	});
+}
