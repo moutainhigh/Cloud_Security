@@ -44,5 +44,10 @@ public interface MonitorTaskDao {
 	
 	void insertMonitorTask(MonitorTask task);
 	
-	
+	/**
+	 * 功能描述：根据引擎任务task_id更新任务状态
+	 * 
+	 * 
+	 */
+	void updateMonitorTaskStatusByTaskId(MonitorTask monitorTask);
 }
