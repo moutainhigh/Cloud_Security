@@ -49,4 +49,11 @@ public interface IMonitorTaskService {
 	 */
 	void insertMonitorTask(MonitorTask task );
 	
+	/**
+	 * 功能描述：更新
+	 * 
+	 * 返回值    ：  List
+	 */
+	void updateMonitorTaskStatusByTaskId(MonitorTask monitorTask);
+	
 }

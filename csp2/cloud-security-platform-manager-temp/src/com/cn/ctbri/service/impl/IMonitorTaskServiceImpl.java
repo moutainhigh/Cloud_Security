@@ -55,4 +55,11 @@ public class IMonitorTaskServiceImpl implements IMonitorTaskService {
 		taskDao.insertMonitorTask(task);
 	}
 
+
+	@Override
+	public void updateMonitorTaskStatusByTaskId(MonitorTask monitorTask) {
+		// TODO Auto-generated method stub
+		taskDao.updateMonitorTaskStatusByTaskId(monitorTask);
+	}
+
 }
