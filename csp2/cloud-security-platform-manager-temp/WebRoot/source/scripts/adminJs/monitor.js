@@ -132,8 +132,8 @@ function add(){
 	var addr = $("#addr").val();
 	var frequency = $("input:radio[name='frequency']:checked").val();
 	var typeFalg=0;
-	var monType = null;
-	var serverType = null;
+	var monType = '0';
+	var serverType = '0';
 	var alarm = null;	//格式：email,***;message,***
 	var alarmFalg = 0;
 	
@@ -150,19 +150,17 @@ function add(){
 	
 	$("input:checkbox[name='monType']:checked").each(function(){
 		typeFalg=1;
-		monType+=$(this).val()+',';
+		if($(this).val()=='host'){
+			monType = '1';
+		}
 		if($(this).val()=='server'){
 			serverType = $("#serverType").val();
 		}
 	});
 	if(!typeFalg){
-		$("#type_msg").html("选择告警提示方式！"); 
+		$("#type_msg").html("选择监控类型！"); 
 		$("#host").focus(); 
 		return false;
-	}else{
-		if(monType!=null){	
-			monType=monType.substring(0,monType.length-1);
-		}
 	}
 	
 	$("input:checkbox[name='alarm']:checked").each(function(){
@@ -178,7 +176,7 @@ function add(){
 				$("#email").focus(); 
 				return false; 
 			}
-			alarm+="email,"+$("#email").val()+";";
+			//alarm+="email,"+$("#email").val()+";";
 		}
 		else if($(this).val()=='message'){
 			if ($("#message").val() == "") { 
@@ -187,12 +185,12 @@ function add(){
 				return false; 
 			} 
 
-			if (!$("#message").val().match(/^(((13[0-9]{1})|159|153)+\d{8})$/)) { 
+			if (!$("#message").val().match(/^(((13[0-9]{1})|15[0-9]{1}|17[0-9]{1}|18[0-9]{1})+\d{8})$/)) { 
 				$("#alarm_msg").html("手机号码格式不正确！请重新输入！"); 
 				$("#message").focus(); 
 				return false; 
 			}
-			alarm+="message,"+$("#message").val()+";";
+			//alarm+="message,"+$("#message").val()+";";
 		}		
 	});
 	if(!alarmFalg){
@@ -200,14 +198,16 @@ function add(){
 		$("#alarm1").focus(); 
 		return false;
 	}else{
+		alarm = "email,"+$("#email").val()+";"+"message,"+$("#message").val();
+		/*
 		if(alarm){
-			alarm=alarm.substring(0, alarm.length-1);
-		}
+			alarm=alarm.substring(0, alarm.length-1);			
+		}*/
 	}
 	
 	$.ajax({
 		type:"post",
-		url:"",
+		url:"addMonitorTask.html",
 		data:{
 			"name":name,
 			"addr":addr,
