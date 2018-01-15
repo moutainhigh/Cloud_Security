@@ -62,6 +62,13 @@ public class MonitorTaskDaoImpl extends DaoCommon implements MonitorTaskDao {
 		this.getSqlSession().insert(ns + "insertMonitorTask", task);
 	}
 
+
+	@Override
+	public void updateMonitorTaskStatusByTaskId(MonitorTask monitorTask) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().update(ns + "updateMonitorTaskStatusByTaskId", monitorTask);
+	}
+
 	
 
 }
