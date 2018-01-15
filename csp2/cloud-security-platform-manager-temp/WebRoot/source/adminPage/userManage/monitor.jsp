@@ -27,7 +27,7 @@
 
 <style>
 .user_table{padding-top: 20px; }
-.user_table thead tr th{text-align:center;}
+.user_table thead tr th{text-align:center;font-weight:bold;}
 .user_table thead tr th:nth-child(1) {padding-right: 40px;padding-left: 20px;}
 .user_table thead tr th:nth-child(2) {padding-right: 100px;padding-left: 50px;}
 .user_table thead tr th:nth-child(3) {padding-right: 30px;}
@@ -39,16 +39,17 @@
 .user_table thead tr th:nth-child(9) {padding-right: 60px;padding-left: 10px;}
 .user_table thead tr th:nth-child(10) {padding-right: 30px;}
 .user_table tbody tr td a{padding-left: 2px; width: 40px;}
+
 .user_table tbody tr td:nth-child(1) {width: 114px;padding-left: 10px;}
-.user_table tbody tr td:nth-child(2) {width: 182px;}
-.user_table tbody tr td:nth-child(3) {width: 94px;}
-.user_table tbody tr td:nth-child(4) {width: 94px;}
+.user_table tbody tr td:nth-child(2) {width: 185px;}
+.user_table tbody tr td:nth-child(3) {width: 80px;}
+.user_table tbody tr td:nth-child(4) {width: 70px;}
 .user_table tbody tr td:nth-child(5) {width: 78px;}
-.user_table tbody tr td:nth-child(6) {width: 94px;}
-.user_table tbody tr td:nth-child(7) {width: 94px;}
-.user_table tbody tr td:nth-child(8) {width: 164px;}
-.user_table tbody tr td:nth-child(9) {width: 126px;}
-.user_table tbody tr td:nth-child(10) {width: 58px;}
+.user_table tbody tr td:nth-child(6) {width: 80px;}
+.user_table tbody tr td:nth-child(7) {width: 95px;padding-left:10px;}
+.user_table tbody tr td:nth-child(8) {width: 130px;padding-left:10px;}
+.user_table tbody tr td:nth-child(9) {width: 120px;padding-left:10px;}
+.user_table tbody tr td:nth-child(10) {width: 90px;}
 .user_table tbody tr td span{display:inline-block; line-height:1rem;}
 .user_table {font-size:14px;}
 
@@ -101,7 +102,31 @@ opacity: 0;
 
 
 </style>
-
+<script type="text/javascript">
+$(function(){
+	$("#serverType").hide();
+	monitorLine();
+	
+	$("#server").change(function(){
+		if(this.checked){
+			$("#serverType").show();
+		}else{
+			$("#serverType").hide();
+		}
+	});
+/*	
+	$("[name='monType']").each(function(){
+		var type=$(this).val();
+		if(type=="server"){
+			$("serverType").show();			
+		}
+		else if(type=="server"){
+			$("serverType").hide();			
+		}
+	});
+	*/
+});
+</script>
 </head>
 
 <body>
@@ -133,8 +158,8 @@ opacity: 0;
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody>
-                
+                <tbody id="monList">
+                <!--  
                 <c:forEach items="${MonList}" var="mon" varStatus="status">
                     <tr>
                     	<td><span>${mon.taskname}</span></td>
@@ -148,12 +173,13 @@ opacity: 0;
                         <td>${mon.createtime}</td>                                          
                         <td>
                         	<a href="javascript:void(0)" class="delet" style="color:#2499fb;" onclick="deleteMon('${mon.id}')">删除</a>
-                        	<!--  /
+                        	  /
                         	<a href="javascript:void(0)" onclick="AlterMon('${mon.id}')" style="color:#2499fb;" id="${mon.id}" name="${mon.name}" addr="${mon.addr }" type="${mon.type}" time="${mon.time}" rate="${mon.rate}" response="${mon.response}" state="${mon.state}" date="${mon.date}">修改</a>
-                        	-->
+                        	
                         </td>
                     </tr>
-                </c:forEach>            
+                </c:forEach>    
+                -->        
                 </tbody>
             </table>
         </div>
@@ -172,56 +198,55 @@ opacity: 0;
    </div> 
        <div class="regist_form">
        <form  id="form_advertisement" name="form_regist" method="post" action="${ctx}/monitorAdd.html" enctype="multipart/form-data">
-       <table>
+       <table>      
           <tr class="register_tr">
             <td class="regist_title">监控名称</td>
-            <td class="regist_input"><input type="text" class="regist_txt required" name="name" id="regist_name"/></td>
-            <td class="regist_prompt" style="text-align:left;">给监控项目起一个名字，比如：测试环境。</td>
-          </tr>
+            <td class="regist_input"><input type="text" class="regist_txt required" name="name" id="name"/></td>
+            <td class="regist_prompt" style="text-align:left;font-size: 12px;"><p class="prompt" style="color:#e32929;" id="name_msg"></p>给监控项目起一个名字，比如：测试环境。</td>
+          </tr>                   
            <tr class="register_tr">
             <td class="regist_title">URL</td>
-            <td class="regist_input"><input type="text" class="regist_txt required" name="addr" id="regist_addr"/></td>            
-	        <td class="regist_prompt" style="text-align:left;">监控的网址，可以是网站首页或其他页面，也可以是ip地址</td>
+            <td class="regist_input"><input type="text" class="regist_txt required" name="addr" id="addr"/></td>            
+	        <td class="regist_prompt" style="text-align:left;font-size: 12px;"><p class="prompt" style="color:#e32929;" id="addr_msg"></p>监控网址，网站首页或其他页面，或ip地址</td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">监控频率</td>
             <td class="regist_input">
-            	<label><input type="radio" name="time" checked="checked" id="time15" value="15">15分钟</input></label>
-                <label style="margin-left:10px;"><input type="radio" name="time" id="time20" value="20">20分钟</label>
-                <label style="margin-left:10px;"><input type="radio" name="time" id="time30" value="30">30分钟</label>
-                <label style="margin-left:10px;"><input type="radio" name="time" id="time60" value="60">60分钟</label>
+            	<label><input type="radio" name="frequency" checked="checked" value="15">&nbsp;15分钟</input></label>
+                <label style="margin-left:10px;"><input type="radio" name="frequency" value="20">&nbsp;20分钟</label>
+                <label style="margin-left:10px;"><input type="radio" name="frequency" value="30">&nbsp;30分钟</label>
+                <label style="margin-left:10px;"><input type="radio" name="frequency" value="60">&nbsp;60分钟</label>
             </td>
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
           	<td class="regist_title">监控类型</td>
             <td class="regist_input">
-            	<label><input type="radio" name="type" checked="checked" id="type1" value="15">主机监控</label>
-                <label style="margin-left:10px;"><input type="radio" name="type" id="type2" value="20">服务监控</label>
+            	<label><input type="checkbox" name="monType" id="host" value="host">&nbsp;主机监控</label>
+                <label style="margin-left:10px;"><input type="checkbox" name="monType" id="server" value="server">&nbsp;服务监控</label>
 
-                <select style="margin-left:10px;border:1px solid #cbc9c9;" id="regist_type" name="type2">
+                <select style="margin-left:10px;border:1px solid #cbc9c9;" id="serverType" name="serverType">
                 	<option selected="selected" value="-1">http</option>
                 	<option value="0" >https</option>
                 	<option value="1" >其他服务</option>
                 </select>
             </td>
-            <td class="regist_prompt"></td>
+            <td class="regist_prompt prompt" style="color:#e32929;text-align:left;font-size: 12px;" id="type_msg"></td>
           </tr>        
           <tr class="register_tr">
           	<td class="regist_title">告警设置</td>
             <td class="regist_input">
             	<div>
-            	<label><input type="checkbox" name="alarm" id="alarm1" style="vertical-align:middle;" value="1"><span >邮件</span></label> 
-            	<input calss="input_alarm" style="margin-left:10px;width:200px;height:22px;border:1px solid #cbc9c9;" type="text" name="addr" id="regist_addr"/> 
+            	<label><input type="checkbox" name="alarm" id="alarm1" style="vertical-align:middle;" value="email"><span >邮件</span></label> 
+            	<input calss="input_alarm" style="margin-left:10px;width:200px;height:22px;border:1px solid #cbc9c9;" type="text" name="email" id="email"/> 
             	</div>
 				<br/> 
 				<div>
-            	<label ><input type="checkbox" name="alarm" id="alarm2" style="vertical-align:middle;" value="2"><span >短信</span></label>
-                <input calss="input_alarm" style="margin-left:10px;width:200px;height:22px;border:1px solid #cbc9c9;" type="text" name="addr" id="regist_addr"/>                     
-				</div>
-            	                       
+            	<label ><input type="checkbox" name="alarm" id="alarm2" style="vertical-align:middle;" value="message"><span >短信</span></label>
+                <input calss="input_alarm" style="margin-left:10px;width:200px;height:22px;border:1px solid #cbc9c9;" type="text" name="message" id="message"/>                     
+				</div>           	                       
             </td>           
-            <td class="regist_prompt"></td>
+            <td class="regist_prompt prompt" style="color:#e32929;text-align:left;font-size: 12px;" id="alarm_msg"></td>
           </tr>
          
           <tr>
