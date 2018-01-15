@@ -68,5 +68,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 createtime=#{createtime},
                 availability=#{availability}
 	</insert>
-
+	
+	<!-- 更新引擎任务状态-->
+	<update id="updateMonitorTaskStatusByTaskId" parameterType="com.cn.ctbri.entity.MonitorTask">
+		update cs_monitor_task
+		<set>
+			<if test="laststatus!=null">
+                laststatus=#{laststatus},
+            </if>
+		</set>
+		where task_id=#{task_id}
+	</update>
+	
 </mapper>
