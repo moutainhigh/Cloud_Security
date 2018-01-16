@@ -1,0 +1,97 @@
+@CHARSET "UTF-8";
+			/*外面大框*/
+			.text{
+				width: 1000px;
+				border-top: 5px solid #ededed;		
+				margin-top: 50px;
+				margin-left: 300px;	
+			}
+			/*标签总框*/
+			.headtext{
+				width: 170px;
+				height: 65px;
+				margin-top: -15px;
+				margin-left: 115px;
+				position: relative;			
+			}
+			/*标签*/
+			.txt{
+				width: 170px;
+				height: 60px;
+				background:#2499FB;
+				opacity: 0.9;
+				border-radius: 5px 0px 5px 5px;
+			}
+			.txt p{
+				font-size: 25px;
+				line-height: 60px;
+				text-align: center;
+				color: white;
+			}
+			/*三角形*/
+			.triangle{			
+				position: absolute;
+				top: 0px;
+				left: 170px;
+				border-top:solid 15px rgba(0,0,0,0);
+				border-left:solid 10px #2499FB;
+			}					
+			.join_left{
+				width: 200px;
+				float: left;
+				position:fixed;
+				left: 50px;
+				top:100px;				
+				border: 1px solid #ededed;
+			 	box-shadow: 0px 0px 10px #ededed;
+			}
+			.join_left ul{
+				padding: 0;
+				font-size: 12px;			
+				margin: 0;
+				list-style: none;
+				border-bottom: 1px white solid;
+			}	
+			.join_left p{
+				margin-left: 20px;
+			}
+			.cebianlan{
+				height: 30px;
+				border-top: 1px solid #ededed;
+				position: relative;
+				line-height: 30px;
+				transition: all 200ms;
+				width: 200px;
+				color: black;
+				list-style: none; 
+				font-family: "微软雅黑";
+			}			
+			/*内容框*/
+			.content{				
+				width: 950px;
+				margin: 40px auto;
+				padding: 20px;
+				border: 1px solid #2499FB;
+				box-shadow: 0px 0px 10px #2499FB;
+				border-radius: 5px 5px 5px 5px;	
+				display: none;
+			}
+			/*小标题*/
+			.title{
+				line-height: 35px;
+				font-size:20px;
+				color: #2499FB;
+			}
+			.txttop{
+				margin-top: 10px;
+			}	
+			.content p{
+				line-height: 30px;
+			}
+			#cebianlan1{
+				display: none;
+			}
+			#cebianlan2{
+				display: none;
+			}
+			}	
