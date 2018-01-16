@@ -129,7 +129,7 @@ html, body {
 			</div>
 
 		</div>
-		<div class="safe02" style="padding-bottom:120px;">
+		<div class="safe02">
 
 			<div class="imgBox" style="width:1108px; margin:0 auto">
 				<h2>热门服务</h2>
@@ -442,9 +442,9 @@ html, body {
 					<li>
 						<h2>帮助中心</h2>
 						<dl>
-							<dd>购物指南</dd>
+							<dd><a href="${ctx}/guide.jsp">购物指南<a/></dd>
 							<dd>在线帮助</dd>
-							<dd>常见问题</dd>
+							<dd><a href="${ctx}/Common_problem.jsp">常见问题<a/></dd>
 						</dl>
 					</li>
 					<li>

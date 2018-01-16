@@ -16,28 +16,6 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
-<style>
-.rich_media_meta_list{
-	height:40px;
-	line-height:40px;
-}
-.rich_media_meta_nickname{
-	color: #607fa6;
-    text-decoration: none;
-}
-.rich_media_content p{
-    line-height: 24px;
-    font-size: 14px;
-    color: #343434;
-	
-}
-.rich_media_inner{
-	padding:0px;
-}
-.understand img{
-    padding: 20px 0;
-}
-</style>
 <script>
 $(function(){
 	$('.understand p').css('text-align','left');
@@ -46,7 +24,170 @@ $(function(){
 
 </script>
 </head>
-
+<style>
+.about{
+			width: 1000px;
+			height: 2100px;
+			margin: 0 auto;			
+			margin-top: 30px;
+		}
+		.banner img{
+			width: 1000px;
+			height: 400px;
+			margin: 0 auto;			
+			margin-top:0px;
+			box-shadow: 0px 0px 10px #2499FB;			
+		}
+		/*标题*/
+		.Title{
+			font-size:20px;
+			color: #2499FB;
+			line-height: 55px;
+			margin-top: 5px;
+			margin-left: 30px;
+		}
+		/*我们的产品与服务*/
+		.product{
+			width: 100%;
+			height: 1040px;
+			position: relative;
+			font-size: 16px;
+			box-shadow: 0px 0px 10px #2499FB;
+			border-radius: 5px 5px 5px 5px;	
+		}
+		/*黄色强调字样式*/
+		.txt{
+			color:#FFCC00;
+			font-weight: 600;
+		}
+		
+		/*图文交叉*/
+		.product_1{
+			margin-top: 20px;
+			width: 100%;
+			height: 278px;
+		}
+		.product_1 img{
+			margin-left: 30px;
+		}
+		.product_1 p{
+			width: 45%;
+			height: 200px;
+			float: right;			
+			text-indent: 2em;
+			line-height: 40px;
+			margin-right: 30px;
+			margin-top: 25px;
+		}
+		.product_2{
+			width: 100%;
+			height: 250px;
+		}
+		.product_2 img{
+			margin-top: 10px;
+			margin-right: 30px;
+		}
+		.product_2 p{
+			width: 44%;
+			float: left;
+			margin-top: 10px;
+			margin-left: 30px;
+			text-indent: 2em;
+			line-height: 45px;
+		}
+		.product_3{
+			width: 100%;
+			height: 285px;
+		}
+		.product_3 img{
+			margin-top: 30px;
+			margin-left: 30px;
+		}
+		.product_3 ul{
+			width: 44%;
+			float: right;
+			margin-right: 30px;
+			/*margin-top:-10px;*/
+		}
+		.product_3 li{
+			list-style: none;
+			line-height: 28px;
+			margin: 10px 0px;
+			text-indent: 2em;
+		}		
+		
+		/*安全新生态*/
+		.security{
+			width: 100%;
+			height: 270px;
+			font-size: 16px;
+			box-shadow: 0px 0px 10px #2499FB;
+			border-radius: 5px 5px 5px 5px;	
+		}
+		/*安全新生态左侧*/
+		.security_left{
+			width: 44%;
+			height: 250px;
+			float: left;
+			margin-top: 10px;
+			margin-left: 30px;
+			text-indent: 2em;
+			line-height: 35px;
+		}	
+		/*安全新生态右侧*/
+		.security_right{
+			width: 50%;
+			height: 270px;
+			float: right;
+			line-height: 35px;
+			box-shadow: 0px 0px 8px #2499FB;
+			border-radius: 0px 5px 5px 0px;	
+		}
+		.security_right li{
+			list-style: none;
+			margin-left: 135px;
+			color: #2499FB;
+			font-weight: 600;
+			line-height: 55px;
+		}
+		/*联系我们*/
+		.contact{
+			width: 100%;
+			box-shadow: 0px 0px 10px #2499FB;
+			border-radius: 5px 5px 5px 5px;	
+			position: relative;
+		}
+		.contact li{
+			list-style: none;
+			margin-left: 30px;
+			font-size: 16px;
+			line-height: 50px;
+		}
+		/*二维码*/
+		.pic1{
+			width: 150px;
+			text-align: center;
+			position: absolute;
+			top: 8px;
+			left: 535px;
+		}
+		/*文字*/
+		.pic1 p{
+			font-size: 14px;
+			margin-top: -10px;
+		}
+		.pic2{
+			width: 150px;
+			text-align: center;
+			position: absolute;
+			top: 15px;
+			left: 740px;
+		}
+		.pic2 p{
+			font-size: 14px;
+			margin-top: -5px;
+		}
+</style>
 <body>
 	<div class="safeBox">
 		
@@ -86,51 +227,111 @@ $(function(){
 					</div>
 				</div>
 			</div>
+			<!-- 正文内容 -->
+			<div class="about">
+			<div class="banner">
+				<img src="${ctx}/source/img/banner.jpg"/>
+			</div>
+			<p class="Title">
+				我们的产品与服务
+			</p>
+			<div class="product">
+				<p style="margin-left: 30px;line-height: 40px;">安全帮包括<span class="txt">“1+4”</span>产品体系：</p>
+				<p class="txt" style="margin-left: 60px;margin-top:10px;line-height: 20px;">“1”：SaaS云安全服务商城</p>
+				<p style="margin-left: 30px;margin-right: 30px;margin-top:10px;line-height: 25px;text-indent: 2em;">
+					全自助式安全服务云商城，面向中小微企业用户提供在线云化安全服务和安全能力API，让安全像购物一样简单。
+					真正实现即买即用，按次计费，在线支付。
+				</p>
+				<div class="product_1">
+					<img width="470px" align="left" src="${ctx}/source/img/show_one.png">
+					<p>
+						为用户打造全自助一站式在线安全服务体验，动一动鼠标即可享受及时、灵活、智能、便捷的安全服务，
+						并结合丰富多样的图表让企业安全更直观立体，企业所面临的安全厂商多、安全产品繁、安全投资大、
+						安全人才缺等问题迎刃而解，为企业省时省力省钱。
+					</p>
+				</div>
+				
+				<p class="txt" style="margin-left: 40px;">
+					“4”：PaaS安全平台——SDS分布式协同平台、安全能力开放平台、安全大数据平台、安全态势感知平台
+				</p>
+				
+				<div class="product_2">
+					<img width="490px" align="right" src="${ctx}/source/img/show_two.png">
+					<p>
+						安全帮作为SDS软件定义安全先行者，以极致的专业能力与创新的精神打造了Sec-aaS云安全服务平台，
+						基于多年技术积累进行提炼与抽象，将领域内领先的基础能力对外开放，帮助企业实现快速的安全应用引入，
+						以更低的成本来高效、可靠地创建安全融合业务，推动企业安全建设的全面提升与优化。
+					</p>
+				</div>
+				
+				<div class="product_3">
+					<img width="480px" src="${ctx}/source/img/show_three.png">
+					<ul>
+						<li>
+							&diams;&nbsp;SDS分布式协同平台基于SDS架构设计，支持安全策略的解析与下发、
+							安全资源的智能随选调度与管理、多厂家引擎的统一能力适配和异构引擎间的协同工作。
+						</li>
+						<li>
+							&diams;&nbsp;安全能力开放平台支持智能化的业务编排和管理、快速的自动化服务配置部署、已定义的业务能力输出。
+						</li>
+						<li>
+							&diams;&nbsp;安全大数据平台基于海量的安全数据源，通过行为建模、经验转化、算法应用进行多维度数据分析和展现。
+						</li>
+						<li>
+							&diams;&nbsp;安全态势感知平台定义安全态势指标体系，基于安全大数据分析能力进行安全态势指标的获取，
+							并构建立体的安全态势展示模型进行直观的安全态势展示与预测。
+						</li>
+					</ul>
+				</div>
+				
+			</div>
 			
+			<p class="Title">
+				安全新生态
+			</p>
+			<div class="security">
+				<p class="security_left">
+					 2017年11月，安全帮携手绿盟科技、安华金和、启明星辰、安恒信息共同发起了“安全服务创新联盟”，
+					以开放、协同、创新为宗旨，开展企业安全技术、产品、解决方案及标准规范的协同研究，
+					持续深化安全服务理念创新与安全服务模式创新，不断推出满足用户需要的安全新产品和新服务，
+					由自主创新驱动产业深度变革，共同开创网络和信息安全的美好未来。
+				</p>
+				<ul class="security_right">
+					<p style="margin-top: 35px;margin-left: 90px;">安全帮三步战略：</p>
+					<li>1.中国电信自有品牌安全服务</li>
+					<li>2.第三方品牌安全服务入驻安全帮</li>
+					<li>3.智能协同SaaS云安全服务</li>
+				</ul>
+			</div>
+			
+			
+			<p class="Title">
+				联系我们
+			</p>
+			<div class="contact">
+				<ul>
+					<ul>					
+					<li>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：010－50902872</li>
+					<li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：service@anquanbang.net</li>
+					<li>Q&nbsp;Q客服：470899318</li>
+					<li>通讯地址：北京市昌平区北七家镇未来科技城南区中国电信北京信息科技创新园北京研究院902室</li>
+				</ul>
+				</ul>
+				<div class="pic1">
+					<img width="130px" src="${ctx}/source/img/show_four.png">
+					<p>关注安全帮微信公众号</p>
+				</div>
+				<div class="pic2">
+					<img width="120px" src="${ctx}/source/img/show_five.png">
+					<p>关注安全帮微博</p>
+				</div>				
+			</div>
+			
+		</div>
 
 		</div>
         <!--主题内容-->
-		<div class="understand" style="width:740px; margin:0 auto">
-        	<div class="rich_media_inner">
-            <div id="page-content">
-                    <div class="rich_media_content " id="js_content">
-                        <p style="padding-left:205px;font-family:FZShuTi;font-size:22px;margin-top:28px;margin-bottom:21px;">安全帮，帮一下就好了！</p>
-                        <p style="padding-left:220px;">安全帮，www.anquanbang.net</p>
-                        <p style="padding-left:170px;">中国电信基于专业安全能力打造的云安全服务平台</p>
-                        <p style="padding-left:170px;">诞生于中国电信北京研究院安全技术与应用产品线</p>
-                        <img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/14.jpg" style="width: 640px; visibility: visible !important; height: 240px;"/><br></p>
-                        <p style="font-weight:bold;font-family:SimHei">安全帮<span style="font-size:20px;color:#FFCC00;line-height:30px;">“1+4”</span>产品体系：</p>
-                        <p style="font-size:15px;color:#FFCC00;line-height:40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“1”：SaaS云安全服务商城</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全自助式安全服务云商城，为企业用户提供专业的云化安全服务和安全能力API。</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户通过在线注册购买，即可享受及时、在线、智能、便捷的安全服务。安全帮的创立，旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，为企业省时省力省钱。</p>
-                        <p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/2.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在安全帮，你可以像在线购买普通商品那样，购买和使用及时生效的安全服务。这样，你不用再购买昂贵的安全设备，不用再部署高大上的安全设备，不用再熬夜看使用手册，你要做的，就是：轻点鼠标，立享服务，晴空万里，一切都好！ </p>
-                        <img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/16.jpg" style="width: 640px; visibility: visible !important; height: 340px;margin-left:-26px;"><br></p>
-                        <img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/17.jpg" style="width: 640px; visibility: visible !important; height: 340px;"><br></p>
-                        <p style="font-size:15px;color:#FFCC00;line-height:40px;">“4”：SDS分布式调度管理系统、安全能力开放平台、安全大数据平台、安全态势感知平台</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;SDS分布式调度系统基于SDS架构设计，支持安全策略的解析与下发、安全资源的智能随选调度与管理、多厂家设备的统一能力适配和异构设备间的协同工作</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;安全能力开放平台支持智能化的业务编排和管理、快速的自动化服务配置部署、已定义的业务能力输出</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;安全大数据平台基于海量的安全数据源，通过行为建模、经验转化、算法应用进行多维度数据分析和展现</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;安全态势感知平台定义安全态势指标体系，基于安全大数据分析能力进行安全态势指标的获取，并构建立体的安全态势展示模型进行直观的安全态势展示与预测</p>
-                        <p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/15.jpg" style="padding-top:15px; padding-bottom:0px; width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
-                        <br />
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中国电信安全帮携绿盟科技、安恒信息、金山安全等合作伙伴，共同打造云安全服务平台，为客户的网络信息安全保驾护航！</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全帮三步战略：</p>
-                        <p style="color:#6699FF;margin-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 中国电信自有品牌安全服务</p>
-                        <p style="color:#6699FF;margin-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 第三方品牌安全服务入驻安全帮</p>
-                        <p style="color:#6699FF;margin-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 智能协同SaaS云安全服务</p>
-                        <p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/18.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
-                        <br />
-                        <br />
-                    </div>
-
-                  </div>
-
-            </div>
-           
-        </div>
-        </div>
-        
+		
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
