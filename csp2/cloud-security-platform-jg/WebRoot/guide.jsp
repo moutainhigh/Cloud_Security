@@ -37,7 +37,24 @@ margin: 10px 10%;
 margin: 0 18%;
 }
 
+.data-crumbs{margin-left:50px;}
+
+ul li p{
+	cursor:pointer;
+}
+
 </style>
+<script type="text/javascript">
+$(window).scroll(function(){
+	var height=$(document).height();
+	var distance=$(window).scrollTop();
+	if((height-distance)<=880){
+		$('.join_left').css({'position':'relative'});
+	}else{
+		$('.join_left').css({'position':'fixed'});
+	}
+});
+</script>
 </head>
 
 <body>
@@ -85,6 +102,9 @@ margin: 0 18%;
 <!-- 头部代码结束-->
 
 		<!-- 正文内容 -->
+	<div class="data-crumbs">
+		<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="javascript:;">购物指南</a>
+	</div>
 	<div class="join_left">
 			<ul>
 				<li class="cebianlan" style="background: dodgerblue;color: white;height: 50px;line-height: 50px;font-size: 15px;"><p style="margin-left: 70px;">用户注册</p></li>
@@ -105,18 +125,13 @@ margin: 0 18%;
 				
 			</ul>
 		</div>
+		
 		<div class="text">
-			<!--主题标签-->
-			<div class="headtext">
-				<div class="txt"><p>购物流程</p></div>
-				<div class="triangle"></div>
-			</div>
-			
 			<!--用户注册-->
 			<div class="content" style="display: block;">
 				<p class="title">1. 用户注册</p>
 				<p>（1）登录https://www.anquanbang.net，点击右上角“注册”；</p>
-				<img width="800px" src="${ctx}/source/img/guide_img/gw1.png"style="position: relative;left:80px;">
+				<img width="600px" src="${ctx}/source/img/guide_img/gw1.png"style="position: relative;left:80px;">
 				<p>（2）进入到注册页面，请填写您的用户名、密码、邮箱、手机等信息完成注册；</p>
 				<img width="400px" style="margin-left: 200px;" src="${ctx}/source/img/guide_img/gw2.png">
 				<p>（3）注册成功后，即可登录。</p>
@@ -259,7 +274,8 @@ margin: 0 18%;
 			</div>
 						
 		</div>
-	
+
+
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
