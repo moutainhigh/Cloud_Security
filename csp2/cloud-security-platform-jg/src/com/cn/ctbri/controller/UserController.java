@@ -387,7 +387,7 @@ public class UserController{
 	 * 参数描述：
 	 *		 @time 
 	 */
-	@RequestMapping(value="error.html")
+	@RequestMapping(value="app/error.html")
 	public String index(){
 		
 		return "/pageError";
@@ -2279,6 +2279,24 @@ public class UserController{
 	@RequestMapping(value="system_activity.html")
 	public String system_activity(Model m){
 		return "/system_fuli";
+	}
+	
+	/**
+	 * 功能描述： 购物指南
+	 *		 @time 2018-1-16
+	 */
+	@RequestMapping(value="guide.html")
+	public String guide(Model m){
+		return "/guide";
+	}
+	
+	/**
+	 * 功能描述： 常见问题
+	 *		 @time 2018-1-16
+	 */
+	@RequestMapping(value="common_problem.html")
+	public String common_problem(Model m){
+		return "/Common_problem";
 	}
 	
 }
