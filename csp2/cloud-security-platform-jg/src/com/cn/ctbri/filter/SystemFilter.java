@@ -37,7 +37,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/loginUI.html");
 		list.add("/login.html");
 		list.add("/index.html");
-		list.add("/error.html");
+		list.add("/app/error.html");
 		list.add("/exit.html");
 		list.add("/regist_checkSendEmail.html");
 		list.add("/regist_checkName.html");
@@ -85,6 +85,9 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/portScanMethod.html");//x专区
 		list.add("/portScanPostMethod.html");//x专区
 		list.add("/Xlist.html");//x专区
+		list.add("/guide.html");//购物指南
+		list.add("/common_problem.html");//常见问题
+		
 //		list.add("/serviceUserUI.html");
 //		list.add("/serviceUser.html");
 //		list.add("/orderServiceUI.html");
