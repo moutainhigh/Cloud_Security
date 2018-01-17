@@ -36,8 +36,22 @@ margin: 10px 10%;
 	width: 70%;
 margin: 0 18%;
 }
+ul li p{
+	cursor:pointer;
+}
 
 </style>
+<script type="text/javascript">
+$(window).scroll(function(){
+	var height=$(document).height();
+	var distance=$(window).scrollTop();
+	if((height-distance)<=760){
+		$('.join_left').css({'position':'relative'});
+	}else{
+		$('.join_left').css({'position':'fixed'});
+	}
+});
+</script>
 </head>
 
 <body>
