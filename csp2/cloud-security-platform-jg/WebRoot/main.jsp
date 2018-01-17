@@ -442,9 +442,9 @@ html, body {
 					<li>
 						<h2>帮助中心</h2>
 						<dl>
-							<dd><a href="${ctx}/guide.jsp">购物指南<a/></dd>
+							<dd><a href="${ctx}/guide.html">购物指南<a/></dd>
 							<dd>在线帮助</dd>
-							<dd><a href="${ctx}/Common_problem.jsp">常见问题<a/></dd>
+							<dd><a href="${ctx}/common_problem.html">常见问题<a/></dd>
 						</dl>
 					</li>
 					<li>
