@@ -56,6 +56,7 @@
 			
 	body{
         background:url(${ctx}/source/images/personalCenter/background4.png);
+        background-size: cover;
     }	
 	.contentBox{
 		/*background-color: #04144d;*/
@@ -175,6 +176,7 @@
       float: left;
       position: absolute;
     }
+    html,body{     height:100%; }
 </style>
 <script>
 	var ctx='${ctx}';
@@ -253,18 +255,18 @@
             <!-- 
             	<div  id="totalFontDiv" style="margin:10px auto; text-align:center;">
 			 -->
-			 <div style="width: 200px;height: 70px;background: rgba(3,47,155, 0.39);position:absolute;top:220px;left:7px;text-align:center; line-height:35px;">
+			 <div style="width: 200px;height: 70px;background: rgba(3,47,155, 0.39);position:absolute;top:32%;left:3%;text-align:center; line-height:35px;">
 			 	<font id="totalFon" color="#c1c7da" size='5'  style="font-weight:bold;">2684403</font><br/>
 			 	<font color="#c1c7da" size='3'>阻断攻击总数</font>
 			 </div>
-			 <div style="width: 200px;height: 70px; background: rgba(3,47,155, 0.39);position:absolute;top:320px;left:7px;text-align:center; line-height:35px;">
+			 <div style="width: 200px;height: 70px; background: rgba(3,47,155, 0.39);position:absolute;top:50%;left:3%;text-align:center; line-height:35px;">
 			 	<font id="dayTotalFon" color="#c1c7da" size='5'  style="font-weight:bold;">62207</font><br/>
 			 	<font color="#c1c7da" size='3'>今日阻断攻击总数</font>
 			 </div>
 		
 			
 			
-                <div class="word" style="width: 100%; height: 600px;">
+                <div class="word"  id="worldBox" style="width: 100%; height: 550px;">
                 <!-- 世界地图背景色 -->
 <!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
 					<div class="content">
@@ -362,6 +364,23 @@
 					if(error!=''){
 						alert(error);
 					}
+					var resizemainMapContainer = function() {
+						var winHeight;
+						// 获取窗口高度
+						if (window.innerHeight)
+							winHeight = window.innerHeight;
+						else if ((document.body) && (document.body.clientHeight))
+							winHeight = document.body.clientHeight;
+						// 通过深入 Document 内部对 body 进行检测，获取窗口大小
+						if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
+						{
+						 	winHeight = document.documentElement.clientHeight;
+						}
+						winHeight-=40;
+						document.getElementById("worldBox").style.height= winHeight +"px";
+					};
+					resizemainMapContainer();
+					window.onresize=resizemainMapContainer;
 					</script>
 					<script type="text/javascript" src="${ctx}/source/attacking/js/attacking.js"></script>
                 </div>
@@ -370,7 +389,7 @@
                         		
        		</div>
         </div>
-        、
+
         <!-- 数据简摘 -->
         <div class="contentcenterdata not-used">
             <ul class="clearfix" style="width:auto">

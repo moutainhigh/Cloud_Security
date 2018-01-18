@@ -443,8 +443,7 @@ var painter = {
                 } else {
                     return shrinkMin;
                 }
-            },
-        	
+            },        	
        
             draw: function(context) {
             	//alert(nodeModel.ATTACKS);
